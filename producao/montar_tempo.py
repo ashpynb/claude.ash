@@ -9,12 +9,13 @@ AQUI = pathlib.Path(__file__).parent
 roteiro = json.load(open(AQUI.parent / "roteiro" / f"{ep}.json"))
 beats = [b for c in roteiro["clipes"] for b in c["beats"]]
 tempos = json.load(open(voz / "tempos.json"))
+falas = {f["id"]: f for f in json.load(open(AQUI / f"{ep}_falas.json"))}
 SR = 24000
 partes, out, t = [], [], 0.0
 for i, b in enumerate(beats):
     k = "b%02d" % i
     a, _ = sf.read(voz / f"{k}.wav")
-    resp = 0.5 if "CUBO" in b["visual"] or i == 0 else 0.22
+    resp = falas[k].get("resp", 0.5 if "CUBO" in b["visual"] or i == 0 else 0.22)
     dur = len(a) / SR + resp
     out.append({"t0": round(t, 3), "t1": round(t + dur, 3), "fala": b["fala"],
                 "words": [{"w": w["w"], "t0": round(t + w["t0"], 3), "t1": round(t + w["t1"], 3)} for w in tempos[k]["palavras"]]})

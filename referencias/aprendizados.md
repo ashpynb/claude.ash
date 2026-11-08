@@ -31,7 +31,13 @@ Nunca misturar as regras de "economia" com as de "fatos gerais".
 
 ## Série "Cubo mágico: F2L" (regras pedidas pela usuária, têm prioridade nesta série)
 - **Duração:** cada vídeo entre 1:05 e 1:30 (alvo 1:15–1:25).
-- **Ritmo da fala mais calmo que o padrão:** 2,4–2,6 palavras/s (o padrão das skills é 2,8–3,3).
+- **Ritmo da fala (ATUALIZADO pela usuária depois do ep. 1):** 2,5 p/s ficou "lento demais".
+  Agora: **gancho/introdução no ritmo viral (~3,1–3,2 p/s)** e **explicação ~2,9 p/s**.
+  Medido no ep. 1: intro `rate +24%`, pausas ≤0,10s, respiro 0,08s (0,2s após algoritmo) → 3,15 p/s;
+  explicação `rate -4%`, pausas ≤0,20s, respiro 0,18s (0,38s após algoritmo) → 2,92 p/s; total 1:05,7.
+  Configuração por beat em `producao/epNN_falas.json` (`rate`, `gap`, `resp`).
+  Cuidado: com fala rápida, giros seguidos ("érre, u, érre linha") precisam durar ~0,33s, senão se atropelam.
+- ~~Ritmo antigo: 2,4–2,6 palavras/s~~ (substituído acima).
   Motivo: a própria usuária está aprendendo junto. Continua sem pausas arrastadas: o ritmo
   mais calmo vem de frases curtas e de um respiro de ~0,25s depois de cada algoritmo, não de
   voz lenta. No produtor: `speed` 1,0–1,05 e `stop_duration` 0,25 no silenceremove.

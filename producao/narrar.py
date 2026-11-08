@@ -1,7 +1,8 @@
 """Gera a narração por beat com Edge TTS (Antônio) e o tempo de cada palavra.
 
 Uso: python narrar.py entrada.json saida_dir RATE GAP_MAX
-entrada.json: [{"id":..., "texto":...}, ...]
+entrada.json: [{"id":..., "texto":..., "rate"?:"+0%", "gap"?:0.2, "resp"?:0.2}, ...]
+(rate/gap por beat sobrescrevem os da linha de comando; resp é usado por montar_tempo.py)
 Saída: saida_dir/<id>.wav e saida_dir/tempos.json com
   {id: {"dur": s, "palavras": [{"w":..., "t0":..., "t1":...}]}}
 As pausas entre palavras maiores que GAP_MAX são encurtadas para GAP_MAX
@@ -53,8 +54,8 @@ async def main():
     os.makedirs(saida, exist_ok=True)
     out, tw, tt = {}, 0, 0.0
     for b in json.load(open(entrada)):
-        a, pal = await tts(b["texto"], rate)
-        a2, pal2 = comprimir(a, pal, gap_max)
+        a, pal = await tts(b["texto"], b.get("rate", rate))
+        a2, pal2 = comprimir(a, pal, b.get("gap", gap_max))
         sf.write(os.path.join(saida, b["id"] + ".wav"), a2, SR)
         d = len(a2) / SR
         out[b["id"]] = {"dur": round(d, 3), "palavras": pal2}

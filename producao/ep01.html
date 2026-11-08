@@ -115,11 +115,11 @@ const EV=[]; // {t,tipo:'reset',seq} | {t,tipo:'mov',m,dur}
 const NOTA=[]; // {t,txt} notação grande
 const DUR1=.62,DUR2=.95;
 function reset(t,seq=''){EV.push({t,tipo:'reset',seq})}
-function mov(t,txt,nota=true){for(const m of parse(txt)){EV.push({t,tipo:'mov',m,dur:m.q===2?DUR2:DUR1});if(nota)NOTA.push({t,txt:m.txt});t+=(m.q===2?DUR2:DUR1)}}
+function mov(t,txt,nota=true,d1=DUR1){for(const m of parse(txt)){const d=m.q===2?DUR2:d1;EV.push({t,tipo:'mov',m,dur:d});if(nota)NOTA.push({t,txt:m.txt});t+=d}}
 const MIST="R2 D' F U2 L B' R U' F2 L2 D B2 U' R'";
 // cues (cubo gira na palavra falada)
 reset(0,MIST);
-mov(palavra(0,'erre',1),'R');mov(palavra(0,'u'),'U');mov(palavra(0,'erre',2),"R'");
+mov(palavra(0,'erre',1),'R',true,.34);mov(palavra(0,'u'),'U',true,.32);mov(palavra(0,'erre',2),"R'",true,.34);
 reset(B[2].t0);
 mov(palavra(11,'erre'),'R');
 reset(B[12].t0);mov(palavra(12,'ele'),'L');
@@ -213,6 +213,6 @@ function renderAt(t){
  for(const e of EV)if(e.tipo==='reset'&&e.t>0&&t>=e.t&&t-e.t<.08)flash=Math.max(flash,.35);
  $('flash').style.opacity=flash;
 }
-window.renderAt=renderAt;window.TOTAL=TEMPO.total;window.EVENTOS=()=>({EV:EV.map(e=>({t:e.t,tipo:e.tipo,m:e.m?e.m.txt:e.seq})),NOTA});
+window.renderAt=renderAt;window.TOTAL=TEMPO.total;window.EVENTOS=()=>({EV:EV.map(e=>({t:e.t,tipo:e.tipo,m:e.m?e.m.txt:e.seq,dur:e.dur})),NOTA});
 renderAt(0);
 </script></body></html>

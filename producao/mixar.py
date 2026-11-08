@@ -28,7 +28,7 @@ for e in E["EV"]:
     if m[0] in "xy":
         add(whoosh(.7), e["t"], .10)
     else:
-        d = .95 if m.endswith("2") else .62
+        d = e.get("dur") or (.95 if m.endswith("2") else .62)
         add(clique(1900), e["t"], .16); add(clique(1300), e["t"]+d-.02, .22)
 voz_n = voz/np.max(np.abs(voz))*0.85
 out = np.zeros(len(mix)); out[:len(voz_n)] += voz_n; out += mix
