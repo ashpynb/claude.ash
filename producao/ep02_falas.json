@@ -1,0 +1,149 @@
+[
+ {
+  "id": "b00",
+  "texto": "No método de iniciante as duas primeiras camadas levam oito etapas.",
+  "rate": "+12%",
+  "gap": 0.1,
+  "resp": 0.08
+ },
+ {
+  "id": "b01",
+  "texto": "O éfe dois éle faz em quatro.",
+  "rate": "+12%",
+  "gap": 0.1,
+  "resp": 0.08
+ },
+ {
+  "id": "b02",
+  "texto": "E não é mágica.",
+  "rate": "+12%",
+  "gap": 0.1,
+  "resp": 0.08
+ },
+ {
+  "id": "b03",
+  "texto": "É só uma ideia diferente: trabalhar em pares.",
+  "rate": "+12%",
+  "gap": 0.1,
+  "resp": 0.08
+ },
+ {
+  "id": "b04",
+  "texto": "Éfe dois éle vem do inglês, first two layers.",
+  "rate": "+12%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b05",
+  "texto": "As duas primeiras camadas. Você começa igual, com a cruz branca embaixo.",
+  "rate": "+12%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b06",
+  "texto": "A diferença vem depois da cruz.",
+  "rate": "+12%",
+  "gap": 0.2,
+  "resp": 0.38
+ },
+ {
+  "id": "b07",
+  "texto": "No método de camadas você coloca uma quina branca,",
+  "rate": "+12%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b08",
+  "texto": "depois outra, depois as arestas do meio.",
+  "rate": "+12%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b09",
+  "texto": "São oito peças viajando sozinhas.",
+  "rate": "+12%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b10",
+  "texto": "E cada viagem desmonta e remonta um pedaço do cubo.",
+  "rate": "+12%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b11",
+  "texto": "No éfe dois éle você junta a quina,",
+  "rate": "+12%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b12",
+  "texto": "com a aresta que fica em cima dela.",
+  "rate": "+12%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b13",
+  "texto": "Vira um par, um bloquinho de duas peças.",
+  "rate": "+12%",
+  "gap": 0.2,
+  "resp": 0.38
+ },
+ {
+  "id": "b14",
+  "texto": "E coloca o par inteiro de uma vez no espaço dele, o slot.",
+  "rate": "+12%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b15",
+  "texto": "A cruz deixa quatro buracos nos cantos. São os quatro slots.",
+  "rate": "+12%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b16",
+  "texto": "Quatro pares, quatro slots, duas camadas prontas.",
+  "rate": "+12%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b17",
+  "texto": "Menos movimentos e menos pausa pra pensar.",
+  "rate": "+12%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b18",
+  "texto": "Resumo: mesma cruz, mas em vez de oito peças soltas são quatro pares.",
+  "rate": "+12%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b19",
+  "texto": "Pergunta: quantas peças formam um par? Pausa e pensa.",
+  "rate": "+12%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b20",
+  "texto": "No próximo vídeo, os primeiros casos com três movimentos.",
+  "rate": "+12%",
+  "gap": 0.2,
+  "resp": 0.18
+ }
+]

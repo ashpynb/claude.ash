@@ -1,0 +1,56 @@
+
+:root{--navy:#0b1030;--roxo:#241048;--ciano:#27f2ff;--magenta:#ff3bd4;--S:150px}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#05071a;font-family:'Inter',sans-serif}
+#palco{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 58%,#3a1670 0%,var(--roxo) 38%,var(--navy) 82%)}
+#chao{position:absolute;left:-30%;right:-30%;bottom:0;height:34%;
+ background:repeating-linear-gradient(90deg,#27f2ff2a 0 3px,transparent 3px 90px),repeating-linear-gradient(0deg,#27f2ff2a 0 3px,transparent 3px 90px);
+ transform:perspective(500px) rotateX(58deg);transform-origin:bottom}
+#estrelas{position:absolute;inset:0}
+#estrelas i{position:absolute;width:5px;height:5px;background:#fff;border-radius:50%;opacity:.5}
+#brilhoOuro{position:absolute;left:50%;top:50%;width:900px;height:900px;margin:-450px;border-radius:50%;
+ background:radial-gradient(circle,#ffd54a88 0%,#ffb30033 40%,transparent 70%);opacity:0}
+#cena{position:absolute;left:50%;top:50%;width:0;height:0;perspective:2200px}
+#cam{position:absolute;transform-style:preserve-3d}
+#vista{position:absolute;transform-style:preserve-3d}
+#cubo{position:absolute;transform-style:preserve-3d}
+.peca{position:absolute;width:var(--S);height:var(--S);margin:calc(var(--S)/-2);transform-style:preserve-3d}
+.f{position:absolute;inset:0;background:#0a0a12;border:3px solid #0a0a12;border-radius:12px}
+.f i{position:absolute;inset:7px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.f i.dim{filter:grayscale(1) brightness(.35)}
+.f i.luz{box-shadow:0 0 0 9px #fff inset;filter:brightness(1.15)}
+.f i b{font:900 92px 'Inter';color:#111;opacity:0}
+.f.px{transform:rotateY(90deg) translateZ(calc(var(--S)/2))}
+.f.nx{transform:rotateY(-90deg) translateZ(calc(var(--S)/2))}
+.f.py{transform:rotateX(90deg) translateZ(calc(var(--S)/2))}
+.f.ny{transform:rotateX(-90deg) translateZ(calc(var(--S)/2))}
+.f.pz{transform:translateZ(calc(var(--S)/2))}
+.f.nz{transform:rotateY(180deg) translateZ(calc(var(--S)/2))}
+#jogada{position:absolute;top:150px;left:0;right:0;text-align:center;font:900 210px/1 'Inter';color:#fff;
+ text-shadow:8px 8px 0 var(--magenta),0 0 50px var(--magenta);opacity:0;letter-spacing:4px}
+#jogada em{font-style:normal;color:var(--ciano);text-shadow:8px 8px 0 #0b1030,0 0 50px var(--ciano)}
+#leg{position:absolute;left:70px;right:70px;top:1470px;text-align:center;font:800 60px/1.18 'Inter';color:#fff;
+ -webkit-text-stroke:12px #0a0820;paint-order:stroke fill}
+#leg span{display:inline-block;transition:none}#leg .mv{color:#27f2ff}#leg .ag{color:#ffe35a}
+.seta{position:absolute;width:150px;height:330px;opacity:0}
+#relogio{position:absolute;left:720px;top:520px;width:250px;height:250px;opacity:0}
+#resumo{position:absolute;left:110px;right:110px;top:930px;opacity:0}
+#resumo div{display:flex;align-items:center;gap:36px;margin:22px 0;padding:18px 34px;border-radius:30px;background:#0b1030dd;
+ border:5px solid #27f2ff88;font:800 54px 'Inter';color:#fff;opacity:0}
+#resumo div b{font:900 70px 'Inter';color:var(--ciano);min-width:170px}
+#quiz{position:absolute;left:850px;top:620px;opacity:0}
+#quiz div{font:900 170px/1 'Inter';margin:10px 0}
+#carimbo{position:absolute;left:50%;top:50%;width:300px;height:300px;margin:-150px;border-radius:50%;border:16px solid #36f07a;
+ color:#36f07a;font:900 210px/270px 'Inter';text-align:center;opacity:0;background:#0b103099}
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+#vinheta{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 55%,#000a 100%)}
+
+#contador{position:absolute;top:120px;left:0;right:0;text-align:center;font:900 260px/1 'Inter';color:#ff4b4b;
+ text-shadow:10px 10px 0 #0b1030,0 0 60px #ff4b4b;opacity:0}
+#contador.ciano{color:var(--ciano);text-shadow:10px 10px 0 #0b1030,0 0 60px var(--ciano)}
+#sigla{position:absolute;top:390px;left:0;right:0;text-align:center;font:800 64px 'Inter';color:#fff;opacity:0;letter-spacing:2px}
+#sigla b{color:var(--ciano)}
+#comparar{position:absolute;left:90px;right:90px;top:900px;display:flex;gap:40px;opacity:0}
+#comparar div{flex:1;text-align:center;padding:30px 10px;border-radius:34px;background:#0b1030dd;border:6px solid #ff4b4b99;font:800 50px 'Inter';color:#fff}
+#comparar div.f2l{border-color:#27f2ffaa}
+#comparar b{display:block;font:900 150px/1.05 'Inter';color:#ff4b4b}
+#comparar .f2l b{color:var(--ciano)}

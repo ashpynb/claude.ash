@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><link rel="stylesheet" href="motor.css"></head><body>
+<div id="palco">
+ <div id="estrelas"></div><div id="chao"></div><div id="brilhoOuro"></div>
+ <div id="cena"><div id="cam"><div id="vista"><div id="cubo"></div></div></div></div>
+ <div id="comparar"><div><b>8</b>peças soltas</div><div class="f2l"><b>4</b>pares</div></div>
+ <div id="contador"></div><div id="sigla"><b>F</b>irst <b>2</b> <b>L</b>ayers</div>
+ <div id="jogada"></div>
+ <div id="leg"></div>
+ <div id="vinheta"></div><div id="flash"></div>
+</div>
+<script src="ep02_tempo.js"></script>
+<script src="motor.js"></script>
+<script>
+// Ep. 2 — Camadas × F2L. Peças "voando" mostram o par (quina + aresta) e o slot.
+OCULTA=['contador','sigla','comparar','brilhoOuro'];
+const PARES=[['DFR','FR',[1,0,1]],['DFL','FL',[-1,0,1]],['DBR','BR',[1,0,-1]],['DBL','BL',[-1,0,-1]]];
+const OITO=['DFR','DFL','DBR','DBL','FR','FL','BR','BL'];
+const CRUZ=['DF','DR','DL','DB','D'];
+const w=(bi,a,n)=>palavra(bi,a,n);
+reset(0);
+// beat 10: desmonta e remonta (sem notação: não é falado)
+mov(w(10,'desmonta'),"R U R' U'",false,.28);mov(w(10,'remonta'),"U R U' R'",false,.28);
+// beat 20: teaser do próximo vídeo — par em cima, entra com R U R'
+reset(B[20].t0,"R U' R'");
+nota(w(4,'efe'),'F2L');nota(w(19,'pergunta'),'?');nota(w(20,'tres'),"R U R'");
+mov(w(20,'movimentos'),"R U R'",false,.4);
+function cont(el,txt,t0,t,ciano=false){const c=$('contador');c.textContent=txt;c.classList.toggle('ciano',ciano);
+ c.style.opacity=clamp((t-t0)/.06);c.style.transform=`scale(${.5+.5*back((t-t0)/.25)})`}
+function efeitos({bi,u,lt,t,v,w}){
+ switch(bi){
+  case 0:{v.sc=lerp(1.25,1,out(lt/.8));if(lt<.3){v.shx=Math.sin(t*95)*12}const a=w('oito');v.mk={foco:t>=a?OITO:null,pecaLuz:t>=a?OITO:[]};if(t>=a)cont(0,'8',a,t);break}
+  case 1:{const a=w('quatro');v.mk={foco:OITO};if(t>=a){cont(0,'4',a,t,true);const k=out((t-a)/.5);PARES.forEach(([c,e,d])=>{v.off[c]=v.off[e]=[d[0]*.35*k,0,d[2]*.35*k]});v.mk.pecaLuz=OITO}else cont(0,'8',B[0].t0-1,t);break}
+  case 2:{v.vz=Math.sin(lt*8)*6;v.vy+=Math.sin(lt*4)*8;break}
+  case 3:{const a=w('pares');v.mk={foco:t>=a?['DFR','FR']:null};if(t>=a){const k=back((t-a)/.45);v.off.DFR=v.off.FR=[.3*k,2.4*k,0];v.ty=120*k;v.mk.pecaLuz=['DFR','FR'];$('brilhoOuro').style.opacity=.6}break}
+  case 4:{v.mk={cinzaTopo:true};const a=w('first');if(t>=a){const s=$('sigla');s.style.opacity=clamp((t-a)/.15);s.style.transform=`translateY(${(1-out((t-a)/.3))*30}px)`}v.sc=lerp(1,1.06,u);break}
+  case 5:{const a=w('cruz');v.mk={cinzaTopo:true};if(t>=a){v.vx=lerp(BASE_X,32,ease((t-a)/.7));v.mk={foco:CRUZ,pecaLuz:['DF','DR','DL','DB']}}break}
+  case 6:{v.vx=32;v.mk={foco:CRUZ,pecaLuz:['DF','DR','DL','DB']};v.sc=1+.04*Math.sin(lt*5);break}
+  case 7:{v.vx=lerp(32,BASE_X,ease(lt/.5));const a=w('quina');v.mk={foco:['DFR'],pecaLuz:['DFR']};if(t>=a){const k=Math.sin(Math.PI*clamp((t-a)/1.1));v.off.DFR=[1.1*k,1.4*k,1.1*k]}break}
+  case 8:{const c=['DFR','DFL','DBR','DBL'];const n=Math.min(4,1+Math.floor(u*4.2));const a=w('arestas');
+   v.mk={foco:OITO,pecaLuz:c.slice(0,n)};cont(0,String(n),B[8].t0+Math.floor(u*4.2)*(B[8].t1-B[8].t0)/4.2,t);
+   if(t>=a)v.mk.pecaLuz=[...c,'FR'];break}
+  case 9:{const e=['FR','FL','BR','BL'];const n=Math.min(4,1+Math.floor(u*4.5));const a=w('oito');
+   v.mk={foco:OITO,pecaLuz:['DFR','DFL','DBR','DBL',...e.slice(0,n)]};cont(0,String(Math.min(8,4+n)),B[9].t0+Math.floor(u*4.5)*(B[9].t1-B[9].t0)/4.5,t);
+   if(t>=a){cont(0,'8',a,t);v.mk.pecaLuz=OITO}
+   OITO.forEach((p,i)=>{const d=PARES[i%4][2];const k=.25*Math.max(0,Math.sin(t*6+i));v.off[p]=[d[0]*k,0,d[2]*k]});break}
+  case 10:{v.mk={};break}
+  case 11:{const a=w('quina');v.ty=lerp(0,170,out(lt/.5));v.sc=.9;v.mk={foco:['DFR','FR'],pecaLuz:t>=a?['DFR']:[]};const k=out((t-a)/.6);if(t>=a){v.off.DFR=[.3*k,3.3*k,0];v.off.FR=[1.5*k,1.6*k,.6*k]}break}
+  case 12:{const a=w('aresta');v.ty=170;v.sc=.9;v.mk={foco:['DFR','FR'],pecaLuz:['DFR',...(t>=a?['FR']:[])]};v.off.DFR=[.3,3.3,0];
+   const k=ease((t-a)/.7);v.off.FR=[lerp(1.5,.3,k),lerp(1.6,3.3,k),lerp(.6,0,k)];if(t>=a+.7&&t<a+.78)v.flash=.4;break}
+  case 13:{v.ty=170;v.sc=.9;v.mk={foco:['DFR','FR'],pecaLuz:['DFR','FR']};const bo=Math.sin(lt*5)*.12;v.off.DFR=v.off.FR=[.3,3.3+bo,0];
+   $('brilhoOuro').style.opacity=.5;break}
+  case 14:{v.ty=lerp(170,0,ease(lt/1.5));v.sc=lerp(.9,1,ease(lt/1.5));v.mk={foco:['DFR','FR'],pecaLuz:['DFR','FR']};const a=w('coloca');const k=1-ease((t-a)/.9);v.off.DFR=v.off.FR=[.3*k,3.3*k,0];
+   if(t>=a+.9&&t<a+.98)v.flash=.4;break}
+  case 15:{const a=w('quatro');const k=out((t-a)/.8);v.vx=lerp(BASE_X,42,ease(lt/.8));v.ty=lerp(0,-230,ease(lt/.8));v.sc=.92;
+   PARES.forEach(([c,e,d])=>{v.off[c]=v.off[e]=[d[0]*.9*k,-.5*k,d[2]*.9*k]});v.mk={foco:[...OITO,...CRUZ],pecaLuz:t>=w('slots')?OITO:[]};break}
+  case 16:{const tp=w('prontas');v.vx=lerp(42,BASE_X,ease((t-tp)/.7));v.ty=lerp(-230,0,ease((t-tp)/.7));v.sc=.92;PARES.forEach(([c,e,d],i)=>{const ti=B[16].t0+(B[16].t1-B[16].t0)*(.06+i*.16);const k=1-ease((t-ti)/.35);v.off[c]=v.off[e]=[d[0]*.9*k,-.5*k,d[2]*.9*k];
+   if(t>=ti+.35&&t<ti+.42)v.flash=.3});v.mk={foco:t<tp?[...OITO,...CRUZ]:null,pecaLuz:t>=tp?OITO:[],cinzaTopo:t>=tp};break}
+  case 17:{v.vy+=lt*140;v.sc=lerp(1,1.05,u);break}
+  case 18:{v.sc=.62;v.ty=-330;const c=$('comparar');c.style.opacity=1;const ks=[w('oito'),w('quatro')];
+   [...c.children].forEach((d,i)=>{const k=out((t-ks[i])/.35);d.style.opacity=k;d.style.transform=`scale(${.7+.3*back((t-ks[i])/.35)})`});
+   v.mk={pecaLuz:t>=ks[1]?OITO:[]};v.semNota=true;break}
+  case 19:{v.ty=170;v.sc=.9;v.mk={foco:['DFR','FR'],pecaLuz:['DFR','FR']};const bo=Math.sin(lt*4)*.12;v.off.DFR=v.off.FR=[.3,3.3+bo,0];v.vy+=Math.sin(lt)*10;break}
+  case 20:{v.mk={foco:['DFR','FR',...CRUZ],pecaLuz:['DFR','FR']};break}
+ }
+}
+iniciar();
+</script></body></html>
