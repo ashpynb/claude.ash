@@ -57,7 +57,7 @@ EPS = [
      ("Moldura dourada 'REGRA DE OURO' cai na tela", "queda + tremida de impacto", "REGRA DE OURO", "gongo 8-bit"),
      ("Relógio pixel aparece colado na face direita, ponteiro girando", "rotação do relógio", "SENTIDO HORÁRIO", "tique-taque"),
      ("CUBO: R — coluna da direita sobe, seta ciano pra cima", "câmera fixa, só o cubo move", "R ↑", "click de giro"),
-     ("CUBO: R' (desfaz) depois L — coluna da esquerda desce, seta magenta", "punch-in na coluna", "L ↓", "click de giro"),
+     ("Corte seco: cubo volta resolvido. CUBO: L no 'éle' — coluna da esquerda desce, seta magenta", "punch-in na coluna", "L ↓", "click de giro"),
     ]},
    {"narracao": "Viu um tracinho do lado? Lê linha. Érre linha gira ao contrário e a coluna desce. "
                 "Se tiver um dois, é meia volta. U dois.",
@@ -71,9 +71,9 @@ EPS = [
                 "Xis vira tudo igual o érre. Ípsilon vira tudo igual o u. Nada se desfaz.",
     "beats": [
      ("Duas mãos pixel aparecem segurando o cubo", "mãos entram de baixo", "x · y", "whoosh"),
-     ("CUBO: x — cubo inteiro tomba pra trás (frente sobe)", "giro completo + rastro ciano", "x = R no cubo todo", "whoosh longo"),
-     ("CUBO: x' (volta) e y — cubo inteiro gira pra esquerda", "giro completo + rastro magenta", "y = U no cubo todo", "whoosh longo"),
-     ("Selo verde 'nada se desfaz' carimba", "carimbo + tremida", "SÓ MUDA A VISTA", "carimbo"),
+     ("Cubo balança de leve nas mãos (sem girar camada nenhuma)", "bob suave + mãos apertam", "", "whoosh"),
+     ("CUBO: x no 'xis' — cubo inteiro tomba pra trás (frente sobe)", "giro completo + rastro ciano", "x", "whoosh longo"),
+     ("Corte seco: cubo volta à vista normal. CUBO: y no 'ípsilon' — cubo inteiro gira pra esquerda; selo verde 'nada se desfaz'", "giro completo + carimbo", "y", "whoosh longo + carimbo"),
     ]},
    {"narracao": "Resumo. Letra gira a face, linha é ao contrário, dois é meia volta, xis e ípsilon viram o cubo. "
                 "Teste: em érre, a coluna da direita sobe ou desce? No próximo vídeo, por que o éfe dois éle resolve duas camadas de uma vez.",
@@ -302,14 +302,15 @@ EPS = [
      ("Mãos pixel girando rápido, depois um X em cima", "tremida + X carimba", "NÃO É A MÃO", "buzzer"),
      ("Olho pixel abre gigante brilhando ciano", "punch-in no olho", "É O OLHO", "brilho"),
     ]},
-   {"narracao": "A ordem é sempre a mesma. Faz a cruz. Escolhe um par. "
-                "Leva o slot pra frente à direita com ípsilon. Resolve o caso. Repete até os quatro slots fecharem.",
+   {"narracao": "A ordem é sempre a mesma. | Faz a cruz. | Escolhe um par. | "
+                "Leva o slot pra frente à direita com ípsilon. | Resolve o caso. | Repete até os quatro slots fecharem.",
     "beats": [
      ("Checklist HUD com 5 linhas vazias", "painel desliza", "A ORDEM", "painel"),
      ("CUBO: cruz branca embaixo destaca", "check na linha 1", "1. CRUZ", "ding"),
      ("CUBO (foco): um par pisca", "check na linha 2", "2. PAR", "ding"),
-     ("CUBO: y", "giro + check linha 3", "3. y", "whoosh"),
-     ("CUBO: R U R' insere o par; contador ×4", "check linhas 4–5 + contador", "4. CASO · ×4", "click ×3"),
+     ("CUBO: y no 'ípsilon' — slot do par vem pra frente-direita", "giro + check linha 3", "y", "whoosh"),
+     ("CUBO: R U R' insere o par", "check linha 4", "R U R'", "click ×3"),
+     ("4 pares entrando em corte rápido; contador ×4", "cortes rápidos + check linha 5", "×4", "click ×4"),
     ]},
    {"narracao": "Enquanto resolve um par, olha onde está o próximo. Isso se chama look ahead, olhar adiante. "
                 "Seus olhos trabalham um par na frente das mãos. Melhor girar devagar sem parar do que rápido e travar.",
@@ -368,6 +369,12 @@ def palavras(txt):
     return len(re.findall(r"[\wÀ-ÿ']+", txt))
 
 
+NOTACAO = re.compile(r"^[RLUDFBMxyz2'’ ↑↓·]+$")
+def so_notacao(txt):
+    """Aprendizado (EP01 abelhas): texto grande repetindo a fala é 'muita informação'.
+    Na tela só fica a notação do cubo (R, U2, R' ↑...). O resto vira ''."""
+    return txt if txt and NOTACAO.match(txt.strip()) else ""
+
 def montar(ep):
     t = 0.0
     clipes = []
@@ -394,7 +401,7 @@ def montar(ep):
             visual, mov, txt, sfx = b[:4]
             beats.append({"t_ini": round(t, 1), "t_fim": round(t + d, 1), "fala": f,
                           "visual": visual, "imagem": "cubo.html" if visual.startswith("CUBO") else "bg_arena/hero/chefao (reuso)",
-                          "movimento": mov, "texto_tela": txt, "sfx": sfx,
+                          "movimento": mov, "texto_tela": so_notacao(txt), "sfx": sfx,
                           "video_ia": bool(b[4]) if len(b) > 4 else False})
             t += d
         clipes.append({"id": f"ep{ep['n']:02d}_clip{i:02d}", "narracao": c["narracao"].replace(" | ", " "),

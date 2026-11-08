@@ -24,7 +24,7 @@
           "visual": "Três cartas de jogo viram: R, U, R'",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "cartas giram 3D + flash",
-          "texto_tela": "3 MOVIMENTOS",
+          "texto_tela": "",
           "sfx": "carta ×3",
           "video_ia": true
         },
@@ -35,7 +35,7 @@
           "visual": "Chefão rosna, Hero levanta as três cartas",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "personagem entra + tremida",
-          "texto_tela": "CASO FÁCIL",
+          "texto_tela": "",
           "sfx": "rugido curto",
           "video_ia": false
         },
@@ -46,7 +46,7 @@
           "visual": "Check verde em cima de cada carta",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "pop sequencial",
-          "texto_tela": "JÁ CONHECE",
+          "texto_tela": "",
           "sfx": "ding ×3",
           "video_ia": false
         }
@@ -66,7 +66,7 @@
           "visual": "CUBO de frente, cruz embaixo visível pela inclinação",
           "imagem": "cubo.html",
           "movimento": "deriva lenta",
-          "texto_tela": "CRUZ EMBAIXO",
+          "texto_tela": "",
           "sfx": "tique",
           "video_ia": false
         },
@@ -77,7 +77,7 @@
           "visual": "Slot frente-direita contornado em neon",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "punch-in no canto",
-          "texto_tela": "FRENTE-DIREITA",
+          "texto_tela": "",
           "sfx": "bipe",
           "video_ia": false
         },
@@ -88,7 +88,7 @@
           "visual": "CUBO: y — cubo inteiro gira trazendo outro slot pra frente-direita",
           "imagem": "cubo.html",
           "movimento": "giro completo",
-          "texto_tela": "USE y",
+          "texto_tela": "",
           "sfx": "whoosh",
           "video_ia": false
         },
@@ -99,7 +99,7 @@
           "visual": "Seta circular ao redor do cubo",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "rotação da seta",
-          "texto_tela": "ATÉ CHEGAR",
+          "texto_tela": "",
           "sfx": "click",
           "video_ia": false
         }
@@ -119,7 +119,7 @@
           "visual": "CUBO (modo foco, setup do caso 1): branco da quina na face direita brilhando",
           "imagem": "cubo.html",
           "movimento": "punch-in na quina",
-          "texto_tela": "BRANCO → DIREITA",
+          "texto_tela": "",
           "sfx": "bipe",
           "video_ia": false
         },
@@ -130,7 +130,7 @@
           "visual": "Aresta no topo-trás pisca (câmera inclina pra mostrar)",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "pan pra trás",
-          "texto_tela": "ARESTA ATRÁS",
+          "texto_tela": "",
           "sfx": "bipe",
           "video_ia": false
         },
@@ -152,7 +152,7 @@
           "visual": "Par encaixado no slot brilha; HP do Chefão cai",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "pico: flash + tremida",
-          "texto_tela": "ENCAIXOU!",
+          "texto_tela": "",
           "sfx": "clack + dano",
           "video_ia": false
         }
@@ -172,7 +172,7 @@
           "visual": "CUBO (setup do caso 2): par pronto em cima do slot, contorno ao redor do par",
           "imagem": "cubo.html",
           "movimento": "punch-in",
-          "texto_tela": "PAR PRONTO",
+          "texto_tela": "",
           "sfx": "bipe",
           "video_ia": false
         },
@@ -183,7 +183,7 @@
           "visual": "Branco da quina na frente pisca",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "pulse",
-          "texto_tela": "BRANCO → FRENTE",
+          "texto_tela": "",
           "sfx": "bipe",
           "video_ia": false
         },
@@ -214,7 +214,7 @@
           "visual": "Replay rápido do caso 2 com setas mostrando o U 'abrindo espaço'",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "replay 2x + setas",
-          "texto_tela": "ABRE ESPAÇO",
+          "texto_tela": "",
           "sfx": "rewind",
           "video_ia": false
         },
@@ -225,7 +225,7 @@
           "visual": "Espelho pixel divide a tela ao meio",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "wipe espelhado",
-          "texto_tela": "ESPELHO",
+          "texto_tela": "",
           "sfx": "shimmer",
           "video_ia": false
         },
@@ -236,7 +236,7 @@
           "visual": "CUBO (setup espelho): branco na frente, aresta topo-esquerda",
           "imagem": "cubo.html",
           "movimento": "punch-in",
-          "texto_tela": "ARESTA ESQUERDA",
+          "texto_tela": "",
           "sfx": "bipe",
           "video_ia": false
         },
@@ -278,7 +278,7 @@
           "visual": "CUBO: quina com branco pra cima, ponto de interrogação",
           "imagem": "cubo.html",
           "movimento": "pulse + glitch",
-          "texto_tela": "BRANCO EM CIMA?",
+          "texto_tela": "",
           "sfx": "glitch",
           "video_ia": false
         },
@@ -289,7 +289,7 @@
           "visual": "Mapa: nó 3 acende, voo ao nó 4",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "zoom-through",
-          "texto_tela": "PRÓXIMO: CASOS CHATOS",
+          "texto_tela": "",
           "sfx": "fanfarra",
           "video_ia": false
         }

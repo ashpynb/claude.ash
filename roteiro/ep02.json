@@ -24,7 +24,7 @@
           "visual": "Contador '8' gigante em vermelho com 8 peças voando",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "zoom-out + partículas",
-          "texto_tela": "8 ETAPAS",
+          "texto_tela": "",
           "sfx": "alarme 8-bit",
           "video_ia": true
         },
@@ -35,7 +35,7 @@
           "visual": "O 8 é cortado por uma espada do Hero e vira '4' ciano",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "golpe + flash + tremida (pico)",
-          "texto_tela": "4 ETAPAS",
+          "texto_tela": "",
           "sfx": "espadada",
           "video_ia": false
         },
@@ -46,7 +46,7 @@
           "visual": "Hero dá de ombros, faíscas de 'mágica' apagam",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "personagem bob",
-          "texto_tela": "NÃO É MÁGICA",
+          "texto_tela": "",
           "sfx": "puf",
           "video_ia": false
         },
@@ -57,7 +57,7 @@
           "visual": "Lâmpada pixel acende acima do cubo CSS",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "pop + brilho",
-          "texto_tela": "IDEIA NOVA",
+          "texto_tela": "",
           "sfx": "ding",
           "video_ia": false
         }
@@ -77,7 +77,7 @@
           "visual": "Letras F-2-L se expandem em 'First 2 Layers'",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "texto cinético expande",
-          "texto_tela": "FIRST 2 LAYERS",
+          "texto_tela": "",
           "sfx": "whoosh",
           "video_ia": false
         },
@@ -88,7 +88,7 @@
           "visual": "CUBO (modo foco): duas camadas de baixo acendem, topo fica cinza",
           "imagem": "cubo.html",
           "movimento": "punch-in no cubo",
-          "texto_tela": "2 CAMADAS",
+          "texto_tela": "",
           "sfx": "bipe",
           "video_ia": false
         },
@@ -99,7 +99,7 @@
           "visual": "CUBO: x2 pra mostrar a face de baixo com a cruz branca",
           "imagem": "cubo.html",
           "movimento": "giro completo",
-          "texto_tela": "CRUZ BRANCA",
+          "texto_tela": "",
           "sfx": "click",
           "video_ia": false
         }
@@ -119,7 +119,7 @@
           "visual": "CUBO: quina branca destacada sobe e desce sozinha pro slot",
           "imagem": "cubo.html",
           "movimento": "câmera acompanha a peça",
-          "texto_tela": "1 QUINA",
+          "texto_tela": "",
           "sfx": "click",
           "video_ia": false
         },
@@ -130,7 +130,7 @@
           "visual": "Contador de peças 1→4 enquanto quinas piscam nos cantos",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "número subindo",
-          "texto_tela": "4 QUINAS",
+          "texto_tela": "",
           "sfx": "bipes",
           "video_ia": false
         },
@@ -141,7 +141,7 @@
           "visual": "Arestas do meio piscam uma a uma, contador 5→8",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "número subindo + tremida no 8",
-          "texto_tela": "+ 4 ARESTAS",
+          "texto_tela": "",
           "sfx": "bipes",
           "video_ia": false
         },
@@ -152,7 +152,7 @@
           "visual": "8 sprites de peça andando em fila indiana cansados",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "pan lateral",
-          "texto_tela": "8 VIAGENS",
+          "texto_tela": "",
           "sfx": "passos",
           "video_ia": false
         }
@@ -172,7 +172,7 @@
           "visual": "CUBO (modo foco): só uma quina e uma aresta coloridas, resto cinza",
           "imagem": "cubo.html",
           "movimento": "punch-in",
-          "texto_tela": "QUINA + ARESTA",
+          "texto_tela": "",
           "sfx": "bipe",
           "video_ia": false
         },
@@ -183,7 +183,7 @@
           "visual": "As duas peças se aproximam e encaixam com faísca",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "pico: ímã + flash",
-          "texto_tela": "= PAR",
+          "texto_tela": "",
           "sfx": "clack metálico",
           "video_ia": false
         },
@@ -194,7 +194,7 @@
           "visual": "CUBO: R U R' — o par desce junto pro canto",
           "imagem": "cubo.html",
           "movimento": "câmera fixa, cubo move",
-          "texto_tela": "PAR ENTRA",
+          "texto_tela": "",
           "sfx": "click ×3",
           "video_ia": false
         },
@@ -205,7 +205,7 @@
           "visual": "Buraco do canto contornado em neon, legenda SLOT",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "contorno desenhando",
-          "texto_tela": "SLOT",
+          "texto_tela": "",
           "sfx": "ding",
           "video_ia": false
         }
@@ -225,7 +225,7 @@
           "visual": "CUBO visto de baixo: 4 cantos vazios piscam",
           "imagem": "cubo.html",
           "movimento": "giro lento + pulso",
-          "texto_tela": "4 SLOTS",
+          "texto_tela": "",
           "sfx": "4 bipes",
           "video_ia": false
         },
@@ -236,7 +236,7 @@
           "visual": "4 pares entram um por um (corte rápido entre slots)",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "whip-pan entre cantos",
-          "texto_tela": "4 PARES",
+          "texto_tela": "",
           "sfx": "click ×4",
           "video_ia": false
         },
@@ -247,7 +247,7 @@
           "visual": "Barra de HP do Chefão cai pela metade",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "HP caindo + tremida",
-          "texto_tela": "-50% HP",
+          "texto_tela": "",
           "sfx": "dano",
           "video_ia": false
         }
@@ -267,7 +267,7 @@
           "visual": "Comparação lado a lado: 8 peças soltas × 4 pares",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "split-screen deslizando",
-          "texto_tela": "8 → 4",
+          "texto_tela": "",
           "sfx": "whoosh",
           "video_ia": false
         },
@@ -278,7 +278,7 @@
           "visual": "Quiz: '? peças = 1 par' piscando",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "pulse",
-          "texto_tela": "QUANTAS?",
+          "texto_tela": "",
           "sfx": "tique de quiz",
           "video_ia": false
         },
@@ -289,7 +289,7 @@
           "visual": "Mapa: nó 2 acende, câmera voa ao nó 3",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "zoom-through",
-          "texto_tela": "PRÓXIMO: 1º CASO",
+          "texto_tela": "",
           "sfx": "fanfarra",
           "video_ia": false
         }

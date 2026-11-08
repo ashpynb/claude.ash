@@ -35,7 +35,7 @@
           "visual": "Hero coça a cabeça, interrogação pixel pisca",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "personagem entra pela esquerda + bob",
-          "texto_tela": "???",
+          "texto_tela": "",
           "sfx": "blip confuso",
           "video_ia": false
         },
@@ -46,7 +46,7 @@
           "visual": "Cubo CSS limpo aparece no centro da arena girando devagar",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "punch-in 100→115%",
-          "texto_tela": "LÍNGUA DO CUBO",
+          "texto_tela": "",
           "sfx": "power-up",
           "video_ia": false
         },
@@ -57,7 +57,7 @@
           "visual": "Seis faces acendem uma a uma com a letra em cima",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "texto cinético em cada face",
-          "texto_tela": "1 LETRA = 1 FACE",
+          "texto_tela": "",
           "sfx": "6 bipes ascendentes",
           "video_ia": false
         }
@@ -77,7 +77,7 @@
           "visual": "Cubo CSS de frente, câmera em leve deriva",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "parallax fundo × cubo",
-          "texto_tela": "FRENTE",
+          "texto_tela": "",
           "sfx": "tique",
           "video_ia": false
         },
@@ -141,7 +141,7 @@
           "visual": "Moldura dourada 'REGRA DE OURO' cai na tela",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "queda + tremida de impacto",
-          "texto_tela": "REGRA DE OURO",
+          "texto_tela": "",
           "sfx": "gongo 8-bit",
           "video_ia": false
         },
@@ -152,7 +152,7 @@
           "visual": "Relógio pixel aparece colado na face direita, ponteiro girando",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "rotação do relógio",
-          "texto_tela": "SENTIDO HORÁRIO",
+          "texto_tela": "",
           "sfx": "tique-taque",
           "video_ia": false
         },
@@ -171,8 +171,8 @@
           "t_ini": 34.0,
           "t_fim": 37.2,
           "fala": "E o éle desce a coluna da esquerda.",
-          "visual": "CUBO: R' (desfaz) depois L — coluna da esquerda desce, seta magenta",
-          "imagem": "cubo.html",
+          "visual": "Corte seco: cubo volta resolvido. CUBO: L no 'éle' — coluna da esquerda desce, seta magenta",
+          "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "punch-in na coluna",
           "texto_tela": "L ↓",
           "sfx": "click de giro",
@@ -194,7 +194,7 @@
           "visual": "Close no apóstrofo de R' crescendo na tela",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "punch-in + glitch",
-          "texto_tela": "R' = linha",
+          "texto_tela": "",
           "sfx": "glitch",
           "video_ia": false
         },
@@ -205,7 +205,7 @@
           "visual": "CUBO: R' — coluna da direita desce",
           "imagem": "cubo.html",
           "movimento": "câmera acompanha a coluna",
-          "texto_tela": "AO CONTRÁRIO",
+          "texto_tela": "",
           "sfx": "click reverso",
           "video_ia": false
         },
@@ -216,7 +216,7 @@
           "visual": "Número 2 cai e quica ao lado da letra U",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "quique squash & stretch",
-          "texto_tela": "2 = MEIA VOLTA",
+          "texto_tela": "",
           "sfx": "boing",
           "video_ia": false
         },
@@ -255,21 +255,21 @@
           "t_ini": 50.0,
           "t_fim": 53.2,
           "fala": "Eles giram o cubo inteiro na sua mão.",
-          "visual": "CUBO: x — cubo inteiro tomba pra trás (frente sobe)",
-          "imagem": "cubo.html",
-          "movimento": "giro completo + rastro ciano",
-          "texto_tela": "x = R no cubo todo",
-          "sfx": "whoosh longo",
+          "visual": "Cubo balança de leve nas mãos (sem girar camada nenhuma)",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "bob suave + mãos apertam",
+          "texto_tela": "",
+          "sfx": "whoosh",
           "video_ia": false
         },
         {
           "t_ini": 53.2,
           "t_fim": 55.6,
           "fala": "Xis vira tudo igual o érre.",
-          "visual": "CUBO: x' (volta) e y — cubo inteiro gira pra esquerda",
+          "visual": "CUBO: x no 'xis' — cubo inteiro tomba pra trás (frente sobe)",
           "imagem": "cubo.html",
-          "movimento": "giro completo + rastro magenta",
-          "texto_tela": "y = U no cubo todo",
+          "movimento": "giro completo + rastro ciano",
+          "texto_tela": "x",
           "sfx": "whoosh longo",
           "video_ia": false
         },
@@ -277,11 +277,11 @@
           "t_ini": 55.6,
           "t_fim": 59.2,
           "fala": "Ípsilon vira tudo igual o u. Nada se desfaz.",
-          "visual": "Selo verde 'nada se desfaz' carimba",
+          "visual": "Corte seco: cubo volta à vista normal. CUBO: y no 'ípsilon' — cubo inteiro gira pra esquerda; selo verde 'nada se desfaz'",
           "imagem": "bg_arena/hero/chefao (reuso)",
-          "movimento": "carimbo + tremida",
-          "texto_tela": "SÓ MUDA A VISTA",
-          "sfx": "carimbo",
+          "movimento": "giro completo + carimbo",
+          "texto_tela": "y",
+          "sfx": "whoosh longo + carimbo",
           "video_ia": false
         }
       ]
@@ -300,7 +300,7 @@
           "visual": "Painel HUD com 4 linhas de resumo entrando uma a uma",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "texto cinético em cascata",
-          "texto_tela": "RESUMO",
+          "texto_tela": "",
           "sfx": "4 bipes",
           "video_ia": false
         },
@@ -311,7 +311,7 @@
           "visual": "Quiz: cubo parado com setas ↑ e ↓ piscando alternadas",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "pulse das setas",
-          "texto_tela": "SOBE OU DESCE?",
+          "texto_tela": "",
           "sfx": "tique de quiz",
           "video_ia": false
         },
@@ -322,7 +322,7 @@
           "visual": "Mapa de fases: nó 1 acende, câmera voa até o nó 2 com o Chefão na sombra",
           "imagem": "bg_arena/hero/chefao (reuso)",
           "movimento": "zoom-through no mapa",
-          "texto_tela": "PRÓXIMO: F2L",
+          "texto_tela": "",
           "sfx": "fanfarra curta",
           "video_ia": false
         }
