@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><link rel="stylesheet" href="motor.css"></head><body>
+<div id="palco">
+ <div id="estrelas"></div><div id="chao"></div><div id="brilhoOuro"></div>
+ <div id="cena"><div id="cam"><div id="vista"><div id="cubo"></div></div></div></div>
+ <div id="carimbo">✓</div>
+ <div id="contador"></div>
+ <div id="jogada"></div>
+ <div id="leg"></div>
+ <div id="vinheta"></div><div id="flash"></div>
+</div>
+<script src="ep03_tempo.js"></script>
+<script src="motor.js"></script>
+<script>
+// Ep. 3 — Seus 2 primeiros casos. Setups conferidos no simulador (slot frente-direita):
+//  C1 = R U' R'  → quina UFR branco p/ R, aresta UB      → resolve com R U R'
+//  C2 = R U R' U' → par pronto UFR+UR, branco p/ F         → resolve com U R U' R'
+//  E  = F' U F   → quina UFR branco p/ F, aresta UL       → resolve com F' U' F
+//  W  = R U' R' U R U2 R' → quina UFR branco p/ cima (gancho do ep. 4)
+OCULTA=['contador','carimbo','brilhoOuro'];
+const C1="R U' R'",C2="R U R' U'",E="F' U F",W="R U' R' U R U2 R'";
+const PAR=['DFR','FR'],CRUZ=['DF','DR','DL','DB','D'];
+const w=(bi,a,n)=>palavra(bi,a,n);
+// toca um algoritmo com cada giro na palavra falada correspondente
+function falado(bi,seq,gatilhos,d=.5){const ms=seq.split(' ');ms.forEach((m,i)=>{const [a,n]=gatilhos[i];mov(w(bi,a,n),m,true,d)})}
+reset(0,C1);mov(w(0,'tres'),"R U R'",false,.3);nota(w(0,'movimentos'),"R U R'");
+reset(B[5].t0);mov(w(5,'ipsilon'),'y');
+reset(B[6].t0);
+reset(B[7].t0,C1);
+falado(9,"R U R'",[['erre',1],['u',1],['erre',2]]);
+reset(w(10,'mais'),C1);falado(10,"R U R'",[['erre',1],['u',2],['erre',2]]);
+reset(B[11].t0,C2);
+falado(13,"U R U' R'",[['u',1],['erre',1],['u',2],['erre',2]]);
+reset(B[14].t0,C2);mov(w(14,'u'),'U',true,.5);const fimR=mov(w(14,'erre'),'R',true,.5);mov(fimR+.05,"U' R'",true,.4);
+reset(B[15].t0,C1);
+reset(B[16].t0,E);
+falado(17,"F' U' F",[['efe',1],['u',1],['efe',2]]);
+reset(B[18].t0,C1);falado(18,"R U R'",[['erre',1],['u',1],['erre',2]],.42);
+reset(B[19].t0,C2);falado(19,"U R U' R'",[['u',1],['erre',1],['u',2],['erre',2]],.42);
+reset(B[20].t0,W);nota(w(20,'cima'),'?');
+function cont(txt,t0,t){const c=$('contador');c.textContent=txt;c.classList.add('ciano');c.style.opacity=clamp((t-t0)/.06);c.style.transform=`scale(${.5+.5*back((t-t0)/.25)})`}
+function carimbo(t0,t,x=820,y=640){const c=$('carimbo');const k=back((t-t0)/.35);c.style.opacity=clamp((t-t0)/.1);c.style.transform=`scale(${2-k}) rotate(-12deg)`;c.style.left=x+'px';c.style.top=y+'px'}
+function efeitos({bi,u,lt,t,v,w}){
+ const focoPar={foco:[...PAR,...CRUZ],pecaLuz:PAR};
+ switch(bi){
+  case 0:{v.sc=lerp(1.25,1,out(lt/.7));if(lt<.3)v.shx=Math.sin(t*95)*12;v.mk=focoPar;break}
+  case 1:{v.vy+=lt*35;v.mk={pecaLuz:PAR};$('brilhoOuro').style.opacity=.4;break}
+  case 2:{v.mk={pecaLuz:PAR};const a=w('tres');if(t>=a)carimbo(a,t);break}
+  case 3:{const a=w('cruz');if(t>=a){v.vx=lerp(BASE_X,32,ease((t-a)/.6));v.mk={foco:CRUZ,pecaLuz:['DF','DR','DL','DB']}}break}
+  case 4:{v.vx=lerp(32,BASE_X,ease(lt/.5));const a=w('frente');v.mk={foco:[...PAR,...CRUZ],pecaLuz:t>=a?PAR:[]};if(t>=a)v.sc=1+.05*Math.sin(Math.PI*clamp((t-a)/.4));break}
+  case 5:{v.mk={foco:['DBR','BR',...PAR,...CRUZ],pecaLuz:['DBR','BR']};break}
+  case 6:{v.mk={foco:[...PAR,...CRUZ],pecaLuz:PAR};v.vy+=Math.sin(lt*2.2)*14;$('brilhoOuro').style.opacity=.3+.3*Math.sin(lt*5)**2;break}
+  case 7:{cont('1',B[7].t0,t);v.vy=lerp(BASE_Y,-60,ease(lt/.8));const a=w('branco');v.mk={foco:[...PAR,...CRUZ],pecaLuz:t>=a?['DFR']:[]};break}
+  case 8:{v.vx=lerp(BASE_X,-58,ease(lt/.6));v.vy=lerp(-60,BASE_Y,ease(lt/.6));v.mk={foco:[...PAR,...CRUZ],pecaLuz:['FR']};break}
+  case 9:{v.vx=lerp(-58,BASE_X,ease(lt/.4));v.mk=focoPar;break}
+  case 10:{const a=w('mais');v.mk=focoPar;if(t<a){$('brilhoOuro').style.opacity=.5;carimbo(B[10].t0+.1,t)}break}
+  case 11:{cont('2',B[11].t0,t);v.mk=focoPar;break}
+  case 12:{v.mk={foco:[...PAR,...CRUZ],pecaLuz:t>=w('branco')?['DFR']:PAR};break}
+  case 13:{v.mk=focoPar;break}
+  case 14:{v.mk=focoPar;break}
+  case 15:{v.vy=lerp(BASE_Y,-BASE_Y,ease(lt/.9));v.mk=focoPar;if(lt<.1)v.flash=.4;break}
+  case 16:{v.vy=lerp(-BASE_Y,-12,ease(lt/.6));v.vx=-34;const a=w('branco'),b2=w('aresta');v.mk={foco:[...PAR,...CRUZ],pecaLuz:[...(t>=a?['DFR']:[]),...(t>=b2?['FR']:[])]};break}
+  case 17:{v.vy=-12;v.vx=-30;v.mk=focoPar;break}
+  case 18:{v.mk=focoPar;break}
+  case 19:{v.mk=focoPar;break}
+  case 20:{v.vx=lerp(BASE_X,-55,ease(lt/.7));const a=w('cima');v.mk={foco:[...PAR,...CRUZ],pecaLuz:t>=a?['DFR']:[]};break}
+ }
+}
+iniciar();
+</script></body></html>

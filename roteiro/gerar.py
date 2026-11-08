@@ -203,7 +203,7 @@ EPS = [
      ("CUBO (setup espelho): branco na frente, aresta topo-esquerda", "punch-in", "ARESTA ESQUERDA", "bipe"),
      ("CUBO: F' U' F", "câmera fixa", "F' U' F", "click ×3"),
     ]},
-   {"narracao": "Resumo. Branco pra direita é érre u érre linha. Par pronto é u érre u linha érre linha. "
+   {"narracao": "Resumo. Branco pra direita é érre, u, érre linha. Par pronto é u, érre, u linha, érre linha. "
                 "Pergunta: e se o branco estiver olhando pra cima? Isso é o próximo vídeo.",
     "beats": [
      ("Duas cartas de golpe lado a lado com os algoritmos", "cartas deslizam", "R U R'  ·  U R U' R'", "carta ×2"),

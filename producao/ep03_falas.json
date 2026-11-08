@@ -1,0 +1,149 @@
+[
+ {
+  "id": "b00",
+  "texto": "Três movimentos.",
+  "rate": "+12%",
+  "gap": 0.1,
+  "resp": 0.08
+ },
+ {
+  "id": "b01",
+  "texto": "É isso que você precisa pro caso mais fácil do éfe dois éle.",
+  "rate": "+12%",
+  "gap": 0.1,
+  "resp": 0.08
+ },
+ {
+  "id": "b02",
+  "texto": "E você já conhece os três.",
+  "rate": "+12%",
+  "gap": 0.1,
+  "resp": 0.08
+ },
+ {
+  "id": "b03",
+  "texto": "Prepara assim. Cruz branca embaixo.",
+  "rate": "+5%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b04",
+  "texto": "O slot que você vai resolver fica na frente, à direita.",
+  "rate": "+5%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b05",
+  "texto": "Se não estiver, gira o cubo com ípsilon até ele chegar ali.",
+  "rate": "+5%",
+  "gap": 0.2,
+  "resp": 0.38
+ },
+ {
+  "id": "b06",
+  "texto": "O slot de trabalho é sempre esse.",
+  "rate": "+5%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b07",
+  "texto": "Caso um. A quina está em cima do slot com o branco olhando pra direita.",
+  "rate": "+5%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b08",
+  "texto": "A aresta está lá atrás.",
+  "rate": "+5%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b09",
+  "texto": "Faz érre, u, érre linha.",
+  "rate": "+5%",
+  "gap": 0.2,
+  "resp": 0.38
+ },
+ {
+  "id": "b10",
+  "texto": "Elas se encontram e descem juntas. Mais uma vez: érre, u, érre linha.",
+  "rate": "+5%",
+  "gap": 0.2,
+  "resp": 0.38
+ },
+ {
+  "id": "b11",
+  "texto": "Caso dois. O par já está pronto no topo, em cima do slot,",
+  "rate": "+5%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b12",
+  "texto": "com o branco olhando pra frente.",
+  "rate": "+5%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b13",
+  "texto": "Faz u, érre, u linha, érre linha.",
+  "rate": "+5%",
+  "gap": 0.2,
+  "resp": 0.38
+ },
+ {
+  "id": "b14",
+  "texto": "Viu? O u tira o par do caminho e o érre abre o slot.",
+  "rate": "+5%",
+  "gap": 0.2,
+  "resp": 0.38
+ },
+ {
+  "id": "b15",
+  "texto": "Agora o espelho do caso um.",
+  "rate": "+5%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b16",
+  "texto": "Branco olhando pra frente e aresta na esquerda.",
+  "rate": "+5%",
+  "gap": 0.2,
+  "resp": 0.18
+ },
+ {
+  "id": "b17",
+  "texto": "Faz éfe linha, u linha, éfe.",
+  "rate": "+5%",
+  "gap": 0.2,
+  "resp": 0.38
+ },
+ {
+  "id": "b18",
+  "texto": "Resumo. Branco pra direita é érre, u, érre linha.",
+  "rate": "+5%",
+  "gap": 0.2,
+  "resp": 0.38
+ },
+ {
+  "id": "b19",
+  "texto": "Par pronto é u, érre, u linha, érre linha.",
+  "rate": "+5%",
+  "gap": 0.2,
+  "resp": 0.38
+ },
+ {
+  "id": "b20",
+  "texto": "Pergunta: e se o branco estiver olhando pra cima? Isso é o próximo vídeo.",
+  "rate": "+5%",
+  "gap": 0.2,
+  "resp": 0.18
+ }
+]
