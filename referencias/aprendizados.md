@@ -37,10 +37,8 @@ Nunca misturar as regras de "economia" com as de "fatos gerais".
   explicação `rate -4%`, pausas ≤0,20s, respiro 0,18s (0,38s após algoritmo) → 2,92 p/s; total 1:05,7.
   Configuração por beat em `producao/epNN_falas.json` (`rate`, `gap`, `resp`).
   Cuidado: com fala rápida, giros seguidos ("érre, u, érre linha") precisam durar ~0,33s, senão se atropelam.
-- ~~Ritmo antigo: 2,4–2,6 palavras/s~~ (substituído acima).
-  Motivo: a própria usuária está aprendendo junto. Continua sem pausas arrastadas: o ritmo
-  mais calmo vem de frases curtas e de um respiro de ~0,25s depois de cada algoritmo, não de
-  voz lenta. No produtor: `speed` 1,0–1,05 e `stop_duration` 0,25 no silenceremove.
+- Ritmo antigo (2,4–2,6 p/s) foi descartado pela usuária. Continua valendo: sem pausas
+  arrastadas; o respiro maior fica depois de cada algoritmo.
 - **Algoritmo falado = algoritmo na tela:** sempre que a narração disser um movimento, o cubo
   em CSS executa o MESMO movimento no MESMO instante, e a notação aparece grande (ex.: `R'`).
   (Exceção à regra geral de "sem texto grande": aqui a notação É o conteúdo.)
