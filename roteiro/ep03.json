@@ -1,8 +1,8 @@
 {
   "ep": 3,
   "titulo": "Seus 2 primeiros casos",
-  "ritmo_pps": 2.5,
-  "duracao_s": 74.4,
+  "ritmo_pps": 2.9,
+  "duracao_s": 64.1,
   "imagens": {
     "bg_arena": "Empty pixel-art arena floor seen from the front, glowing cyan grid on the ground, dark purple sky with stars, large empty space in the center for a 3D object, 2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, vertical 9:16, deep navy, dark purple, neon cyan and magenta palette, no text",
     "hero": "a small adventurer whose head is a tiny 3x3 colorful puzzle cube, cyan scarf, big expressive eyes, purple tunic, full body, idle pose, plain flat magenta-free green background for chroma key, 2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, vertical 9:16, deep navy, dark purple, neon cyan and magenta palette, no text",
@@ -14,12 +14,12 @@
       "id": "ep03_clip01",
       "narracao": "Três movimentos. É isso que você precisa pro caso mais fácil do éfe dois éle. E você já conhece os três.",
       "palavras": 21,
-      "duracao_s": 8.4,
+      "duracao_s": 7.2,
       "t_ini": 0.0,
       "beats": [
         {
           "t_ini": 0.0,
-          "t_fim": 0.8,
+          "t_fim": 0.7,
           "fala": "Três movimentos.",
           "visual": "Três cartas de jogo viram: R, U, R'",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -29,8 +29,8 @@
           "video_ia": true
         },
         {
-          "t_ini": 0.8,
-          "t_fim": 6.0,
+          "t_ini": 0.7,
+          "t_fim": 5.2,
           "fala": "É isso que você precisa pro caso mais fácil do éfe dois éle.",
           "visual": "Chefão rosna, Hero levanta as três cartas",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -40,8 +40,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 6.0,
-          "t_fim": 8.4,
+          "t_ini": 5.2,
+          "t_fim": 7.2,
           "fala": "E você já conhece os três.",
           "visual": "Check verde em cima de cada carta",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -56,12 +56,12 @@
       "id": "ep03_clip02",
       "narracao": "Prepara assim. Cruz branca embaixo. O slot que você vai resolver fica na frente, à direita. Se não estiver, gira o cubo com ípsilon até ele chegar ali. O slot de trabalho é sempre esse.",
       "palavras": 35,
-      "duracao_s": 14.0,
-      "t_ini": 8.4,
+      "duracao_s": 12.1,
+      "t_ini": 7.2,
       "beats": [
         {
-          "t_ini": 8.4,
-          "t_fim": 10.4,
+          "t_ini": 7.2,
+          "t_fim": 9.0,
           "fala": "Prepara assim. Cruz branca embaixo.",
           "visual": "CUBO de frente, cruz embaixo visível pela inclinação",
           "imagem": "cubo.html",
@@ -71,8 +71,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 10.4,
-          "t_fim": 14.8,
+          "t_ini": 9.0,
+          "t_fim": 12.8,
           "fala": "O slot que você vai resolver fica na frente, à direita.",
           "visual": "Slot frente-direita contornado em neon",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -82,8 +82,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 14.8,
-          "t_fim": 19.6,
+          "t_ini": 12.8,
+          "t_fim": 16.9,
           "fala": "Se não estiver, gira o cubo com ípsilon até ele chegar ali.",
           "visual": "CUBO: y — cubo inteiro gira trazendo outro slot pra frente-direita",
           "imagem": "cubo.html",
@@ -93,8 +93,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 19.6,
-          "t_fim": 22.4,
+          "t_ini": 16.9,
+          "t_fim": 19.3,
           "fala": "O slot de trabalho é sempre esse.",
           "visual": "Seta circular ao redor do cubo",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -109,12 +109,12 @@
       "id": "ep03_clip03",
       "narracao": "Caso um. A quina está em cima do slot com o branco olhando pra direita. A aresta está lá atrás. Faz érre, u, érre linha. Elas se encontram e descem juntas. Mais uma vez: érre, u, érre linha.",
       "palavras": 38,
-      "duracao_s": 15.2,
-      "t_ini": 22.4,
+      "duracao_s": 13.1,
+      "t_ini": 19.3,
       "beats": [
         {
-          "t_ini": 22.4,
-          "t_fim": 28.4,
+          "t_ini": 19.3,
+          "t_fim": 24.5,
           "fala": "Caso um. A quina está em cima do slot com o branco olhando pra direita.",
           "visual": "CUBO (modo foco, setup do caso 1): branco da quina na face direita brilhando",
           "imagem": "cubo.html",
@@ -124,8 +124,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 28.4,
-          "t_fim": 30.4,
+          "t_ini": 24.5,
+          "t_fim": 26.2,
           "fala": "A aresta está lá atrás.",
           "visual": "Aresta no topo-trás pisca (câmera inclina pra mostrar)",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -135,8 +135,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 30.4,
-          "t_fim": 32.4,
+          "t_ini": 26.2,
+          "t_fim": 27.9,
           "fala": "Faz érre, u, érre linha.",
           "visual": "CUBO: R U R' em velocidade de aula, letra grande a cada giro",
           "imagem": "cubo.html",
@@ -146,8 +146,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 32.4,
-          "t_fim": 37.6,
+          "t_ini": 27.9,
+          "t_fim": 32.4,
           "fala": "Elas se encontram e descem juntas. Mais uma vez: érre, u, érre linha.",
           "visual": "Par encaixado no slot brilha; HP do Chefão cai",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -162,12 +162,12 @@
       "id": "ep03_clip04",
       "narracao": "Caso dois. O par já está pronto no topo, em cima do slot, com o branco olhando pra frente. Faz u, érre, u linha, érre linha.",
       "palavras": 26,
-      "duracao_s": 10.4,
-      "t_ini": 37.6,
+      "duracao_s": 9.0,
+      "t_ini": 32.4,
       "beats": [
         {
-          "t_ini": 37.6,
-          "t_fim": 42.8,
+          "t_ini": 32.4,
+          "t_fim": 36.9,
           "fala": "Caso dois. O par já está pronto no topo, em cima do slot,",
           "visual": "CUBO (setup do caso 2): par pronto em cima do slot, contorno ao redor do par",
           "imagem": "cubo.html",
@@ -177,8 +177,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 42.8,
-          "t_fim": 45.2,
+          "t_ini": 36.9,
+          "t_fim": 39.0,
           "fala": "com o branco olhando pra frente.",
           "visual": "Branco da quina na frente pisca",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -188,8 +188,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 45.2,
-          "t_fim": 48.0,
+          "t_ini": 39.0,
+          "t_fim": 41.4,
           "fala": "Faz u, érre, u linha, érre linha.",
           "visual": "CUBO: U R U' R' devagar, letra grande a cada giro",
           "imagem": "cubo.html",
@@ -204,12 +204,12 @@
       "id": "ep03_clip05",
       "narracao": "Viu? O u tira o par do caminho e o érre abre o slot. Agora o espelho do caso um. Branco olhando pra frente e aresta na esquerda. Faz éfe linha, u linha, éfe.",
       "palavras": 34,
-      "duracao_s": 13.6,
-      "t_ini": 48.0,
+      "duracao_s": 11.7,
+      "t_ini": 41.4,
       "beats": [
         {
-          "t_ini": 48.0,
-          "t_fim": 53.6,
+          "t_ini": 41.4,
+          "t_fim": 46.2,
           "fala": "Viu? O u tira o par do caminho e o érre abre o slot.",
           "visual": "Replay rápido do caso 2 com setas mostrando o U 'abrindo espaço'",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -219,8 +219,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 53.6,
-          "t_fim": 56.0,
+          "t_ini": 46.2,
+          "t_fim": 48.3,
           "fala": "Agora o espelho do caso um.",
           "visual": "Espelho pixel divide a tela ao meio",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -230,8 +230,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 56.0,
-          "t_fim": 59.2,
+          "t_ini": 48.3,
+          "t_fim": 51.0,
           "fala": "Branco olhando pra frente e aresta na esquerda.",
           "visual": "CUBO (setup espelho): branco na frente, aresta topo-esquerda",
           "imagem": "cubo.html",
@@ -241,8 +241,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 59.2,
-          "t_fim": 61.6,
+          "t_ini": 51.0,
+          "t_fim": 53.1,
           "fala": "Faz éfe linha, u linha, éfe.",
           "visual": "CUBO: F' U' F",
           "imagem": "cubo.html",
@@ -257,12 +257,12 @@
       "id": "ep03_clip06",
       "narracao": "Resumo. Branco pra direita é érre u érre linha. Par pronto é u érre u linha érre linha. Pergunta: e se o branco estiver olhando pra cima? Isso é o próximo vídeo.",
       "palavras": 32,
-      "duracao_s": 12.8,
-      "t_ini": 61.6,
+      "duracao_s": 11.0,
+      "t_ini": 53.1,
       "beats": [
         {
-          "t_ini": 61.6,
-          "t_fim": 65.2,
+          "t_ini": 53.1,
+          "t_fim": 56.2,
           "fala": "Resumo. Branco pra direita é érre u érre linha.",
           "visual": "Duas cartas de golpe lado a lado com os algoritmos",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -272,8 +272,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 65.2,
-          "t_fim": 68.8,
+          "t_ini": 56.2,
+          "t_fim": 59.3,
           "fala": "Par pronto é u érre u linha érre linha.",
           "visual": "CUBO: quina com branco pra cima, ponto de interrogação",
           "imagem": "cubo.html",
@@ -283,8 +283,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 68.8,
-          "t_fim": 74.4,
+          "t_ini": 59.3,
+          "t_fim": 64.1,
           "fala": "Pergunta: e se o branco estiver olhando pra cima? Isso é o próximo vídeo.",
           "visual": "Mapa: nó 3 acende, voo ao nó 4",
           "imagem": "bg_arena/hero/chefao (reuso)",

@@ -4,14 +4,14 @@
 - Série de **5 vídeos** ensinando a resolver o cubo pelo **F2L**.
 - **Vídeo 1:** revisar a notação (y, x, U, L, R…) mostrando o cubo **em CSS, animado**.
 - Depois: explicar **o que muda do método de camadas pro F2L** (resolve as duas camadas de uma vez).
-- **Duração:** mais de 1:00, idealmente entre **1:05 e 1:30**.
+- **Duração:** mínimo exato **1:00**, máximo **1:30** (atualizado pela usuária).
 - Seguir os **requisitos de vídeo viral** das skills (`diretor-video-aula`, `produtor-video-aula`, `analisar-video-referencia`).
 - **Acessível e NÃO rápido demais:** a usuária quer aprender junto.
 
 ## O que já está pronto (branch `claude/cubo-magico-f2l-videos-0r1398`)
 | Arquivo | O que é |
 |---|---|
-| `roteiro/gerar.py` | **Fonte única** dos roteiros. Edite aqui e rode `python3 roteiro/gerar.py`. Ele confere se cada episódio fica entre 65 e 90s. |
+| `roteiro/gerar.py` | **Fonte única** dos roteiros. Edite aqui e rode `python3 roteiro/gerar.py`. Ele confere se cada episódio fica entre 60 e 90s. |
 | `roteiro/ep01–05.md` / `.json` | Roteiros gerados: ficha, narração por clipe, beats (tempo, fala, visual, movimento, texto, SFX, ⭐ vídeo IA), prompts e kit de estudo. |
 | `anim/cubo.html` | Cubo 3D em CSS/JS puro: notação, sequência, velocidade, modo foco F2L e 12 cenas prontas. Para gravar: `?cena=ep3-caso1&auto=1&gravar=1&vel=900`. API em `window.CUBO`. |
 | `referencias/aprendizados.md` | Regras específicas da série (veja abaixo). |

@@ -6,7 +6,7 @@ Rodar: python3 roteiro/gerar.py
 """
 import json, re, pathlib
 
-RITMO = 2.5  # palavras por segundo (mais calmo, a pedido da usuária)
+RITMO = 2.9  # p/s médio (intro ~3,15, explicação ~2,9 — pedido da usuária após o ep. 1)
 AQUI = pathlib.Path(__file__).parent
 
 ESTILO = ("2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, "
@@ -418,7 +418,7 @@ def md(ep, clipes, total):
     L += ["## Ficha",
           f"- **Tema/nível:** cubo mágico 3×3, método F2L intuitivo, iniciante que já sabe o método de camadas.",
           f"- **Objetivo:** {ep['objetivo']}",
-          f"- **Duração estimada:** {mmss(total)} ({sum(c['palavras'] for c in clipes)} palavras a {RITMO} p/s) — alvo 1:05–1:30.",
+          f"- **Duração estimada:** {mmss(total)} ({sum(c['palavras'] for c in clipes)} palavras a {RITMO} p/s) — alvo 1:00–1:30 (mínimo exato 1:00).",
           "- **Legenda do Jogo:** Chefão = cubo embaralhado · HP do Chefão = quanto falta resolver · "
           "cartas de golpe = algoritmos · mapa de fases = os 5 episódios · slot = casa do par.",
           f"- **Hero (token fixo):** `{HERO}`",
@@ -449,7 +449,7 @@ if __name__ == "__main__":
     resumo = []
     for ep in EPS:
         clipes, total = montar(ep)
-        assert 65 <= total <= 90, (ep["n"], total)
+        assert 60 <= total <= 90, (ep["n"], total)
         (AQUI / f"ep{ep['n']:02d}.md").write_text(md(ep, clipes, total), encoding="utf-8")
         (AQUI / f"ep{ep['n']:02d}.json").write_text(json.dumps(
             {"ep": ep["n"], "titulo": ep["titulo"], "ritmo_pps": RITMO, "duracao_s": round(total, 1),

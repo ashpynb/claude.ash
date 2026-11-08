@@ -1,8 +1,8 @@
 {
   "ep": 5,
   "titulo": "Juntando tudo + treino",
-  "ritmo_pps": 2.5,
-  "duracao_s": 74.8,
+  "ritmo_pps": 2.9,
+  "duracao_s": 64.5,
   "imagens": {
     "bg_arena": "Empty pixel-art arena floor seen from the front, glowing cyan grid on the ground, dark purple sky with stars, large empty space in the center for a 3D object, 2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, vertical 9:16, deep navy, dark purple, neon cyan and magenta palette, no text",
     "hero": "a small adventurer whose head is a tiny 3x3 colorful puzzle cube, cyan scarf, big expressive eyes, purple tunic, full body, idle pose, plain flat magenta-free green background for chroma key, 2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, vertical 9:16, deep navy, dark purple, neon cyan and magenta palette, no text",
@@ -14,12 +14,12 @@
       "id": "ep05_clip01",
       "narracao": "Você já sabe tudo pra fazer o éfe dois éle completo. Agora é só juntar as peças. Só que o segredo de quem é rápido não é a mão. É o olho.",
       "palavras": 32,
-      "duracao_s": 12.8,
+      "duracao_s": 11.0,
       "t_ini": 0.0,
       "beats": [
         {
           "t_ini": 0.0,
-          "t_fim": 6.8,
+          "t_fim": 5.9,
           "fala": "Você já sabe tudo pra fazer o éfe dois éle completo. Agora é só juntar as peças.",
           "visual": "Castelo final; Chefão com meia barra de HP",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -29,8 +29,8 @@
           "video_ia": true
         },
         {
-          "t_ini": 6.8,
-          "t_fim": 11.6,
+          "t_ini": 5.9,
+          "t_fim": 10.0,
           "fala": "Só que o segredo de quem é rápido não é a mão.",
           "visual": "Mãos pixel girando rápido, depois um X em cima",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -40,8 +40,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 11.6,
-          "t_fim": 12.8,
+          "t_ini": 10.0,
+          "t_fim": 11.0,
           "fala": "É o olho.",
           "visual": "Olho pixel abre gigante brilhando ciano",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -56,12 +56,12 @@
       "id": "ep05_clip02",
       "narracao": "A ordem é sempre a mesma. Faz a cruz. Escolhe um par. Leva o slot pra frente à direita com ípsilon. Resolve o caso. Repete até os quatro slots fecharem.",
       "palavras": 30,
-      "duracao_s": 12.0,
-      "t_ini": 12.8,
+      "duracao_s": 10.3,
+      "t_ini": 11.0,
       "beats": [
         {
-          "t_ini": 12.8,
-          "t_fim": 15.2,
+          "t_ini": 11.0,
+          "t_fim": 13.1,
           "fala": "A ordem é sempre a mesma.",
           "visual": "Checklist HUD com 5 linhas vazias",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -71,8 +71,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 15.2,
-          "t_fim": 16.4,
+          "t_ini": 13.1,
+          "t_fim": 14.1,
           "fala": "Faz a cruz.",
           "visual": "CUBO: cruz branca embaixo destaca",
           "imagem": "cubo.html",
@@ -82,8 +82,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 16.4,
-          "t_fim": 17.6,
+          "t_ini": 14.1,
+          "t_fim": 15.2,
           "fala": "Escolhe um par.",
           "visual": "CUBO (foco): um par pisca",
           "imagem": "cubo.html",
@@ -93,8 +93,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 17.6,
-          "t_fim": 21.2,
+          "t_ini": 15.2,
+          "t_fim": 18.3,
           "fala": "Leva o slot pra frente à direita com ípsilon.",
           "visual": "CUBO: y no 'ípsilon' — slot do par vem pra frente-direita",
           "imagem": "cubo.html",
@@ -104,8 +104,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 21.2,
-          "t_fim": 22.4,
+          "t_ini": 18.3,
+          "t_fim": 19.3,
           "fala": "Resolve o caso.",
           "visual": "CUBO: R U R' insere o par",
           "imagem": "cubo.html",
@@ -115,8 +115,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 22.4,
-          "t_fim": 24.8,
+          "t_ini": 19.3,
+          "t_fim": 21.4,
           "fala": "Repete até os quatro slots fecharem.",
           "visual": "4 pares entrando em corte rápido; contador ×4",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -131,12 +131,12 @@
       "id": "ep05_clip03",
       "narracao": "Enquanto resolve um par, olha onde está o próximo. Isso se chama look ahead, olhar adiante. Seus olhos trabalham um par na frente das mãos. Melhor girar devagar sem parar do que rápido e travar.",
       "palavras": 35,
-      "duracao_s": 14.0,
-      "t_ini": 24.8,
+      "duracao_s": 12.1,
+      "t_ini": 21.4,
       "beats": [
         {
-          "t_ini": 24.8,
-          "t_fim": 31.2,
+          "t_ini": 21.4,
+          "t_fim": 26.9,
           "fala": "Enquanto resolve um par, olha onde está o próximo. Isso se chama look ahead, olhar adiante.",
           "visual": "CUBO girando R U R' devagar; olho pixel procura outra peça em volta",
           "imagem": "cubo.html",
@@ -146,8 +146,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 31.2,
-          "t_fim": 34.8,
+          "t_ini": 26.9,
+          "t_fim": 30.0,
           "fala": "Seus olhos trabalham um par na frente das mãos.",
           "visual": "Letreiro LOOK AHEAD em neon",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -157,8 +157,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 34.8,
-          "t_fim": 38.8,
+          "t_ini": 30.0,
+          "t_fim": 33.4,
           "fala": "Melhor girar devagar sem parar do que rápido e travar.",
           "visual": "Corrida: tartaruga constante passa coelho parado com '...'",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -173,12 +173,12 @@
       "id": "ep05_clip04",
       "narracao": "Plano de treino. Semana um, só os casos básicos devagar. Semana dois, peças presas e branco pra cima. Semana três, cronômetro e look ahead. Dez minutos por dia.",
       "palavras": 28,
-      "duracao_s": 11.2,
-      "t_ini": 38.8,
+      "duracao_s": 9.7,
+      "t_ini": 33.4,
       "beats": [
         {
-          "t_ini": 38.8,
-          "t_fim": 40.0,
+          "t_ini": 33.4,
+          "t_fim": 34.5,
           "fala": "Plano de treino.",
           "visual": "Calendário pixel com 3 semanas",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -188,8 +188,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 40.0,
-          "t_fim": 42.8,
+          "t_ini": 34.5,
+          "t_fim": 36.9,
           "fala": "Semana um, só os casos básicos devagar.",
           "visual": "Semana 1 marcada com carta R U R'",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -199,8 +199,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 42.8,
-          "t_fim": 46.0,
+          "t_ini": 36.9,
+          "t_fim": 39.7,
           "fala": "Semana dois, peças presas e branco pra cima.",
           "visual": "Semana 2 marcada com carta R U2 R'",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -210,8 +210,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 46.0,
-          "t_fim": 48.4,
+          "t_ini": 39.7,
+          "t_fim": 41.7,
           "fala": "Semana três, cronômetro e look ahead.",
           "visual": "Semana 3: cronômetro pixel correndo",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -221,8 +221,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 48.4,
-          "t_fim": 50.0,
+          "t_ini": 41.7,
+          "t_fim": 43.1,
           "fala": "Dez minutos por dia.",
           "visual": "Ampulheta '10 min'",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -237,12 +237,12 @@
       "id": "ep05_clip05",
       "narracao": "Recapitulando a série. Notação, ideia de par, casos básicos e como transformar caso chato em fácil. Com isso, as duas primeiras camadas saem em quatro pares. Travou? Revê o episódio daquela parte.",
       "palavras": 32,
-      "duracao_s": 12.8,
-      "t_ini": 50.0,
+      "duracao_s": 11.0,
+      "t_ini": 43.1,
       "beats": [
         {
-          "t_ini": 50.0,
-          "t_fim": 56.4,
+          "t_ini": 43.1,
+          "t_fim": 48.6,
           "fala": "Recapitulando a série. Notação, ideia de par, casos básicos e como transformar caso chato em fácil.",
           "visual": "Mapa com os 4 nós anteriores acendendo em sequência",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -252,8 +252,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 56.4,
-          "t_fim": 60.4,
+          "t_ini": 48.6,
+          "t_fim": 52.1,
           "fala": "Com isso, as duas primeiras camadas saem em quatro pares.",
           "visual": "CUBO: 4 pares entrando em corte rápido, duas camadas completas",
           "imagem": "cubo.html",
@@ -263,8 +263,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 60.4,
-          "t_fim": 62.8,
+          "t_ini": 52.1,
+          "t_fim": 54.1,
           "fala": "Travou? Revê o episódio daquela parte.",
           "visual": "Chefão perde a barra de HP inteira e explode em pixels",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -279,12 +279,12 @@
       "id": "ep05_clip06",
       "narracao": "Pergunta final: o que é look ahead? Responde nos comentários com suas palavras. Depois disso falta só a última camada, com o ó éle éle e o pê éle éle.",
       "palavras": 30,
-      "duracao_s": 12.0,
-      "t_ini": 62.8,
+      "duracao_s": 10.3,
+      "t_ini": 54.1,
       "beats": [
         {
-          "t_ini": 62.8,
-          "t_fim": 65.6,
+          "t_ini": 54.1,
+          "t_fim": 56.6,
           "fala": "Pergunta final: o que é look ahead?",
           "visual": "Quiz: olho com '?'",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -294,8 +294,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 65.6,
-          "t_fim": 68.0,
+          "t_ini": 56.6,
+          "t_fim": 58.6,
           "fala": "Responde nos comentários com suas palavras.",
           "visual": "Balão de comentário pixel aparece",
           "imagem": "bg_arena/hero/chefao (reuso)",
@@ -305,8 +305,8 @@
           "video_ia": false
         },
         {
-          "t_ini": 68.0,
-          "t_fim": 74.8,
+          "t_ini": 58.6,
+          "t_fim": 64.5,
           "fala": "Depois disso falta só a última camada, com o ó éle éle e o pê éle éle.",
           "visual": "Portão novo no mapa com 'OLL · PLL' trancado",
           "imagem": "bg_arena/hero/chefao (reuso)",

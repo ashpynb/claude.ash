@@ -30,7 +30,7 @@ conflita com uma regra geral, vale a da série (está marcada).
 Nunca misturar as regras de "economia" com as de "fatos gerais".
 
 ## Série "Cubo mágico: F2L" (regras pedidas pela usuária, têm prioridade nesta série)
-- **Duração:** cada vídeo entre 1:05 e 1:30 (alvo 1:15–1:25).
+- **Duração:** mínimo **exato 1:00** (pedido da usuária), máximo 1:30.
 - **Ritmo da fala (ATUALIZADO pela usuária depois do ep. 1):** 2,5 p/s ficou "lento demais".
   Agora: **gancho/introdução no ritmo viral (~3,1–3,2 p/s)** e **explicação ~2,9 p/s**.
   Medido no ep. 1: intro `rate +24%`, pausas ≤0,10s, respiro 0,08s (0,2s após algoritmo) → 3,15 p/s;
