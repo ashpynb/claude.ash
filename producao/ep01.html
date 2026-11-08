@@ -32,7 +32,7 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#05071a
 #jogada em{font-style:normal;color:var(--ciano);text-shadow:8px 8px 0 #0b1030,0 0 50px var(--ciano)}
 #leg{position:absolute;left:70px;right:70px;top:1470px;text-align:center;font:800 60px/1.18 'Inter';color:#fff;
  -webkit-text-stroke:12px #0a0820;paint-order:stroke fill}
-#leg u{text-decoration:none;color:#ffe35a}
+#leg span{display:inline-block;transition:none}#leg .mv{color:#27f2ff}#leg .ag{color:#ffe35a}
 .seta{position:absolute;width:150px;height:330px;opacity:0}
 #relogio{position:absolute;left:720px;top:520px;width:250px;height:250px;opacity:0}
 #resumo{position:absolute;left:110px;right:110px;top:930px;opacity:0}
@@ -155,7 +155,14 @@ function renderAt(t){
  const bi=Math.max(0,B.findIndex(b=>t>=b.t0&&t<b.t1));const b=B[bi===-1?B.length-1:bi];const u=(t-b.t0)/(b.t1-b.t0),lt=t-b.t0;
  const w=(a,n)=>palavra(bi,a,n);
  // legenda
- $('leg').innerHTML=b.fala.replace(/\b(érre linha|érre|éle|éfe|dê|u dois|U dois|xis|ípsilon|linha|dois)\b/gi,'<u>$1</u>');
+ // legenda karaokê: palavra falada em amarelo, letras do cubo em ciano
+ { const toks=b.fala.split(' ');let wi=0;const ws=b.words;let html=[];
+   for(const tk of toks){const n=norm(tk);let tw=null;
+     for(let j=wi;j<ws.length;j++){if(norm(ws[j].w)===n||(n&&norm(ws[j].w).startsWith(n))||(n&&n.startsWith(norm(ws[j].w))&&norm(ws[j].w))){tw=j;wi=j+1;break}}
+     const ag=tw!==null&&t>=ws[tw].t0&&(tw+1>=ws.length?t<ws[tw].t1+.25:t<ws[tw+1].t0);
+     const raw=tk.toLowerCase().replace(/[^\p{L}]/gu,'');const mv=['érre','éle','éfe','dê','u','xis','ípsilon','linha','dois'].includes(raw);
+     html.push(`<span class="${ag?'ag':''} ${mv?'mv':''}">${tk}</span>`)}
+   $('leg').innerHTML=html.join(' ');}
  // padrão
  let vx=BASE_X,vy=BASE_Y,vz=0,sc=1,ty=0,shx=0,shy=0,flash=0;
  const ids=['setaD','setaE','relogio','resumo','quiz','carimbo','brilhoOuro'];ids.forEach(i=>$(i).style.opacity=0);
@@ -163,7 +170,7 @@ function renderAt(t){
  const anim=estado(t);
  // efeitos por beat
  switch(bi){
-  case 0:{sc=lerp(1.35,1,out(lt/.9));if(lt<.35){shx=Math.sin(t*95)*14;shy=Math.cos(t*80)*10}vy=BASE_Y+lt*8;break}
+  case 0:{sc=lerp(1.35,1,out(lt/.9));if(lt<.35){shx=Math.sin(t*95)*14;shy=Math.cos(t*80)*10}vy=BASE_Y+Math.sin(lt*1.2)*6;break}
   case 1:{vz=Math.sin(lt*7)*7;vy=BASE_Y+Math.sin(lt*3)*10;break}
   case 2:{vy=BASE_Y+ease(u)*90-90+ (lt<.12?0:0);sc=lerp(.9,1.05,out(u));flash=lt<.1?.6*(1-lt/.1):0;break}
   case 3:{vy=BASE_Y+u*360;const fs=['py','pz','px','nz','nx','ny'];mk.letras=fs.slice(0,1+Math.floor(u*6));break}
@@ -190,6 +197,10 @@ function renderAt(t){
   case 22:{mk={luz:['px'],dim:['pz','py','nx','nz','ny']};const q=$('quiz');q.style.opacity=1;const al=Math.floor(lt*2.4)%2;$('qUp').style.opacity=al?1:.2;$('qDn').style.opacity=al?.2:1;break}
   case 23:{mk={cinzaTopo:true};vy=BASE_Y+lt*25;sc=lerp(1,1.08,u);break}
  }
+ // vida: cubo respira, chão anda, punch-in a cada giro
+ vy+=Math.sin(t*.9)*3;vx+=Math.sin(t*.7)*1.5;
+ for(const e of EV){if(e.tipo==='mov'&&t>=e.t&&t-e.t<.35){sc*=1+.05*Math.sin(Math.PI*(t-e.t)/.35)}}
+ $('chao').style.backgroundPosition=`0 ${t*60}px`;
  marcar(mk);
  desenhar(anim);
  $('vista').style.transform=`rotateX(${vx}deg) rotateY(${vy}deg) rotateZ(${vz}deg)`;
