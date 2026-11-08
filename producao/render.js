@@ -1,7 +1,7 @@
 // Uso: node render.js pagina.html saida_dir [teste]
 const {chromium}=require('playwright'),path=require('path'),fs=require('fs');
 (async()=>{const [pag,out,modo]=process.argv.slice(2);
-const b=await chromium.launch();const p=await b.newPage({viewport:{width:1080,height:1920},deviceScaleFactor:1});
+const b=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});const p=await b.newPage({viewport:{width:1080,height:1920},deviceScaleFactor:1});
 p.on('pageerror',e=>{console.log('ERR',e.message);process.exitCode=1});p.on('console',m=>console.log('LOG',m.text()));
 await p.goto('file://'+path.resolve(pag));await p.waitForTimeout(400);
 const total=await p.evaluate('TOTAL');fs.mkdirSync(out,{recursive:true});

@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<style>
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#000;font-family:'Inter',sans-serif}
+#c{position:absolute;left:0;top:0;width:1080px;height:1920px}
+#leg{position:absolute;left:70px;right:70px;top:1440px;text-align:center;font:800 62px/1.18 'Inter';color:#fff;-webkit-text-stroke:12px #111;paint-order:stroke fill}
+#leg .ag{color:#FFD400}
+#num{position:absolute;left:0;right:0;top:250px;text-align:center;opacity:0}
+#num span{display:inline-block;padding:14px 44px;border-radius:999px;background:#111d;border:6px solid #FFD400;font:900 92px 'Inter';color:#FFD400}
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+#tint{position:absolute;inset:0;background:#c0002a;opacity:0;mix-blend-mode:multiply}
+#vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,rgba(0,0,0,0) 55%,rgba(0,0,0,.45) 100%)}
+</style></head><body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<div id="tint"></div><div id="vig"></div><div id="num"><span></span></div><div id="leg"></div><div id="flash"></div>
+<script src="vendor/three.min.js"></script>
+<script src="viral01_formiga_zumbi_tempo.js"></script>
+<script>
+// Viral 01 — Formiga zumbi. 3D cartoon por código (sem crédito). Sem texto grande: só legenda + números (12:00, 25 cm, 48 milhões de anos).
+const W=1080,H=1920;
+const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('c'),antialias:true,preserveDrawingBuffer:true});
+renderer.setSize(W,H,false);renderer.setPixelRatio(1);
+const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(50,W/H,.1,500);
+scene.add(new THREE.HemisphereLight(0xffffff,0x665544,.7));const sunL=new THREE.DirectionalLight(0xffffff,.85);sunL.position.set(5,10,8);scene.add(sunL);
+let seed=11;const rnd=()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646};
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),lerp=(a,b,t)=>a+(b-a)*t;
+const ease=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2},out=x=>{x=clamp(x);return 1-Math.pow(1-x,3)},back=x=>{x=clamp(x);const c=1.9;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const g3=new Uint8Array([90,170,255]);const grad=new THREE.DataTexture(g3,3,1,THREE.RedFormat);grad.needsUpdate=true;
+const toon=(c,o={})=>new THREE.MeshToonMaterial(Object.assign({color:c,gradientMap:grad},o));
+function mesh(geo,mat,parent,p=[0,0,0],s=[1,1,1]){const m=new THREE.Mesh(geo,mat);m.position.set(...p);m.scale.set(...s);(parent||scene).add(m);return m}
+function grupo(parent){const g=new THREE.Group();(parent||scene).add(g);return g}
+const preto=toon(0x1a1a1a),branco=toon(0xffffff),pedra=toon(0x9a9a9a);
+
+// ---------- céu, chão, floresta ----------
+const sky=new THREE.Mesh(new THREE.SphereGeometry(200,32,16),new THREE.MeshBasicMaterial({side:THREE.BackSide,vertexColors:true}));
+(()=>{const p=sky.geometry.attributes.position,c=[];for(let i=0;i<p.count;i++){const y=p.getY(i)/200;c.push(...new THREE.Color(0xfff1c4).lerp(new THREE.Color(0x6cc3ff),clamp(y*1.4+.15)).toArray())}sky.geometry.setAttribute('color',new THREE.Float32BufferAttribute(c,3))})();scene.add(sky);
+const chao=mesh(new THREE.CircleGeometry(90,48).rotateX(-Math.PI/2),toon(0x4f9a3a),null,[0,-3,0]);
+const floresta=grupo();
+for(let i=0;i<26;i++){const x=(rnd()-.5)*60,z=-12-rnd()*40;const tr=grupo(floresta);tr.position.set(x,-3,z);
+ mesh(new THREE.CylinderGeometry(.35,.5,6,8),toon(0x6b4a2f),tr,[0,3,0]);mesh(new THREE.SphereGeometry(2.6,14,10),toon([0x2f8f3a,0x3fa548,0x267a33][i%3]),tr,[0,7,0],[1,1.2,1])}
+const sol=mesh(new THREE.SphereGeometry(3,24,16),new THREE.MeshBasicMaterial({color:0xffe14a}),null,[0,40,-60]);
+
+// ---------- planta com folha (nervura no meio) ----------
+function planta(parent){const g=grupo(parent);mesh(new THREE.CylinderGeometry(.07,.09,4,8),toon(0x3e8b33),g,[0,2,0]);
+ const f=grupo(g);f.position.set(0,4,0);const mat=toon(0x47b347);const folha=mesh(new THREE.SphereGeometry(1,24,12),mat,f,[.9,0,0],[1.5,.07,.6]);
+ const nerv=mesh(new THREE.BoxGeometry(2.8,.06,.06),toon(0x2c7a2a),f,[.9,-.06,0]);const nerv2=mesh(new THREE.BoxGeometry(2.8,.05,.06),toon(0x2c7a2a),f,[.9,.06,0]);
+ const marcas=grupo(f);for(let i=0;i<4;i++)mesh(new THREE.SphereGeometry(.09,10,8),toon(0x3a2a1a),marcas,[.4+i*.3,.08,0],[1.4,.4,.8]);marcas.visible=false;return{g,f,folha,nerv,nerv2,marcas,mat}}
+const P=planta();
+// ---------- formiga ----------
+const corpoM=toon(0x5a2a1a);
+function formiga(){const g=grupo();const c=grupo(g);
+ mesh(new THREE.SphereGeometry(.62,20,14),corpoM,c,[-1.05,.05,0],[1.25,1,1]);
+ mesh(new THREE.SphereGeometry(.34,16,12),corpoM,c,[-.15,0,0],[1.3,.9,.9]);
+ const cab=grupo(c);cab.position.set(.65,.12,0);mesh(new THREE.SphereGeometry(.5,20,14),corpoM,cab);
+ const olhos=[],pup=[],xs=[];[-1,1].forEach(s=>{const e=grupo(cab);e.position.set(.3,.15,s*.25);olhos.push(mesh(new THREE.SphereGeometry(.17,14,10),branco,e));pup.push(mesh(new THREE.SphereGeometry(.08,10,8),preto,e,[.12,0,0]));
+  const x=grupo(e);x.position.x=.15;x.visible=false;mesh(new THREE.BoxGeometry(.03,.2,.03),preto,x).rotation.x=.8;mesh(new THREE.BoxGeometry(.03,.2,.03),preto,x).rotation.x=-.8;xs.push(x)});
+ const mand=[];[-1,1].forEach(s=>{const m=mesh(new THREE.ConeGeometry(.07,.32,8),toon(0x2a140c),cab,[.48,-.18,s*.12]);m.rotation.z=-Math.PI/2;mand.push(m)});
+ [-1,1].forEach(s=>{const a=grupo(cab);a.position.set(.15,.38,s*.18);a.rotation.set(s*-.4,0,-.5);mesh(new THREE.CylinderGeometry(.025,.025,.7,6),preto,a,[0,.35,0])});
+ const pernas=[];for(let i=0;i<3;i++)[-1,1].forEach(s=>{const l=grupo(c);l.position.set(-.35+i*.25,-.15,s*.25);const m=mesh(new THREE.CylinderGeometry(.035,.035,.8,6),preto,l,[0,-.3,s*.25]);m.rotation.x=s*.7;pernas.push(l)});
+ const fungo=grupo(cab);fungo.position.set(0,.4,0);mesh(new THREE.CylinderGeometry(.05,.08,1,8),toon(0xd8cfa0),fungo,[0,.5,0]);
+ const chapeu=mesh(new THREE.SphereGeometry(.22,14,10),toon(0xe8e0b0),fungo,[0,1.05,0],[1,1.3,1]);
+ const sob=[];[-1,1].forEach(s=>{const b=mesh(new THREE.BoxGeometry(.04,.04,.16),preto,fungo,[.2,1.15,s*.09]);b.rotation.x=s*.5;sob.push(b)});
+ const solhos=[];[-1,1].forEach(s=>solhos.push(mesh(new THREE.SphereGeometry(.05,8,6),toon(0xff3355,{emissive:0x550011}),fungo,[.2,1.05,s*.08])));
+ const guarda=grupo(g);guarda.position.set(-.2,1.4,0);mesh(new THREE.ConeGeometry(.9,.4,12,1,true),toon(0xff5c8a,{side:THREE.DoubleSide}),guarda,[0,.4,0]);mesh(new THREE.CylinderGeometry(.03,.03,1,6),preto,guarda,[0,0,0]);
+ return{g,cab,pup,xs,olhos,mand,pernas,fungo,chapeu,sob,solhos,guarda,
+  set(t,o={}){g.visible=true;const an=o.anda||0;pernas.forEach((l,i)=>l.rotation.z=Math.sin(t*14+i*1.7)*.5*an);
+   const z=o.zumbi||0;olhos.forEach(e=>e.material=z>.5?toon(0xd8f0d0,{emissive:0x335533}):branco);pup.forEach(p=>p.visible=z<.5&&!o.morta);xs.forEach(x=>x.visible=!!o.morta);
+   const fg=o.fungo??0;fungo.visible=fg>0;fungo.scale.set(1,Math.max(.01,fg),1);const vil=!!o.vilao;sob.forEach(b=>b.visible=vil);solhos.forEach(b=>b.visible=vil);chapeu.scale.set(1+(vil?.5:0),1.3+(vil?.4:0),1+(vil?.5:0));
+   const ab=o.morde||0;mand.forEach((m,i)=>m.rotation.y=(i?1:-1)*(.5-ab*.5));guarda.visible=!!o.guarda;cab.rotation.z=o.olha||0}}}
+const F=formiga(),F2=formiga(),F3=formiga(),F4=formiga();const turma=[F2,F3,F4];
+// ---------- objetos ----------
+const relogio=grupo();mesh(new THREE.CylinderGeometry(1.3,1.3,.3,40).rotateX(Math.PI/2),toon(0xffffff),relogio);mesh(new THREE.TorusGeometry(1.3,.12,10,40),toon(0xff4b4b),relogio);
+const ptrH=mesh(new THREE.BoxGeometry(.12,.8,.05),preto,relogio,[0,.4,.2]),ptrM=mesh(new THREE.BoxGeometry(.08,1.1,.05),preto,relogio,[0,.55,.25]);
+for(let i=0;i<12;i++){const a=i/12*Math.PI*2;mesh(new THREE.BoxGeometry(.08,.2,.05),preto,relogio,[Math.sin(a)*1.05,Math.cos(a)*1.05,.18]).rotation.z=-a}
+const regua=grupo();mesh(new THREE.BoxGeometry(.4,3,.08),toon(0xffd84a),regua,[0,1.5,0]);for(let i=0;i<=10;i++)mesh(new THREE.BoxGeometry(i%5?.15:.28,.03,.1),preto,regua,[-.1,i*.3,.02]);
+const lupa=grupo();mesh(new THREE.TorusGeometry(.35,.06,8,20),toon(0x333333),lupa);mesh(new THREE.CircleGeometry(.33,20),new THREE.MeshBasicMaterial({color:0xbfe8ff,transparent:true,opacity:.5}),lupa);mesh(new THREE.CylinderGeometry(.05,.05,.6,6),toon(0x6b3a1a),lupa,[0,-.65,0]);
+const cientista=formiga();
+const esporos=[];for(let i=0;i<70;i++)esporos.push(mesh(new THREE.SphereGeometry(.06,8,6),new THREE.MeshBasicMaterial({color:0xf3ffb0}),null));
+const ninho=grupo();mesh(new THREE.ConeGeometry(3,2.2,24),toon(0x9a6b3d),ninho,[0,1.1,0]);mesh(new THREE.CircleGeometry(.5,16),preto,ninho,[0,.6,1.25]).rotation.x=-.5;
+const cel=grupo();mesh(new THREE.BoxGeometry(2.2,4,.25),toon(0x222831),cel);mesh(new THREE.PlaneGeometry(2,3.6),toon(0xeaf6ff),cel,[0,0,.13]);
+const bolhas=[];for(let i=0;i<4;i++){const b=mesh(new THREE.BoxGeometry(i%2?1.1:1.3,.38,.05),toon(i%2?0x9be38a:0xffffff),cel,[i%2?.35:-.25,1.1-i*.6,.16]);bolhas.push(b)}
+const saiu=mesh(new THREE.BoxGeometry(1.5,.45,.05),toon(0xff5c5c),cel,[0,-1.3,.17]);
+const raiox=grupo();mesh(new THREE.SphereGeometry(1.4,24,16),new THREE.MeshBasicMaterial({color:0x7fd8ff,transparent:true,opacity:.25,depthWrite:false}),raiox);
+const musc=[];[-1,1].forEach(s=>musc.push(mesh(new THREE.SphereGeometry(.45,16,12),toon(0xff4b6b),raiox,[.2,-.2,s*.55])));
+[-1,1].forEach(s=>mesh(new THREE.ConeGeometry(.15,.9,10),toon(0xffffff,{transparent:true,opacity:.8}),raiox,[1.4,-.5,s*.3]).rotation.z=-Math.PI/2);
+const vento=[];for(let i=0;i<14;i++)vento.push(mesh(new THREE.BoxGeometry(2.5,.04,.04),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.7}),null));
+const motorista=grupo();mesh(new THREE.SphereGeometry(2.4,32,20),new THREE.MeshBasicMaterial({color:0xa0602a,transparent:true,opacity:.25,depthWrite:false}),motorista);
+const cog=grupo(motorista);cog.position.set(0,-.4,0);mesh(new THREE.CylinderGeometry(.25,.35,.9,12),toon(0xe8e0b0),cog,[0,0,0]);mesh(new THREE.SphereGeometry(.7,20,12,0,Math.PI*2,0,Math.PI/2),toon(0xd94a4a),cog,[0,.45,0]);
+[-1,1].forEach(s=>{mesh(new THREE.SphereGeometry(.1,10,8),branco,cog,[.3,.15,s*.13]);mesh(new THREE.SphereGeometry(.05,8,6),preto,cog,[.38,.15,s*.13])});
+mesh(new THREE.CylinderGeometry(.4,.4,.12,16),preto,cog,[0,.85,0]);mesh(new THREE.CylinderGeometry(.28,.28,.35,16),preto,cog,[0,1.05,0]);
+const volante=mesh(new THREE.TorusGeometry(.5,.07,8,24),preto,motorista,[.75,-.3,0]);volante.rotation.y=Math.PI/2;
+const cemiterio=grupo();const cemP=[];for(let i=0;i<24;i++){const pl=planta(cemiterio);const x=(i%6-2.5)*2.6+(rnd()-.5),z=-Math.floor(i/6)*3-(rnd());pl.g.position.set(x,-3,z);pl.g.scale.setScalar(.8);pl.f.rotation.y=rnd()*6;
+ const fm=formiga();cemiterio.add(fm.g);fm.g.scale.setScalar(.35);cemP.push({pl,fm})}
+const linha=grupo();mesh(new THREE.BoxGeometry(16,.2,.2),toon(0xffffff),linha);const cogLinha=grupo(linha);cogLinha.position.set(-7.5,.6,0);cogLinha.scale.setScalar(1.6);mesh(new THREE.CylinderGeometry(.08,.12,.8,8),toon(0xd8cfa0),cogLinha);mesh(new THREE.SphereGeometry(.35,14,10),toon(0xe8e0b0),cogLinha,[0,.5,0],[1,1.3,1]);
+function humano(parent){const g=grupo(parent);mesh(new THREE.CapsuleGeometry(.35,.9,6,12),toon(0x3d7bff),g,[0,.9,0]);mesh(new THREE.SphereGeometry(.38,16,12),toon(0xf2c29b),g,[0,1.95,0]);
+ [-1,1].forEach(s=>{mesh(new THREE.SphereGeometry(.07,8,6),preto,g,[.33,2.0,s*.12])});const pe=[];[-1,1].forEach(s=>{const l=grupo(g);l.position.set(0,.4,s*.18);mesh(new THREE.CylinderGeometry(.1,.1,.7,8),toon(0x333333),l,[0,-.35,0]);pe.push(l)});return{g,pe}}
+const hum=humano(linha);hum.g.position.set(7.4,.1,0);hum.g.scale.setScalar(.5);const hum2=humano();
+const controle=grupo();mesh(new THREE.CapsuleGeometry(.9,2.2,8,16).rotateZ(Math.PI/2),toon(0x2b2b33),controle);[[1,0],[1.4,.4],[1.8,0],[1.4,-.4]].forEach(([x,y],i)=>mesh(new THREE.CylinderGeometry(.16,.16,.2,12).rotateX(Math.PI/2),toon([0xff4b4b,0x3dd56d,0x4b8bff,0xffd84a][i]),controle,[x-.2,y,.85]));
+mesh(new THREE.BoxGeometry(.9,.28,.2),toon(0x111111),controle,[-1.3,0,.85]);mesh(new THREE.BoxGeometry(.28,.9,.2),toon(0x111111),controle,[-1.3,0,.85]);
+const OBJ=[floresta,P.g,relogio,regua,lupa,ninho,cel,raiox,motorista,cemiterio,linha,hum2.g,controle,sol,chao,sky];
+
+// ---------- linha do tempo ----------
+const B=TEMPO.beats;
+const norm=w=>w.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]/g,'');
+function palavra(bi,a,n=1){let c=0;for(const x of B[bi].words)if(norm(x.w).startsWith(norm(a))&&++c===n)return x.t0;throw new Error('palavra '+a+' beat '+bi)}
+function legenda(b,t){const toks=b.fala.split(' ');const ws=b.words;let wi=0;
+ document.getElementById('leg').innerHTML=toks.map(tk=>{const n=norm(tk);let tw=null;for(let j=wi;j<ws.length;j++){const m=norm(ws[j].w);if(m===n||(n&&m.startsWith(n))||(m&&n.startsWith(m))){tw=j;wi=j+1;break}}
+  const ag=tw!==null&&t>=ws[tw].t0&&(tw+1>=ws.length?t<ws[tw].t1+.25:t<ws[tw+1].t0);return `<span class="${ag?'ag':''}">${tk}</span>`}).join(' ')}
+function num(txt,t0,t){const n=document.getElementById('num');n.firstChild.textContent=txt;n.style.opacity=clamp((t-t0)/.08);n.style.transform=`scale(${.5+.5*back((t-t0)/.25)})`}
+const cam=(x,y,z,lx,ly,lz)=>{camera.position.set(x,y,z);camera.lookAt(lx,ly,lz)};
+function folhaComFormiga(t,o={}){P.g.visible=true;P.marcas.visible=false;P.g.position.set(0,-3,0);P.g.rotation.set(0,0,0);P.f.rotation.set(0,0,0);P.mat.color.set(0x47b347);
+ F.g.position.set(1.3,1.0-.2,0);F.g.rotation.set(Math.PI,0,0);F.g.scale.setScalar(.6);F.set(t,o)}
+
+function renderAt(t){
+ const bi0=B.findIndex(b=>t>=b.t0&&t<b.t1);const bi=bi0<0?B.length-1:bi0;const b=B[bi];const u=clamp((t-b.t0)/(b.t1-b.t0)),lt=t-b.t0,w=(a,n)=>palavra(bi,a,n);
+ legenda(b,t);
+ OBJ.forEach(o=>o.visible=false);[F,F2,F3,F4,cientista].forEach(a=>{a.g.visible=false;a.g.scale.setScalar(1);a.g.rotation.set(0,0,0)});esporos.forEach(e=>e.visible=false);vento.forEach(v=>v.visible=false);
+ cemP.forEach(c=>c.fm.g.visible=false);sky.visible=chao.visible=true;
+ document.getElementById('num').style.opacity=0;let flash=0,tint=0,shx=0,shy=0;
+ sunL.color.set(0xffffff);
+ switch(bi){
+  case 0:{floresta.visible=sol.visible=true;sol.position.set(0,26,-30);P.g.visible=true;P.g.position.set(0,-3,0);P.f.rotation.set(0,0,0);P.mat.color.set(0x47b347);
+   F.g.position.set(.9,1.25,0);F.g.rotation.set(0,-.4,0);F.g.scale.setScalar(.6);F.set(t,{anda:1});
+   relogio.visible=true;relogio.position.set(.4,3.6,-1.5);relogio.rotation.y=0;ptrH.rotation.z=ptrM.rotation.z=0;num('12:00',b.t0+.15,t);
+   const z=lerp(11,6,out(lt/1.4));if(lt<.35){shx=Math.sin(t*90)*.15}cam(.4+shx,1.6,z,.4,1.1,0);break}
+  case 1:{floresta.visible=true;P.g.visible=true;F.g.position.set(.9,1.25,0);F.g.scale.setScalar(.6);const k=ease(lt/1.1);F.g.rotation.set(0,lerp(-.4,-1.57,k),0);
+   F.set(t,{zumbi:lt>.5?1:0,fungo:.5});cam(.9+lerp(0,2.2,k),1.7,lerp(3.2,2.6,k),.9,1.35,0);if(lt>.5&&lt<.6)flash=.6;tint=lt>.5?.12:0;break}
+  case 2:{floresta.visible=true;cemiterio.visible=true;cemP.forEach((c,i)=>{if(i>=6)return;c.fm.g.visible=true;const p=c.pl.g.position;c.fm.g.position.set(p.x+.5,p.y+3.0,p.z);c.fm.g.rotation.set(Math.PI,0,0);c.fm.set(t,{zumbi:1,fungo:.3,morde:1})});
+   cientista.g.visible=true;cientista.g.position.set(lerp(-8,-3,ease(u)),-2.6,2);cientista.g.scale.setScalar(.9);cientista.set(t,{anda:1});lupa.visible=true;lupa.position.set(cientista.g.position.x+1.1,-1.3,2.3);lupa.rotation.y=-.4;
+   cam(lerp(-4,2,ease(u)),.2,6.5,lerp(-3,1,ease(u)),-.6,0);break}
+  case 3:{floresta.visible=true;F.g.visible=true;F.g.position.set(0,-2.4,0);F.g.rotation.set(0,-1.2,0);F.set(t,{zumbi:u>.6?1:0});
+   esporos.slice(0,12).forEach((e,i)=>{e.visible=true;const k=clamp(u*1.4-i*.03);e.position.set(lerp(-4+i*.3,.6,k),lerp(1.5+i*.15,-1.8,k),lerp(-2,0,k))});
+   if(u>.6){shx=Math.sin(t*70)*.06}cam(1.5+shx,-.8,5.5,0,-1.8,0);break}
+  case 4:{motorista.visible=true;sky.visible=false;chao.visible=false;scene.background=new THREE.Color(0x2b1608);motorista.position.set(0,0,0);volante.rotation.x=Math.sin(t*4)*.6;cog.position.y=-.4+Math.sin(t*6)*.05;
+   cam(lerp(4.5,3.6,u),.6,lerp(4.5,3.8,u),0,0,0);break}
+  case 5:{ninho.visible=true;floresta.visible=true;ninho.position.set(-3,-3,-2);F.g.visible=true;F.g.position.set(lerp(-1.6,4,ease(u)),-2.6,.5);F.set(t,{anda:1,zumbi:1,fungo:.3});
+   turma.forEach((a,i)=>{a.g.visible=true;a.g.position.set(-3.5+i*1.1,-2.6,1.4);a.g.rotation.y=-Math.PI/2+.6;a.set(t,{olha:Math.sin(t*2+i)*.2})});cam(0,0,8.5,0,-1.8,0);break}
+  case 6:{cel.visible=true;sky.visible=false;chao.visible=false;scene.background=new THREE.Color(0x14202b);cel.rotation.set(0,Math.sin(t)*.15,Math.sin(t*1.3)*.05);
+   bolhas.forEach((bb,i)=>bb.scale.setScalar(u>i*.12?1:.01));saiu.scale.setScalar(u>.55?back((u-.55)/.2):.01);if(u>.55&&u<.62)shx=Math.sin(t*90)*.08;cam(shx,0,6.2,0,0,0);break}
+  case 7:{floresta.visible=true;P.g.visible=true;P.g.position.set(0,-3,0);P.f.rotation.set(0,0,0);P.mat.color.set(0x47b347);F.g.visible=true;const k=ease(u*1.1);
+   F.g.position.set(.12,lerp(-2.7,.7,k),.0);F.g.rotation.set(0,0,Math.PI/2);F.g.scale.setScalar(.45);F.set(t,{anda:1,zumbi:1,fungo:.3});
+   regua.visible=true;regua.position.set(-.7,-3,.2);if(t>=w('vinte'))num('25 cm',w('vinte'),t);cam(1.2,lerp(-1.5,.4,k),6.5,0,lerp(-1.8,.2,k),0);break}
+  case 8:{floresta.visible=true;folhaComFormiga(t,{zumbi:1,fungo:.3,morde:t>=w('morde')?1:0});relogio.visible=true;relogio.position.set(-.6,3.4,-1.5);ptrH.rotation.z=ptrM.rotation.z=-(1-clamp(lt/1))*1.2;
+   num('12:00',b.t0+.2,t);const tm=w('morde');if(t>=tm&&t<tm+.4){shx=Math.sin(t*95)*.12;shy=Math.cos(t*80)*.08}if(t>=tm&&t<tm+.07)flash=.6;cam(3.4+shx,.5+shy,6.2,.9,.9,0);break}
+  case 9:{raiox.visible=true;sky.visible=false;chao.visible=false;scene.background=new THREE.Color(0x061a2b);musc.forEach(m=>m.scale.setScalar(lerp(1.6,.3,ease(u*1.3))));raiox.rotation.y=-.6+Math.sin(t)*.2;cam(0,.3,4.4,0,0,0);break}
+  case 10:{floresta.visible=true;folhaComFormiga(t,{zumbi:1,fungo:.3,morde:1});const sw=Math.sin(t*9)*.18;P.g.rotation.z=sw*.4;P.f.rotation.x=sw;
+   vento.forEach((v,i)=>{v.visible=true;v.position.set(((t*9+i*1.7)%14)-7,(i%7)*.8-1.5,1+(i%3))});shx=Math.sin(t*30)*.04;cam(3.2+shx,.6,6.5,.9,.6,0);break}
+  case 11:{floresta.visible=true;folhaComFormiga(t,{zumbi:1,morta:1,fungo:lerp(.3,2.2,ease(u*1.2)),morde:1});cam(3.0,.4,5.6,1.2,.4,0);break}
+  case 12:{floresta.visible=true;folhaComFormiga(t,{zumbi:1,morta:1,fungo:2.2,vilao:1,morde:1});const k=back(lt/.4);F.chapeu.scale.multiplyScalar(lerp(.6,1,k));if(lt<.08)flash=.4;cam(2.6,-.2,4.6,1.3,-.2,0);break}
+  case 13:{floresta.visible=true;folhaComFormiga(t,{zumbi:1,morta:1,fungo:2.2,vilao:1,morde:1});
+   esporos.forEach((e,i)=>{e.visible=true;e.position.set(-3+(i%10)*.7+(rnd()*0),3-((t*2.2+i*.37)%6),(Math.floor(i/10)-3)*.6)});
+   turma.forEach((a,i)=>{a.g.visible=true;a.g.position.set(-1.8+i*1.4,-2.6,1.2);a.g.rotation.y=-1.2;a.set(t,{guarda:u>.35})});cam(0,0,8,0,-.4,0);break}
+  case 14:{floresta.visible=true;cemiterio.visible=true;cemP.forEach(c=>{c.fm.g.visible=true;const p=c.pl.g.position;c.fm.g.position.set(p.x+.45,p.y+2.85,p.z);c.fm.g.rotation.set(Math.PI,0,0);c.fm.set(t,{zumbi:1,morta:1,fungo:1.5,morde:1})});
+   const k=ease(u);cam(lerp(1,3,k),lerp(.5,6,k),lerp(4,15,k),0,-.5,-4);break}
+  case 15:{folhaComFormiga(t,{zumbi:1,morta:1,fungo:0,morde:1});F.g.visible=u<.45;const k=clamp((u-.2)/.4);P.mat.color.set(new THREE.Color(0x47b347).lerp(new THREE.Color(0x8d8a80),k));
+   sky.visible=false;chao.visible=false;scene.background=new THREE.Color(new THREE.Color(0x6cc3ff).lerp(new THREE.Color(0x3a332a),k));if(t>=w('quarenta'))num('48 milhões de anos',w('quarenta'),t);
+   P.f.rotation.x=1.15;P.marcas.visible=u>.55;P.marcas.children.forEach(m=>m.material=u>.55?toon(0xffa53a,{emissive:0x803000}):toon(0x3a2a1a));cam(.9,1.3,lerp(4.6,3.4,u),.9,1.1,0);break}
+  case 16:{linha.visible=true;sky.visible=false;chao.visible=false;scene.background=new THREE.Color(0x1f2a44);linha.position.set(0,0,0);hum.g.position.x=lerp(9,7.4,ease(u*1.4));
+   hum.pe.forEach((l,i)=>l.rotation.z=Math.sin(t*16+i*3)*.6);const k=ease((u-.25)/.45);cam(lerp(-7,7,k),1,4.5,lerp(-7.3,7.3,k),.5,0);break}
+  case 17:{floresta.visible=true;hum2.g.visible=true;hum2.g.position.set(lerp(-6,3,u),-3,0);hum2.g.rotation.y=0;hum2.pe.forEach((l,i)=>l.rotation.z=Math.sin(t*18+i*3)*.8);
+   relogio.visible=true;relogio.scale.setScalar(.35);relogio.position.set(hum2.g.position.x+.7,-1.3,.5);cam(hum2.g.position.x*.6,-1.2,7,hum2.g.position.x*.6,-1.6,0);break}
+  case 18:{controle.visible=true;sky.visible=false;chao.visible=false;scene.background=new THREE.Color(0x120008);controle.rotation.set(.5+Math.sin(t)*.1,Math.sin(t*1.3)*.4,0);tint=.35+.15*Math.sin(t*12);
+   if(lt<.3)shx=Math.sin(t*90)*.1;cam(shx,0,6.5,0,0,0);break}
+  case 19:{floresta.visible=sol.visible=true;sol.position.set(0,26,-30);relogio.visible=true;relogio.scale.setScalar(1);relogio.position.set(.3,3.3,-1.5);relogio.rotation.y=0;ptrH.rotation.z=ptrM.rotation.z=0;num('12:00',b.t0+.1,t);
+   P.g.visible=true;P.g.position.set(0,-3,0);P.f.rotation.set(0,0,0);P.mat.color.set(0x47b347);F.g.visible=true;const k=ease(u*1.2);F.g.position.set(.12,lerp(.7,-2.7,k),0);F.g.rotation.set(0,0,-Math.PI/2);F.g.scale.setScalar(.45);F.set(t,{anda:2});
+   cam(.4,lerp(1.4,-.6,k),8,0,lerp(.8,-1,k),0);break}
+ }
+ if(![4,6,9,15,16,18].includes(bi))scene.background=null;
+ relogio.scale.setScalar(bi===17?.35:1);
+ document.getElementById('flash').style.opacity=flash;document.getElementById('tint').style.opacity=tint;
+ renderer.render(scene,camera);
+}
+window.renderAt=renderAt;window.TOTAL=TEMPO.total;window.EVENTOS=()=>({EV:B.map((b,i)=>({t:b.t0,tipo:'corte',i})),NOTA:[]});
+renderAt(.5);
+</script></body></html>
