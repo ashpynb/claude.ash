@@ -1,0 +1,379 @@
+{
+  "ep": 1,
+  "titulo": "A língua do cubo (notação)",
+  "ritmo_pps": 2.5,
+  "duracao_s": 76.8,
+  "imagens": {
+    "bg_arena": "Empty pixel-art arena floor seen from the front, glowing cyan grid on the ground, dark purple sky with stars, large empty space in the center for a 3D object, 2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, vertical 9:16, deep navy, dark purple, neon cyan and magenta palette, no text",
+    "hero": "a small adventurer whose head is a tiny 3x3 colorful puzzle cube, cyan scarf, big expressive eyes, purple tunic, full body, idle pose, plain flat magenta-free green background for chroma key, 2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, vertical 9:16, deep navy, dark purple, neon cyan and magenta palette, no text",
+    "chefao": "a giant floating scrambled 3x3 puzzle cube monster with mixed colored tiles, glowing magenta eyes between the tiles, chains around it, menacing pose, plain flat green background for chroma key, 2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, vertical 9:16, deep navy, dark purple, neon cyan and magenta palette, no text",
+    "bg_mapa": "Top-down pixel-art world map with five glowing level nodes connected by a dotted path, each node a small cube-shaped tower, 2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, vertical 9:16, deep navy, dark purple, neon cyan and magenta palette, no text"
+  },
+  "clipes": [
+    {
+      "id": "ep01_clip01",
+      "narracao": "Todo tutorial de cubo fala érre, u, érre linha. Parece código secreto né? Hoje você aprende essa língua. É só uma letra pra cada face.",
+      "palavras": 25,
+      "duracao_s": 10.0,
+      "t_ini": 0.0,
+      "beats": [
+        {
+          "t_ini": 0.0,
+          "t_fim": 3.6,
+          "fala": "Todo tutorial de cubo fala érre, u, érre linha.",
+          "visual": "Chefão (cubo embaralhado) surge gigante; letras R U R' orbitam ele",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "zoom-out rápido + tremida",
+          "texto_tela": "R U R'",
+          "sfx": "whoosh grave",
+          "video_ia": true
+        },
+        {
+          "t_ini": 3.6,
+          "t_fim": 5.2,
+          "fala": "Parece código secreto né?",
+          "visual": "Hero coça a cabeça, interrogação pixel pisca",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "personagem entra pela esquerda + bob",
+          "texto_tela": "???",
+          "sfx": "blip confuso",
+          "video_ia": false
+        },
+        {
+          "t_ini": 5.2,
+          "t_fim": 7.2,
+          "fala": "Hoje você aprende essa língua.",
+          "visual": "Cubo CSS limpo aparece no centro da arena girando devagar",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "punch-in 100→115%",
+          "texto_tela": "LÍNGUA DO CUBO",
+          "sfx": "power-up",
+          "video_ia": false
+        },
+        {
+          "t_ini": 7.2,
+          "t_fim": 10.0,
+          "fala": "É só uma letra pra cada face.",
+          "visual": "Seis faces acendem uma a uma com a letra em cima",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "texto cinético em cada face",
+          "texto_tela": "1 LETRA = 1 FACE",
+          "sfx": "6 bipes ascendentes",
+          "video_ia": false
+        }
+      ]
+    },
+    {
+      "id": "ep01_clip02",
+      "narracao": "Segura o cubo olhando pra frente. A face de cima é o u. A da direita é o érre. A da esquerda é o éle. A frente é o éfe e embaixo é o dê.",
+      "palavras": 35,
+      "duracao_s": 14.0,
+      "t_ini": 10.0,
+      "beats": [
+        {
+          "t_ini": 10.0,
+          "t_fim": 12.4,
+          "fala": "Segura o cubo olhando pra frente.",
+          "visual": "Cubo CSS de frente, câmera em leve deriva",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "parallax fundo × cubo",
+          "texto_tela": "FRENTE",
+          "sfx": "tique",
+          "video_ia": false
+        },
+        {
+          "t_ini": 12.4,
+          "t_fim": 15.2,
+          "fala": "A face de cima é o u.",
+          "visual": "Face de cima pisca ciano; selo 'U = up'",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "pop da letra U",
+          "texto_tela": "U",
+          "sfx": "bipe",
+          "video_ia": false
+        },
+        {
+          "t_ini": 15.2,
+          "t_fim": 17.6,
+          "fala": "A da direita é o érre.",
+          "visual": "Face direita pisca; selo 'R = right'",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "whip-pan curto pra direita",
+          "texto_tela": "R",
+          "sfx": "bipe",
+          "video_ia": false
+        },
+        {
+          "t_ini": 17.6,
+          "t_fim": 20.0,
+          "fala": "A da esquerda é o éle.",
+          "visual": "Face esquerda pisca; selo 'L = left'",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "whip-pan pra esquerda",
+          "texto_tela": "L",
+          "sfx": "bipe",
+          "video_ia": false
+        },
+        {
+          "t_ini": 20.0,
+          "t_fim": 24.0,
+          "fala": "A frente é o éfe e embaixo é o dê.",
+          "visual": "Frente e baixo piscam juntas (cubo inclina pra mostrar D)",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "cubo tomba 25° + volta",
+          "texto_tela": "F · D",
+          "sfx": "bipe duplo",
+          "video_ia": false
+        }
+      ]
+    },
+    {
+      "id": "ep01_clip03",
+      "narracao": "Agora a regra de ouro. Letra sozinha gira no sentido do relógio olhando pra aquela face. Por isso o érre sobe a coluna da direita. E o éle desce a coluna da esquerda.",
+      "palavras": 33,
+      "duracao_s": 13.2,
+      "t_ini": 24.0,
+      "beats": [
+        {
+          "t_ini": 24.0,
+          "t_fim": 26.0,
+          "fala": "Agora a regra de ouro.",
+          "visual": "Moldura dourada 'REGRA DE OURO' cai na tela",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "queda + tremida de impacto",
+          "texto_tela": "REGRA DE OURO",
+          "sfx": "gongo 8-bit",
+          "video_ia": false
+        },
+        {
+          "t_ini": 26.0,
+          "t_fim": 30.4,
+          "fala": "Letra sozinha gira no sentido do relógio olhando pra aquela face.",
+          "visual": "Relógio pixel aparece colado na face direita, ponteiro girando",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "rotação do relógio",
+          "texto_tela": "SENTIDO HORÁRIO",
+          "sfx": "tique-taque",
+          "video_ia": false
+        },
+        {
+          "t_ini": 30.4,
+          "t_fim": 34.0,
+          "fala": "Por isso o érre sobe a coluna da direita.",
+          "visual": "CUBO: R — coluna da direita sobe, seta ciano pra cima",
+          "imagem": "cubo.html",
+          "movimento": "câmera fixa, só o cubo move",
+          "texto_tela": "R ↑",
+          "sfx": "click de giro",
+          "video_ia": false
+        },
+        {
+          "t_ini": 34.0,
+          "t_fim": 37.2,
+          "fala": "E o éle desce a coluna da esquerda.",
+          "visual": "CUBO: R' (desfaz) depois L — coluna da esquerda desce, seta magenta",
+          "imagem": "cubo.html",
+          "movimento": "punch-in na coluna",
+          "texto_tela": "L ↓",
+          "sfx": "click de giro",
+          "video_ia": false
+        }
+      ]
+    },
+    {
+      "id": "ep01_clip04",
+      "narracao": "Viu um tracinho do lado? Lê linha. Érre linha gira ao contrário e a coluna desce. Se tiver um dois, é meia volta. U dois.",
+      "palavras": 25,
+      "duracao_s": 10.0,
+      "t_ini": 37.2,
+      "beats": [
+        {
+          "t_ini": 37.2,
+          "t_fim": 40.0,
+          "fala": "Viu um tracinho do lado? Lê linha.",
+          "visual": "Close no apóstrofo de R' crescendo na tela",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "punch-in + glitch",
+          "texto_tela": "R' = linha",
+          "sfx": "glitch",
+          "video_ia": false
+        },
+        {
+          "t_ini": 40.0,
+          "t_fim": 43.6,
+          "fala": "Érre linha gira ao contrário e a coluna desce.",
+          "visual": "CUBO: R' — coluna da direita desce",
+          "imagem": "cubo.html",
+          "movimento": "câmera acompanha a coluna",
+          "texto_tela": "AO CONTRÁRIO",
+          "sfx": "click reverso",
+          "video_ia": false
+        },
+        {
+          "t_ini": 43.6,
+          "t_fim": 46.4,
+          "fala": "Se tiver um dois, é meia volta.",
+          "visual": "Número 2 cai e quica ao lado da letra U",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "quique squash & stretch",
+          "texto_tela": "2 = MEIA VOLTA",
+          "sfx": "boing",
+          "video_ia": false
+        },
+        {
+          "t_ini": 46.4,
+          "t_fim": 47.2,
+          "fala": "U dois.",
+          "visual": "CUBO: U2 — topo dá meia volta",
+          "imagem": "cubo.html",
+          "movimento": "pico: flash branco 2 quadros no fim",
+          "texto_tela": "U2",
+          "sfx": "click duplo",
+          "video_ia": false
+        }
+      ]
+    },
+    {
+      "id": "ep01_clip05",
+      "narracao": "Por último o xis e o ípsilon. Eles giram o cubo inteiro na sua mão. Xis vira tudo igual o érre. Ípsilon vira tudo igual o u. Nada se desfaz.",
+      "palavras": 30,
+      "duracao_s": 12.0,
+      "t_ini": 47.2,
+      "beats": [
+        {
+          "t_ini": 47.2,
+          "t_fim": 50.0,
+          "fala": "Por último o xis e o ípsilon.",
+          "visual": "Duas mãos pixel aparecem segurando o cubo",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "mãos entram de baixo",
+          "texto_tela": "x · y",
+          "sfx": "whoosh",
+          "video_ia": false
+        },
+        {
+          "t_ini": 50.0,
+          "t_fim": 53.2,
+          "fala": "Eles giram o cubo inteiro na sua mão.",
+          "visual": "CUBO: x — cubo inteiro tomba pra trás (frente sobe)",
+          "imagem": "cubo.html",
+          "movimento": "giro completo + rastro ciano",
+          "texto_tela": "x = R no cubo todo",
+          "sfx": "whoosh longo",
+          "video_ia": false
+        },
+        {
+          "t_ini": 53.2,
+          "t_fim": 55.6,
+          "fala": "Xis vira tudo igual o érre.",
+          "visual": "CUBO: x' (volta) e y — cubo inteiro gira pra esquerda",
+          "imagem": "cubo.html",
+          "movimento": "giro completo + rastro magenta",
+          "texto_tela": "y = U no cubo todo",
+          "sfx": "whoosh longo",
+          "video_ia": false
+        },
+        {
+          "t_ini": 55.6,
+          "t_fim": 59.2,
+          "fala": "Ípsilon vira tudo igual o u. Nada se desfaz.",
+          "visual": "Selo verde 'nada se desfaz' carimba",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "carimbo + tremida",
+          "texto_tela": "SÓ MUDA A VISTA",
+          "sfx": "carimbo",
+          "video_ia": false
+        }
+      ]
+    },
+    {
+      "id": "ep01_clip06",
+      "narracao": "Resumo. Letra gira a face, linha é ao contrário, dois é meia volta, xis e ípsilon viram o cubo. Teste: em érre, a coluna da direita sobe ou desce? No próximo vídeo, por que o éfe dois éle resolve duas camadas de uma vez.",
+      "palavras": 44,
+      "duracao_s": 17.6,
+      "t_ini": 59.2,
+      "beats": [
+        {
+          "t_ini": 59.2,
+          "t_fim": 66.8,
+          "fala": "Resumo. Letra gira a face, linha é ao contrário, dois é meia volta, xis e ípsilon viram o cubo.",
+          "visual": "Painel HUD com 4 linhas de resumo entrando uma a uma",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "texto cinético em cascata",
+          "texto_tela": "RESUMO",
+          "sfx": "4 bipes",
+          "video_ia": false
+        },
+        {
+          "t_ini": 66.8,
+          "t_fim": 70.8,
+          "fala": "Teste: em érre, a coluna da direita sobe ou desce?",
+          "visual": "Quiz: cubo parado com setas ↑ e ↓ piscando alternadas",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "pulse das setas",
+          "texto_tela": "SOBE OU DESCE?",
+          "sfx": "tique de quiz",
+          "video_ia": false
+        },
+        {
+          "t_ini": 70.8,
+          "t_fim": 76.8,
+          "fala": "No próximo vídeo, por que o éfe dois éle resolve duas camadas de uma vez.",
+          "visual": "Mapa de fases: nó 1 acende, câmera voa até o nó 2 com o Chefão na sombra",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "zoom-through no mapa",
+          "texto_tela": "PRÓXIMO: F2L",
+          "sfx": "fanfarra curta",
+          "video_ia": false
+        }
+      ]
+    }
+  ],
+  "kit": {
+    "resumo": [
+      "Cada letra (U R L F D B) gira uma face no sentido horário, olhando de frente pra ela.",
+      "Linha (') = ao contrário; 2 = meia volta (180°).",
+      "x e y giram o cubo inteiro (x como R, y como U): muda a vista, não desfaz nada."
+    ],
+    "quiz": [
+      [
+        "Em R, a coluna da direita (vista de frente) sobe ou desce?",
+        "Sobe."
+      ],
+      [
+        "O que significa L'?",
+        "Girar a face esquerda no sentido anti-horário: a coluna da esquerda sobe."
+      ],
+      [
+        "Depois de um y, a cor da frente muda?",
+        "Muda: a face da direita vem pra frente, mas nenhuma peça sai do lugar relativo."
+      ]
+    ],
+    "flashcards": [
+      [
+        "U",
+        "face de cima, horário visto de cima (frente vai pra esquerda)"
+      ],
+      [
+        "R / R'",
+        "direita sobe / direita desce"
+      ],
+      [
+        "L / L'",
+        "esquerda desce / esquerda sobe"
+      ],
+      [
+        "U2",
+        "meia volta no topo"
+      ],
+      [
+        "x / y",
+        "cubo inteiro como R / como U"
+      ]
+    ],
+    "metafora": "A 'língua do cubo' é só convenção de escrita; o Chefão é o cubo embaralhado, mas a notação não 'derrota' nada, só permite ler os algoritmos.",
+    "conferir": [
+      "Alguns tutoriais usam letras minúsculas (r, u) para giros de duas camadas; aqui não usamos."
+    ]
+  }
+}

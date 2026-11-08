@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cubo F2L</title>
+<style>
+:root{
+  --navy:#0b1030; --roxo:#241048; --ciano:#27f2ff; --magenta:#ff3bd4; --texto:#f2f4ff;
+  --s:64px; /* tamanho de cada peça */
+}
+*{box-sizing:border-box}
+body{margin:0;background:#05071a;color:var(--texto);font-family:"Press Start 2P",ui-monospace,monospace;
+  display:flex;flex-wrap:wrap;gap:16px;justify-content:center;align-items:flex-start;padding:16px}
+/* Palco 9:16 (gravável) */
+#palco{position:relative;width:min(540px,100%);aspect-ratio:9/16;overflow:hidden;border-radius:12px;
+  background:radial-gradient(ellipse at 50% 70%, #3a1670 0%, var(--roxo) 35%, var(--navy) 80%);
+  box-shadow:0 0 0 3px #1c2260, 0 0 40px #27f2ff22}
+#palco::after{content:"";position:absolute;inset:auto 0 0 0;height:30%;
+  background:repeating-linear-gradient(90deg,#27f2ff22 0 2px,transparent 2px 40px),
+             repeating-linear-gradient(0deg,#27f2ff22 0 2px,transparent 2px 40px);
+  transform:perspective(300px) rotateX(55deg);transform-origin:bottom;pointer-events:none}
+#hud{position:absolute;top:5%;left:0;right:0;text-align:center;font-size:clamp(11px,2.6vw,15px);
+  letter-spacing:1px;color:var(--ciano);text-shadow:0 0 8px var(--ciano)}
+#jogada{position:absolute;top:13%;left:0;right:0;text-align:center;font-size:clamp(44px,13vw,84px);font-weight:900;
+  color:#fff;text-shadow:4px 4px 0 var(--magenta),0 0 24px var(--magenta);min-height:1.2em;transition:transform .15s}
+#jogada.pop{transform:scale(1.25)}
+#cena{position:absolute;left:50%;top:55%;width:0;height:0;perspective:900px}
+#cubo{position:absolute;transform-style:preserve-3d;transform:rotateX(-28deg) rotateY(-38deg)}
+.peca{position:absolute;width:var(--s);height:var(--s);margin:calc(var(--s)/-2);transform-style:preserve-3d}
+.f{position:absolute;inset:0;background:#0a0a12;border:2px solid #0a0a12;border-radius:6px}
+.f i{position:absolute;inset:3px;border-radius:5px;display:block;transition:filter .3s, opacity .3s}
+.f.px{transform:rotateY(90deg) translateZ(calc(var(--s)/2))}
+.f.nx{transform:rotateY(-90deg) translateZ(calc(var(--s)/2))}
+.f.py{transform:rotateX(90deg) translateZ(calc(var(--s)/2))}
+.f.ny{transform:rotateX(-90deg) translateZ(calc(var(--s)/2))}
+.f.pz{transform:translateZ(calc(var(--s)/2))}
+.f.nz{transform:rotateY(180deg) translateZ(calc(var(--s)/2))}
+.cinza i{filter:grayscale(1) brightness(.45)}
+.brilho i{box-shadow:0 0 14px 4px #fff inset}
+#legenda{position:absolute;bottom:17%;left:6%;right:6%;text-align:center;font-family:system-ui,sans-serif;font-weight:800;
+  font-size:clamp(16px,4.6vw,26px);line-height:1.25;text-shadow:0 2px 0 #000,0 0 10px #000}
+#seq{position:absolute;bottom:10%;left:0;right:0;text-align:center;font-family:ui-monospace,monospace;font-size:clamp(14px,4vw,22px);color:#9aa3d8}
+#seq b{color:var(--ciano)}
+/* Painel de controle (não aparece na gravação) */
+#painel{width:min(420px,100%);font-family:system-ui,sans-serif;font-size:14px;background:#10143a;border-radius:12px;padding:14px}
+#painel h2{font-size:15px;margin:4px 0 10px;color:var(--ciano)}
+#painel .grade{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:10px}
+button{font:inherit;font-weight:700;padding:8px 4px;border-radius:8px;border:0;background:#262c6e;color:#fff;cursor:pointer}
+button:hover{background:#353c92}
+button.alt{background:#4a1a6e}
+input[type=text]{width:100%;font:inherit;padding:8px;border-radius:8px;border:0;background:#05071a;color:#fff;margin:4px 0}
+label{display:block;margin:8px 0 4px;color:#b8bfee}
+.preset{display:block;width:100%;text-align:left;margin:4px 0;padding:8px 10px;font-weight:600}
+small{color:#8a91c4}
+</style>
+</head>
+<body>
+<div id="palco">
+  <div id="hud">F2L · ep. 1 · notação</div>
+  <div id="jogada"></div>
+  <div id="cena"><div id="cubo"></div></div>
+  <div id="legenda"></div>
+  <div id="seq"></div>
+</div>
+
+<div id="painel">
+  <h2>Movimentos</h2>
+  <div class="grade" id="botoes"></div>
+  <label>Sequência (ex.: R U R' U2 y x')</label>
+  <input type="text" id="entrada" value="R U R'">
+  <div class="grade" style="grid-template-columns:repeat(3,1fr)">
+    <button id="tocar">▶ Tocar</button>
+    <button id="desfazer" class="alt">↺ Inverso</button>
+    <button id="resetar" class="alt">Resetar</button>
+  </div>
+  <label>Velocidade: <span id="velTxt"></span> ms por giro <small>(devagar = melhor pra aprender)</small></label>
+  <input type="range" id="vel" min="250" max="1500" step="50" value="800" style="width:100%">
+  <label><input type="checkbox" id="foco"> Modo foco F2L (cinza em tudo menos cruz, centros e o par do slot frente-direita)</label>
+  <h2 style="margin-top:14px">Cenas da série</h2>
+  <div id="presets"></div>
+  <small>Gravação: abra com <code>?cena=ep3-caso1&amp;auto=1</code> (o painel some com <code>&amp;gravar=1</code>).</small>
+</div>
+
+<script>
+// ---------- Modelo do cubo ----------
+// Coordenadas "matemáticas": x direita, y cima, z frente. Peças em {-1,0,1}^3.
+const CORES = {px:'#e8202a', nx:'#ff8a1c', py:'#ffe31a', ny:'#ffffff', pz:'#19c24a', nz:'#1f5bff'}; // R L U D F B
+const S = 64;
+const cuboEl = document.getElementById('cubo');
+let pecas = [];
+
+const I3 = () => [[1,0,0],[0,1,0],[0,0,1]];
+const mul = (a,b) => a.map((r,i)=>b[0].map((_,j)=>r.reduce((s,_,k)=>s+a[i][k]*b[k][j],0)));
+const ap = (m,v) => m.map(r=>r[0]*v[0]+r[1]*v[1]+r[2]*v[2]);
+function rot(eixo, ang){ // rotação (radianos) em torno de x/y/z
+  const c=Math.cos(ang), s=Math.sin(ang);
+  if(eixo==='x') return [[1,0,0],[0,c,-s],[0,s,c]];
+  if(eixo==='y') return [[c,0,s],[0,1,0],[-s,0,c]];
+  return [[c,-s,0],[s,c,0],[0,0,1]];
+}
+const arred = m => m.map(r=>r.map(Math.round));
+
+function nomeCasa(p){ // ex.: [1,-1,1] -> "DFR"
+  let n=''; if(p[1]===1)n+='U'; if(p[1]===-1)n+='D';
+  if(p[2]===1)n+='F'; if(p[2]===-1)n+='B';
+  if(p[0]===1)n+='R'; if(p[0]===-1)n+='L'; return n;
+}
+
+function montar(){
+  cuboEl.innerHTML=''; pecas=[];
+  for(let x=-1;x<=1;x++)for(let y=-1;y<=1;y++)for(let z=-1;z<=1;z++){
+    if(!x&&!y&&!z) continue;
+    const el=document.createElement('div'); el.className='peca';
+    const lados={px:x===1,nx:x===-1,py:y===1,ny:y===-1,pz:z===1,nz:z===-1};
+    for(const k in lados){
+      const f=document.createElement('div'); f.className='f '+k;
+      if(lados[k]){ const i=document.createElement('i'); i.style.background=CORES[k]; f.appendChild(i); }
+      el.appendChild(f);
+    }
+    cuboEl.appendChild(el);
+    pecas.push({el, p:[x,y,z], m:I3(), casa:nomeCasa([x,y,z])});
+  }
+  desenhar(); aplicarFoco();
+}
+
+// CSS tem y para baixo: converte com S=diag(1,-1,1).
+function css(m, t){
+  const c = [[m[0][0],-m[0][1],m[0][2]],[-m[1][0],m[1][1],-m[1][2]],[m[2][0],-m[2][1],m[2][2]]];
+  const tx=t[0]*S, ty=-t[1]*S, tz=t[2]*S;
+  return `matrix3d(${c[0][0]},${c[1][0]},${c[2][0]},0,${c[0][1]},${c[1][1]},${c[2][1]},0,${c[0][2]},${c[1][2]},${c[2][2]},0,${tx},${ty},${tz},1)`;
+}
+function desenhar(anim){
+  for(const q of pecas){
+    const R = anim && anim.sel(q) ? anim.R : I3();
+    q.el.style.transform = css(mul(R,q.m), ap(R,q.p));
+  }
+}
+
+// Movimentos: camada (filtro) + eixo + ângulo (horário olhando pra face = -90° no eixo positivo)
+const MOV = {
+  R:{e:'x',a:-1,f:p=>p[0]===1},  L:{e:'x',a:1,f:p=>p[0]===-1},
+  U:{e:'y',a:-1,f:p=>p[1]===1},  D:{e:'y',a:1,f:p=>p[1]===-1},
+  F:{e:'z',a:-1,f:p=>p[2]===1},  B:{e:'z',a:1,f:p=>p[2]===-1},
+  M:{e:'x',a:1,f:p=>p[0]===0},
+  x:{e:'x',a:-1,f:()=>true}, y:{e:'y',a:-1,f:()=>true}, z:{e:'z',a:-1,f:()=>true},
+};
+function parse(seq){
+  return seq.replace(/’/g,"'").trim().split(/\s+/).filter(Boolean).map(t=>{
+    const m=t.match(/^([RLUDFBMxyz])(2|')?(')?$/); if(!m) throw new Error('Movimento inválido: '+t);
+    const voltas = m[2]==='2'?2:1, inv = m[2]==="'"||m[3]==="'";
+    return {txt:t, b:m[1], q:(inv?-1:1)*voltas};
+  });
+}
+const inverso = seq => parse(seq).reverse().map(m=>m.b+(Math.abs(m.q)===2?'2':(m.q<0?'':"'"))).join(' ');
+
+const easing = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+function girar(m, ms){
+  const d=MOV[m.b], ang=d.a*m.q*Math.PI/2, sel=q=>d.f(q.p);
+  return new Promise(res=>{
+    if(!ms){ fim(); return res(); }
+    const t0=performance.now();
+    function passo(t){
+      const k=Math.min(1,(t-t0)/(ms*(Math.abs(m.q)===2?1.5:1)));
+      desenhar({sel, R:rot(d.e, ang*easing(k))});
+      if(k<1) requestAnimationFrame(passo); else { fim(); res(); }
+    }
+    requestAnimationFrame(passo);
+    function fim(){
+      const R=arred(rot(d.e,ang));
+      for(const q of pecas) if(sel(q)){ q.p=ap(R,q.p); q.m=arred(mul(R,q.m)); }
+      desenhar();
+    }
+  });
+}
+
+const jogadaEl=document.getElementById('jogada'), seqEl=document.getElementById('seq'), legEl=document.getElementById('legenda');
+let tocando=false;
+async function tocar(seq, ms, pausa=250){
+  if(tocando) return; tocando=true;
+  const lista=parse(seq);
+  for(let i=0;i<lista.length;i++){
+    jogadaEl.textContent=lista[i].txt; jogadaEl.classList.add('pop');
+    setTimeout(()=>jogadaEl.classList.remove('pop'),150);
+    seqEl.innerHTML=lista.map((m,j)=>j===i?`<b>${m.txt}</b>`:m.txt).join(' ');
+    await girar(lista[i], ms);
+    await new Promise(r=>setTimeout(r,pausa));
+  }
+  tocando=false;
+}
+function aplicarSem(seq){ for(const m of parse(seq)) girar(m,0); }
+
+// Modo foco: mostra só cruz branca, centros e as peças que pertencem ao slot frente-direita (DFR + FR).
+let focoPecas=null;
+function aplicarFoco(){
+  const on=document.getElementById('foco').checked;
+  for(const q of pecas){
+    const ver = !on || q.casa.length===1 || (q.casa.length===2 && q.casa.includes('D')) || (focoPecas||['DFR','FR']).includes(q.casa);
+    q.el.classList.toggle('cinza', !ver);
+  }
+}
+
+// ---------- Cenas prontas da série (setup = inverso do algoritmo no cubo resolvido) ----------
+const CENAS = {
+  'ep1-faces':   {hud:'ep. 1 · notação', seq:"U R L F D", leg:'Cada letra gira uma face'},
+  'ep1-R':       {hud:'ep. 1 · notação', seq:"R R'", leg:"R sobe · R' desce"},
+  'ep1-L':       {hud:'ep. 1 · notação', seq:"L L'", leg:"L desce · L' sobe"},
+  'ep1-U2':      {hud:'ep. 1 · notação', seq:"U2", leg:'2 = meia volta'},
+  'ep1-xy':      {hud:'ep. 1 · notação', seq:"x x' y y'", leg:'x e y giram o cubo inteiro'},
+  'ep2-par':     {hud:'ep. 2 · camadas × F2L', setup:"R U' R'", seq:"R U R'", foco:true, leg:'Quina + aresta = um par'},
+  'ep3-caso1':   {hud:'ep. 3 · caso 1', setup:"R U' R'", seq:"R U R'", foco:true, leg:'Branco pra direita: R U R\''},
+  'ep3-caso2':   {hud:'ep. 3 · caso 2', setup:"R U R' U'", seq:"U R U' R'", foco:true, leg:"Par pronto: U R U' R'"},
+  'ep3-espelho': {hud:'ep. 3 · espelho', setup:"F' U F", seq:"F' U' F", foco:true, leg:"Espelho: F' U' F"},
+  'ep4-preso':   {hud:'ep. 4 · peça presa', setup:"R U2 R' y2 U R U' R' y2", seq:"y2 R U R'", foco:true, leg:'Peça presa: y2 e R U R\''},
+  'ep4-branco':  {hud:'ep. 4 · branco em cima', setup:"R U2 R' U' y2 U R U' R' y2", seq:"R U2 R'", foco:true, leg:"Branco pra cima: R U2 R'"},
+  'ep5-ordem':   {hud:'ep. 5 · juntando tudo', setup:'inv', seq:"R U R' y R U R' y R U R' y R U R' y", foco:false, leg:'4 pares, 4 slots'},
+};
+function carregarCena(id, auto){
+  const c=CENAS[id]; if(!c) return;
+  montar();
+  focoPecas=c.focoPecas||null;
+  document.getElementById('foco').checked=!!c.foco;
+  document.getElementById('hud').textContent='F2L · '+c.hud;
+  if(c.setup) aplicarSem(c.setup==='inv' ? inverso(c.seq) : c.setup);
+  aplicarFoco();
+  legEl.textContent=c.leg||''; jogadaEl.textContent=''; seqEl.textContent=c.seq;
+  document.getElementById('entrada').value=c.seq;
+  if(auto) setTimeout(()=>tocar(c.seq, +document.getElementById('vel').value), 900);
+}
+
+// ---------- UI ----------
+const vel=document.getElementById('vel'), velTxt=document.getElementById('velTxt');
+vel.oninput=()=>velTxt.textContent=vel.value; vel.oninput();
+const bot=document.getElementById('botoes');
+for(const b of ['U','R','L','F','D','B',"U'","R'","L'","F'","D'","B'",'U2','R2','x','y',"x'","y'"]){
+  const e=document.createElement('button'); e.textContent=b; if(/[xy]/.test(b)) e.className='alt';
+  e.onclick=()=>tocar(b,+vel.value,0); bot.appendChild(e);
+}
+document.getElementById('tocar').onclick=()=>{ try{ tocar(document.getElementById('entrada').value,+vel.value);}catch(e){alert(e.message)} };
+document.getElementById('desfazer').onclick=()=>{ try{ tocar(inverso(document.getElementById('entrada').value),+vel.value);}catch(e){alert(e.message)} };
+document.getElementById('resetar').onclick=()=>{ focoPecas=null; montar(); jogadaEl.textContent=''; seqEl.textContent=''; legEl.textContent=''; };
+document.getElementById('foco').onchange=aplicarFoco;
+const pre=document.getElementById('presets');
+for(const id in CENAS){
+  const e=document.createElement('button'); e.className='preset'; e.textContent=`${id} — ${CENAS[id].leg}`;
+  e.onclick=()=>carregarCena(id,true); pre.appendChild(e);
+}
+
+const q=new URLSearchParams(location.search);
+if(q.get('vel')) vel.value=q.get('vel'), vel.oninput();
+if(q.get('gravar')) document.getElementById('painel').style.display='none';
+montar();
+if(q.get('cena')) carregarCena(q.get('cena'), !!q.get('auto'));
+else { legEl.textContent='Escolha uma cena ou digite uma sequência'; }
+window.CUBO={tocar, carregarCena, CENAS, inverso, estado:()=>pecas.map(p=>({casa:p.casa,p:p.p,m:p.m}))};
+</script>
+</body>
+</html>

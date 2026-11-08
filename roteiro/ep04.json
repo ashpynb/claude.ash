@@ -1,0 +1,350 @@
+{
+  "ep": 4,
+  "titulo": "Peças presas e branco pra cima",
+  "ritmo_pps": 2.5,
+  "duracao_s": 74.0,
+  "imagens": {
+    "bg_arena": "Empty pixel-art arena floor seen from the front, glowing cyan grid on the ground, dark purple sky with stars, large empty space in the center for a 3D object, 2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, vertical 9:16, deep navy, dark purple, neon cyan and magenta palette, no text",
+    "hero": "a small adventurer whose head is a tiny 3x3 colorful puzzle cube, cyan scarf, big expressive eyes, purple tunic, full body, idle pose, plain flat magenta-free green background for chroma key, 2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, vertical 9:16, deep navy, dark purple, neon cyan and magenta palette, no text",
+    "chefao": "a giant floating scrambled 3x3 puzzle cube monster with mixed colored tiles, glowing magenta eyes between the tiles, chains around it, menacing pose, plain flat green background for chroma key, 2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, vertical 9:16, deep navy, dark purple, neon cyan and magenta palette, no text",
+    "bg_mapa": "Top-down pixel-art world map with five glowing level nodes connected by a dotted path, each node a small cube-shaped tower, 2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, vertical 9:16, deep navy, dark purple, neon cyan and magenta palette, no text"
+  },
+  "clipes": [
+    {
+      "id": "ep04_clip01",
+      "narracao": "E quando a peça que você precisa está presa no lugar errado? Calma. Ninguém resolve esse caso direto. Você transforma num caso que já sabe.",
+      "palavras": 25,
+      "duracao_s": 10.0,
+      "t_ini": 0.0,
+      "beats": [
+        {
+          "t_ini": 0.0,
+          "t_fim": 4.8,
+          "fala": "E quando a peça que você precisa está presa no lugar errado?",
+          "visual": "Quina presa atrás de grades pixel dentro de um slot",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "zoom-in + tremida",
+          "texto_tela": "PEÇA PRESA",
+          "sfx": "corrente",
+          "video_ia": true
+        },
+        {
+          "t_ini": 4.8,
+          "t_fim": 7.2,
+          "fala": "Calma. Ninguém resolve esse caso direto.",
+          "visual": "Hero respira fundo, ícone de calma",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "bob lento",
+          "texto_tela": "CALMA",
+          "sfx": "respiro",
+          "video_ia": false
+        },
+        {
+          "t_ini": 7.2,
+          "t_fim": 10.0,
+          "fala": "Você transforma num caso que já sabe.",
+          "visual": "Quebra-cabeça: peça difícil vira peça fácil",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "morph pixelado",
+          "texto_tela": "DIFÍCIL → FÁCIL",
+          "sfx": "transform",
+          "video_ia": false
+        }
+      ]
+    },
+    {
+      "id": "ep04_clip02",
+      "narracao": "Essa é a grande sacada do éfe dois éle intuitivo. Todo caso chato vira um caso fácil. Primeiro leva as peças pro topo. Depois usa os casos do vídeo passado.",
+      "palavras": 30,
+      "duracao_s": 12.0,
+      "t_ini": 10.0,
+      "beats": [
+        {
+          "t_ini": 10.0,
+          "t_fim": 14.0,
+          "fala": "Essa é a grande sacada do éfe dois éle intuitivo.",
+          "visual": "Pergaminho 'GRANDE SACADA' desenrola",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "pergaminho abre",
+          "texto_tela": "GRANDE SACADA",
+          "sfx": "papel",
+          "video_ia": false
+        },
+        {
+          "t_ini": 14.0,
+          "t_fim": 16.8,
+          "fala": "Todo caso chato vira um caso fácil.",
+          "visual": "Seta de 'chato' pra 'fácil' com brilho",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "seta desliza",
+          "texto_tela": "CHATO → FÁCIL",
+          "sfx": "whoosh",
+          "video_ia": false
+        },
+        {
+          "t_ini": 16.8,
+          "t_fim": 19.2,
+          "fala": "Primeiro leva as peças pro topo.",
+          "visual": "CUBO: peças sobem pro topo (foco)",
+          "imagem": "cubo.html",
+          "movimento": "punch-in",
+          "texto_tela": "1. TOPO",
+          "sfx": "click",
+          "video_ia": false
+        },
+        {
+          "t_ini": 19.2,
+          "t_fim": 22.0,
+          "fala": "Depois usa os casos do vídeo passado.",
+          "visual": "Cartas R U R' e U R U' R' do ep. 3 reaparecem",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "cartas entram",
+          "texto_tela": "2. CASO CONHECIDO",
+          "sfx": "carta ×2",
+          "video_ia": false
+        }
+      ]
+    },
+    {
+      "id": "ep04_clip03",
+      "narracao": "Peça presa em outro slot? Gira com ípsilon até esse slot ficar na frente à direita. Faz érre, u, érre linha. A peça sobe pro topo. Agora é caso conhecido.",
+      "palavras": 30,
+      "duracao_s": 12.0,
+      "t_ini": 22.0,
+      "beats": [
+        {
+          "t_ini": 22.0,
+          "t_fim": 24.0,
+          "fala": "Peça presa em outro slot?",
+          "visual": "CUBO (foco): quina presa no slot de trás piscando vermelho",
+          "imagem": "cubo.html",
+          "movimento": "pulse vermelho",
+          "texto_tela": "SLOT ERRADO",
+          "sfx": "alarme",
+          "video_ia": false
+        },
+        {
+          "t_ini": 24.0,
+          "t_fim": 28.4,
+          "fala": "Gira com ípsilon até esse slot ficar na frente à direita.",
+          "visual": "CUBO: y2 — slot preso vem pra frente-direita",
+          "imagem": "cubo.html",
+          "movimento": "giro completo",
+          "texto_tela": "y",
+          "sfx": "whoosh",
+          "video_ia": false
+        },
+        {
+          "t_ini": 28.4,
+          "t_fim": 32.4,
+          "fala": "Faz érre, u, érre linha. A peça sobe pro topo.",
+          "visual": "CUBO: R U R' — quina sai do slot e vai pro topo",
+          "imagem": "cubo.html",
+          "movimento": "câmera fixa + grades quebrando",
+          "texto_tela": "R U R'",
+          "sfx": "click ×3 + vidro",
+          "video_ia": false
+        },
+        {
+          "t_ini": 32.4,
+          "t_fim": 34.0,
+          "fala": "Agora é caso conhecido.",
+          "visual": "Grade quebra, quina livre no topo",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "pico: flash + partículas",
+          "texto_tela": "LIVRE!",
+          "sfx": "fanfarra curta",
+          "video_ia": false
+        }
+      ]
+    },
+    {
+      "id": "ep04_clip04",
+      "narracao": "Branco olhando pra cima? Esse é o vilão. Coloca a quina em cima do slot e faz érre, u dois, érre linha. Pronto, o branco saiu de cima. Mais uma vez: érre, u dois, érre linha.",
+      "palavras": 36,
+      "duracao_s": 14.4,
+      "t_ini": 34.0,
+      "beats": [
+        {
+          "t_ini": 34.0,
+          "t_fim": 37.2,
+          "fala": "Branco olhando pra cima? Esse é o vilão.",
+          "visual": "CUBO (foco): quina no topo com branco pra cima, olhos de vilão desenhados",
+          "imagem": "cubo.html",
+          "movimento": "zoom + glitch",
+          "texto_tela": "BRANCO EM CIMA",
+          "sfx": "risada 8-bit",
+          "video_ia": false
+        },
+        {
+          "t_ini": 37.2,
+          "t_fim": 40.0,
+          "fala": "Coloca a quina em cima do slot",
+          "visual": "CUBO: U até a quina ficar em UFR (em cima do slot)",
+          "imagem": "cubo.html",
+          "movimento": "câmera fixa",
+          "texto_tela": "EM CIMA DO SLOT",
+          "sfx": "click",
+          "video_ia": false
+        },
+        {
+          "t_ini": 40.0,
+          "t_fim": 42.8,
+          "fala": "e faz érre, u dois, érre linha.",
+          "visual": "CUBO: R U2 R' devagar",
+          "imagem": "cubo.html",
+          "movimento": "câmera fixa",
+          "texto_tela": "R U2 R'",
+          "sfx": "click ×3",
+          "video_ia": false
+        },
+        {
+          "t_ini": 42.8,
+          "t_fim": 48.4,
+          "fala": "Pronto, o branco saiu de cima. Mais uma vez: érre, u dois, érre linha.",
+          "visual": "Branco agora de lado brilha verde",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "pop + check",
+          "texto_tela": "SAIU DE CIMA",
+          "sfx": "ding",
+          "video_ia": false
+        }
+      ]
+    },
+    {
+      "id": "ep04_clip05",
+      "narracao": "Repara. Érre e érre linha sempre andam em dupla. Por isso a cruz nunca se desfaz. Ajusta com u, acha a aresta e cai num caso do vídeo três.",
+      "palavras": 29,
+      "duracao_s": 11.6,
+      "t_ini": 48.4,
+      "beats": [
+        {
+          "t_ini": 48.4,
+          "t_fim": 52.0,
+          "fala": "Repara. Érre e érre linha sempre andam em dupla.",
+          "visual": "CUBO: replay de R … R' com a cruz branca brilhando e intacta",
+          "imagem": "cubo.html",
+          "movimento": "câmera em baixo, cruz em destaque",
+          "texto_tela": "R … R'",
+          "sfx": "rewind",
+          "video_ia": false
+        },
+        {
+          "t_ini": 52.0,
+          "t_fim": 54.8,
+          "fala": "Por isso a cruz nunca se desfaz.",
+          "visual": "Escudo pixel em volta da cruz",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "escudo surge + brilho",
+          "texto_tela": "CRUZ SEGURA",
+          "sfx": "escudo",
+          "video_ia": false
+        },
+        {
+          "t_ini": 54.8,
+          "t_fim": 57.2,
+          "fala": "Ajusta com u, acha a aresta",
+          "visual": "CUBO: U' traz a quina pra frente-direita; aresta procurada com lupa",
+          "imagem": "cubo.html",
+          "movimento": "lupa passeando",
+          "texto_tela": "ACHA A ARESTA",
+          "sfx": "tique",
+          "video_ia": false
+        },
+        {
+          "t_ini": 57.2,
+          "t_fim": 60.0,
+          "fala": "e cai num caso do vídeo três.",
+          "visual": "Carta do ep. 3 cai encaixando",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "queda + tremida",
+          "texto_tela": "CASO CONHECIDO",
+          "sfx": "carta",
+          "video_ia": false
+        }
+      ]
+    },
+    {
+      "id": "ep04_clip06",
+      "narracao": "Resumo. Peça presa sai com érre u érre linha. Branco pra cima sai com érre u dois érre linha. Pergunta: por que a cruz não se desfaz? No último vídeo, juntando tudo pra ficar rápido.",
+      "palavras": 35,
+      "duracao_s": 14.0,
+      "t_ini": 60.0,
+      "beats": [
+        {
+          "t_ini": 60.0,
+          "t_fim": 67.6,
+          "fala": "Resumo. Peça presa sai com érre u érre linha. Branco pra cima sai com érre u dois érre linha.",
+          "visual": "Duas cartas novas: 'tirar peça' e 'virar branco'",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "cartas deslizam",
+          "texto_tela": "R U R' · R U2 R'",
+          "sfx": "carta ×2",
+          "video_ia": false
+        },
+        {
+          "t_ini": 67.6,
+          "t_fim": 70.8,
+          "fala": "Pergunta: por que a cruz não se desfaz?",
+          "visual": "Quiz: cruz com '?' em cima",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "pulse",
+          "texto_tela": "POR QUÊ?",
+          "sfx": "tique de quiz",
+          "video_ia": false
+        },
+        {
+          "t_ini": 70.8,
+          "t_fim": 74.0,
+          "fala": "No último vídeo, juntando tudo pra ficar rápido.",
+          "visual": "Mapa: nó 4 acende, câmera voa ao castelo final (nó 5)",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "zoom-through",
+          "texto_tela": "FINAL",
+          "sfx": "fanfarra",
+          "video_ia": false
+        }
+      ]
+    }
+  ],
+  "kit": {
+    "resumo": [
+      "Caso difícil = transformar em caso fácil: primeiro levar as peças pro topo.",
+      "Peça presa em outro slot: traga o slot pra frente-direita (y) e faça R U R'.",
+      "Quina com branco pra cima, em cima do slot: R U2 R' tira o branco de cima; ajuste com U e caia num caso do ep. 3."
+    ],
+    "quiz": [
+      [
+        "Como tirar uma peça presa no slot errado?",
+        "Leve o slot pra frente-direita com y e faça R U R'."
+      ],
+      [
+        "Qual algoritmo tira o branco de cima da quina?",
+        "R U2 R' (com a quina em cima do slot frente-direita)."
+      ],
+      [
+        "Por que a cruz não se desfaz com R U R'?",
+        "Porque o R' devolve tudo o que o R tirou da camada de baixo; o U só mexe no topo."
+      ]
+    ],
+    "flashcards": [
+      [
+        "Peça presa",
+        "y até o slot + R U R'"
+      ],
+      [
+        "Branco pra cima",
+        "quina em UFR + R U2 R'"
+      ],
+      [
+        "Regra da cruz",
+        "R e R' em dupla com U no meio = cruz intacta"
+      ]
+    ],
+    "metafora": "'Vilão' e 'grades' são só ênfase visual; nenhum caso é impossível, só leva mais movimentos.",
+    "conferir": [
+      "Depois do R U2 R' a aresta pode estar em vários lugares; às vezes é preciso mais um ajuste antes de cair exatamente num caso do ep. 3.",
+      "Ao tirar peça presa com R U R', o slot frente-direita recebe outras peças: isso é normal, ele ainda não estava resolvido."
+    ]
+  }
+}

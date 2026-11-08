@@ -1,0 +1,342 @@
+{
+  "ep": 2,
+  "titulo": "Camadas × F2L: o que muda",
+  "ritmo_pps": 2.5,
+  "duracao_s": 72.4,
+  "imagens": {
+    "bg_arena": "Empty pixel-art arena floor seen from the front, glowing cyan grid on the ground, dark purple sky with stars, large empty space in the center for a 3D object, 2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, vertical 9:16, deep navy, dark purple, neon cyan and magenta palette, no text",
+    "hero": "a small adventurer whose head is a tiny 3x3 colorful puzzle cube, cyan scarf, big expressive eyes, purple tunic, full body, idle pose, plain flat magenta-free green background for chroma key, 2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, vertical 9:16, deep navy, dark purple, neon cyan and magenta palette, no text",
+    "chefao": "a giant floating scrambled 3x3 puzzle cube monster with mixed colored tiles, glowing magenta eyes between the tiles, chains around it, menacing pose, plain flat green background for chroma key, 2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, vertical 9:16, deep navy, dark purple, neon cyan and magenta palette, no text",
+    "bg_mapa": "Top-down pixel-art world map with five glowing level nodes connected by a dotted path, each node a small cube-shaped tower, 2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, vertical 9:16, deep navy, dark purple, neon cyan and magenta palette, no text"
+  },
+  "clipes": [
+    {
+      "id": "ep02_clip01",
+      "narracao": "No método de iniciante as duas primeiras camadas levam oito etapas. O éfe dois éle faz em quatro. E não é mágica. É só uma ideia diferente: trabalhar em pares.",
+      "palavras": 30,
+      "duracao_s": 12.0,
+      "t_ini": 0.0,
+      "beats": [
+        {
+          "t_ini": 0.0,
+          "t_fim": 4.4,
+          "fala": "No método de iniciante as duas primeiras camadas levam oito etapas.",
+          "visual": "Contador '8' gigante em vermelho com 8 peças voando",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "zoom-out + partículas",
+          "texto_tela": "8 ETAPAS",
+          "sfx": "alarme 8-bit",
+          "video_ia": true
+        },
+        {
+          "t_ini": 4.4,
+          "t_fim": 7.2,
+          "fala": "O éfe dois éle faz em quatro.",
+          "visual": "O 8 é cortado por uma espada do Hero e vira '4' ciano",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "golpe + flash + tremida (pico)",
+          "texto_tela": "4 ETAPAS",
+          "sfx": "espadada",
+          "video_ia": false
+        },
+        {
+          "t_ini": 7.2,
+          "t_fim": 8.8,
+          "fala": "E não é mágica.",
+          "visual": "Hero dá de ombros, faíscas de 'mágica' apagam",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "personagem bob",
+          "texto_tela": "NÃO É MÁGICA",
+          "sfx": "puf",
+          "video_ia": false
+        },
+        {
+          "t_ini": 8.8,
+          "t_fim": 12.0,
+          "fala": "É só uma ideia diferente: trabalhar em pares.",
+          "visual": "Lâmpada pixel acende acima do cubo CSS",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "pop + brilho",
+          "texto_tela": "IDEIA NOVA",
+          "sfx": "ding",
+          "video_ia": false
+        }
+      ]
+    },
+    {
+      "id": "ep02_clip02",
+      "narracao": "Éfe dois éle vem do inglês, first two layers. As duas primeiras camadas. Você começa igual, com a cruz branca embaixo. A diferença vem depois da cruz.",
+      "palavras": 27,
+      "duracao_s": 10.8,
+      "t_ini": 12.0,
+      "beats": [
+        {
+          "t_ini": 12.0,
+          "t_fim": 15.6,
+          "fala": "Éfe dois éle vem do inglês, first two layers.",
+          "visual": "Letras F-2-L se expandem em 'First 2 Layers'",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "texto cinético expande",
+          "texto_tela": "FIRST 2 LAYERS",
+          "sfx": "whoosh",
+          "video_ia": false
+        },
+        {
+          "t_ini": 15.6,
+          "t_fim": 20.4,
+          "fala": "As duas primeiras camadas. Você começa igual, com a cruz branca embaixo.",
+          "visual": "CUBO (modo foco): duas camadas de baixo acendem, topo fica cinza",
+          "imagem": "cubo.html",
+          "movimento": "punch-in no cubo",
+          "texto_tela": "2 CAMADAS",
+          "sfx": "bipe",
+          "video_ia": false
+        },
+        {
+          "t_ini": 20.4,
+          "t_fim": 22.8,
+          "fala": "A diferença vem depois da cruz.",
+          "visual": "CUBO: x2 pra mostrar a face de baixo com a cruz branca",
+          "imagem": "cubo.html",
+          "movimento": "giro completo",
+          "texto_tela": "CRUZ BRANCA",
+          "sfx": "click",
+          "video_ia": false
+        }
+      ]
+    },
+    {
+      "id": "ep02_clip03",
+      "narracao": "No método de camadas você coloca uma quina branca, depois outra, depois as arestas do meio. São oito peças viajando sozinhas. E cada viagem desmonta e remonta um pedaço do cubo.",
+      "palavras": 31,
+      "duracao_s": 12.4,
+      "t_ini": 22.8,
+      "beats": [
+        {
+          "t_ini": 22.8,
+          "t_fim": 26.4,
+          "fala": "No método de camadas você coloca uma quina branca,",
+          "visual": "CUBO: quina branca destacada sobe e desce sozinha pro slot",
+          "imagem": "cubo.html",
+          "movimento": "câmera acompanha a peça",
+          "texto_tela": "1 QUINA",
+          "sfx": "click",
+          "video_ia": false
+        },
+        {
+          "t_ini": 26.4,
+          "t_fim": 29.2,
+          "fala": "depois outra, depois as arestas do meio.",
+          "visual": "Contador de peças 1→4 enquanto quinas piscam nos cantos",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "número subindo",
+          "texto_tela": "4 QUINAS",
+          "sfx": "bipes",
+          "video_ia": false
+        },
+        {
+          "t_ini": 29.2,
+          "t_fim": 31.2,
+          "fala": "São oito peças viajando sozinhas.",
+          "visual": "Arestas do meio piscam uma a uma, contador 5→8",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "número subindo + tremida no 8",
+          "texto_tela": "+ 4 ARESTAS",
+          "sfx": "bipes",
+          "video_ia": false
+        },
+        {
+          "t_ini": 31.2,
+          "t_fim": 35.2,
+          "fala": "E cada viagem desmonta e remonta um pedaço do cubo.",
+          "visual": "8 sprites de peça andando em fila indiana cansados",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "pan lateral",
+          "texto_tela": "8 VIAGENS",
+          "sfx": "passos",
+          "video_ia": false
+        }
+      ]
+    },
+    {
+      "id": "ep02_clip04",
+      "narracao": "No éfe dois éle você junta a quina com a aresta que fica em cima dela. Vira um par, um bloquinho de duas peças. E coloca o par inteiro de uma vez no espaço dele, o slot.",
+      "palavras": 37,
+      "duracao_s": 14.8,
+      "t_ini": 35.2,
+      "beats": [
+        {
+          "t_ini": 35.2,
+          "t_fim": 38.4,
+          "fala": "No éfe dois éle você junta a quina,",
+          "visual": "CUBO (modo foco): só uma quina e uma aresta coloridas, resto cinza",
+          "imagem": "cubo.html",
+          "movimento": "punch-in",
+          "texto_tela": "QUINA + ARESTA",
+          "sfx": "bipe",
+          "video_ia": false
+        },
+        {
+          "t_ini": 38.4,
+          "t_fim": 41.6,
+          "fala": "com a aresta que fica em cima dela.",
+          "visual": "As duas peças se aproximam e encaixam com faísca",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "pico: ímã + flash",
+          "texto_tela": "= PAR",
+          "sfx": "clack metálico",
+          "video_ia": false
+        },
+        {
+          "t_ini": 41.6,
+          "t_fim": 44.8,
+          "fala": "Vira um par, um bloquinho de duas peças.",
+          "visual": "CUBO: R U R' — o par desce junto pro canto",
+          "imagem": "cubo.html",
+          "movimento": "câmera fixa, cubo move",
+          "texto_tela": "PAR ENTRA",
+          "sfx": "click ×3",
+          "video_ia": false
+        },
+        {
+          "t_ini": 44.8,
+          "t_fim": 50.0,
+          "fala": "E coloca o par inteiro de uma vez no espaço dele, o slot.",
+          "visual": "Buraco do canto contornado em neon, legenda SLOT",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "contorno desenhando",
+          "texto_tela": "SLOT",
+          "sfx": "ding",
+          "video_ia": false
+        }
+      ]
+    },
+    {
+      "id": "ep02_clip05",
+      "narracao": "A cruz deixa quatro buracos nos cantos. São os quatro slots. Quatro pares, quatro slots, duas camadas prontas. Menos movimentos e menos pausa pra pensar.",
+      "palavras": 25,
+      "duracao_s": 10.0,
+      "t_ini": 50.0,
+      "beats": [
+        {
+          "t_ini": 50.0,
+          "t_fim": 54.4,
+          "fala": "A cruz deixa quatro buracos nos cantos. São os quatro slots.",
+          "visual": "CUBO visto de baixo: 4 cantos vazios piscam",
+          "imagem": "cubo.html",
+          "movimento": "giro lento + pulso",
+          "texto_tela": "4 SLOTS",
+          "sfx": "4 bipes",
+          "video_ia": false
+        },
+        {
+          "t_ini": 54.4,
+          "t_fim": 57.2,
+          "fala": "Quatro pares, quatro slots, duas camadas prontas.",
+          "visual": "4 pares entram um por um (corte rápido entre slots)",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "whip-pan entre cantos",
+          "texto_tela": "4 PARES",
+          "sfx": "click ×4",
+          "video_ia": false
+        },
+        {
+          "t_ini": 57.2,
+          "t_fim": 60.0,
+          "fala": "Menos movimentos e menos pausa pra pensar.",
+          "visual": "Barra de HP do Chefão cai pela metade",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "HP caindo + tremida",
+          "texto_tela": "-50% HP",
+          "sfx": "dano",
+          "video_ia": false
+        }
+      ]
+    },
+    {
+      "id": "ep02_clip06",
+      "narracao": "Resumo: mesma cruz, mas em vez de oito peças soltas são quatro pares. Pergunta: quantas peças formam um par? Pausa e pensa. No próximo vídeo, os primeiros casos com três movimentos.",
+      "palavras": 31,
+      "duracao_s": 12.4,
+      "t_ini": 60.0,
+      "beats": [
+        {
+          "t_ini": 60.0,
+          "t_fim": 65.2,
+          "fala": "Resumo: mesma cruz, mas em vez de oito peças soltas são quatro pares.",
+          "visual": "Comparação lado a lado: 8 peças soltas × 4 pares",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "split-screen deslizando",
+          "texto_tela": "8 → 4",
+          "sfx": "whoosh",
+          "video_ia": false
+        },
+        {
+          "t_ini": 65.2,
+          "t_fim": 68.8,
+          "fala": "Pergunta: quantas peças formam um par? Pausa e pensa.",
+          "visual": "Quiz: '? peças = 1 par' piscando",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "pulse",
+          "texto_tela": "QUANTAS?",
+          "sfx": "tique de quiz",
+          "video_ia": false
+        },
+        {
+          "t_ini": 68.8,
+          "t_fim": 72.4,
+          "fala": "No próximo vídeo, os primeiros casos com três movimentos.",
+          "visual": "Mapa: nó 2 acende, câmera voa ao nó 3",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "zoom-through",
+          "texto_tela": "PRÓXIMO: 1º CASO",
+          "sfx": "fanfarra",
+          "video_ia": false
+        }
+      ]
+    }
+  ],
+  "kit": {
+    "resumo": [
+      "F2L = First Two Layers: as duas primeiras camadas.",
+      "Começa igual ao iniciante: cruz branca embaixo.",
+      "Em vez de 4 quinas + 4 arestas separadas, monta 4 pares (quina + aresta) e insere cada par no seu slot."
+    ],
+    "quiz": [
+      [
+        "O que significa F2L?",
+        "First Two Layers, as duas primeiras camadas."
+      ],
+      [
+        "Quantas peças formam um par?",
+        "Duas: uma quina e uma aresta."
+      ],
+      [
+        "Quantos slots existem depois da cruz?",
+        "Quatro, um em cada canto de baixo."
+      ]
+    ],
+    "flashcards": [
+      [
+        "F2L",
+        "resolve as 2 primeiras camadas por pares"
+      ],
+      [
+        "Par",
+        "quina + aresta do mesmo slot"
+      ],
+      [
+        "Slot",
+        "espaço de um par: canto de baixo + aresta do meio acima dele"
+      ],
+      [
+        "Cruz",
+        "4 arestas brancas embaixo, feita antes do F2L"
+      ]
+    ],
+    "metafora": "'8 etapas × 4 etapas' simplifica: cada par do F2L também pode exigir vários movimentos. O ganho real é inserir 2 peças juntas, gastando menos movimentos no total.",
+    "conferir": [
+      "Contagem 'oito etapas' supõe o método de camadas clássico (4 quinas + 4 arestas do meio)."
+    ]
+  }
+}
