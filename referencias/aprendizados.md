@@ -41,5 +41,14 @@ Nunca misturar as regras de "economia" com as de "fatos gerais".
 - **Repetir o algoritmo 2 vezes:** uma explicando, outra só mostrando (em velocidade normal).
 - **Visual principal = cubo 3D em CSS** (`anim/cubo.html`), não imagem gerada. Imagens de IA só
   para fundo/Hero/Chefão (reaproveitados nos 5 episódios) → quase zero crédito por episódio.
+- **Medido no ep. 1 (Antônio):** `rate -12%` + pausas entre palavras limitadas a 0,28s + respiro
+  de 0,22s entre beats e 0,5s depois de beat com algoritmo → **2,54 p/s, 1:16**. Com `rate 0%`
+  ficava em 3,2 p/s (rápido demais pra série). O Antônio é rápido por natureza, então aqui o
+  "speed 1,0–1,05" da regra vira `rate -12%`.
+- **Sincronia por palavra:** o Edge TTS devolve o tempo de cada palavra (`boundary="WordBoundary"`);
+  o giro começa no início da palavra do movimento ("érre", "éle", "xis"...). Ferramentas em
+  `producao/` (`narrar.py`, `montar_tempo.py`, `epNN.html`, `render.js`, `mixar.py`).
+- Destaque de adesivo no CSS 3D: só borda branca por dentro. Brilho externo (box-shadow de fora)
+  e `backface-visibility:hidden` causam buracos pretos no cubo no Chromium.
 - Letras faladas por extenso na narração (TTS): "érre", "éle", "u", "éfe", "dê", "xis",
   "ípsilon", "linha" (para `'`), "dois" (para `2`).
