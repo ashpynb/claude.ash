@@ -1,96 +1,96 @@
 1
-00:00:00,000 --> 00:00:02,000
+00:00:00,000 --> 00:00:01,737
 Uma abelha trabalha a vida inteira
 
 2
-00:00:02,000 --> 00:00:04,200
+00:00:01,737 --> 00:00:05,626
 e produz isso aqui. Um doze avos de uma colher de chá de mel.
 
 3
-00:00:04,200 --> 00:00:05,800
+00:00:05,626 --> 00:00:07,342
 Só isso. A vida toda.
 
 4
-00:00:05,800 --> 00:00:08,200
+00:00:07,342 --> 00:00:10,551
 E ainda bate as asas mais de duzentas vezes por segundo.
 
 5
-00:00:08,200 --> 00:00:10,600
+00:00:10,551 --> 00:00:12,192
 Pra fazer um pote de meio quilo?
 
 6
-00:00:10,600 --> 00:00:15,100
+00:00:12,192 --> 00:00:14,752
 Mais de dois milhões de flores visitadas.
 
 7
-00:00:15,100 --> 00:00:17,100
+00:00:14,752 --> 00:00:17,587
 E como uma abelha conta pras amigas onde tem flor?
 
 8
-00:00:17,100 --> 00:00:18,700
+00:00:17,587 --> 00:00:18,538
 Ela não fala.
 
 9
-00:00:18,700 --> 00:00:21,100
+00:00:18,538 --> 00:00:20,931
 Ela dança. É a dança do requebrado.
 
 10
-00:00:21,100 --> 00:00:24,100
+00:00:20,931 --> 00:00:24,213
 O ângulo da rebolada aponta a direção em relação ao sol.
 
 11
-00:00:24,100 --> 00:00:27,100
+00:00:24,213 --> 00:00:27,472
 E quanto mais tempo ela rebola, mais longe fica a comida.
 
 12
-00:00:27,100 --> 00:00:29,600
+00:00:27,472 --> 00:00:30,008
 Basicamente um GPS feito de rebolado.
 
 13
-00:00:29,600 --> 00:00:31,600
+00:00:30,008 --> 00:00:32,118
 Agora os machos. Os zangões.
 
 14
-00:00:31,600 --> 00:00:34,000
+00:00:32,118 --> 00:00:35,690
 Não têm ferrão. Não fazem mel. Não limpam a colmeia.
 
 15
-00:00:34,000 --> 00:00:36,400
+00:00:35,690 --> 00:00:37,899
 Só comem o mel que as operárias fazem.
 
 16
-00:00:36,400 --> 00:00:38,400
+00:00:37,899 --> 00:00:40,420
 Aí chega o outono e as operárias fazem o quê?
 
 17
-00:00:38,400 --> 00:00:41,000
+00:00:40,420 --> 00:00:43,373
 Expulsam todos de casa. Sem direito a mala.
 
 18
-00:00:41,000 --> 00:00:45,400
+00:00:43,373 --> 00:00:46,977
 E o zangão que consegue namorar a rainha? Morre logo depois.
 
 19
-00:00:45,400 --> 00:00:47,900
+00:00:46,977 --> 00:00:48,342
 Enquanto isso a rainha
 
 20
-00:00:47,900 --> 00:00:50,500
+00:00:48,342 --> 00:00:50,316
 bota até dois mil ovos por dia.
 
 21
-00:00:50,500 --> 00:00:52,900
+00:00:50,316 --> 00:00:51,942
 E o mel delas não estraga.
 
 22
-00:00:52,900 --> 00:00:55,900
+00:00:51,942 --> 00:00:54,862
 Já acharam mel de milhares de anos em tumbas do Egito.
 
 23
-00:00:55,900 --> 00:00:58,900
+00:00:54,862 --> 00:00:58,493
 Quantas vezes por segundo a abelha bate as asas? Comenta aí.
 
 24
-00:00:58,900 --> 00:01:01,600
+00:00:58,493 --> 00:01:00,970
 Próximo vídeo: a formiga que vira zumbi.
 
