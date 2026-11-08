@@ -54,5 +54,11 @@ Nunca misturar as regras de "economia" com as de "fatos gerais".
   `producao/` (`narrar.py`, `montar_tempo.py`, `epNN.html`, `render.js`, `mixar.py`).
 - Destaque de adesivo no CSS 3D: só borda branca por dentro. Brilho externo (box-shadow de fora)
   e `backface-visibility:hidden` causam buracos pretos no cubo no Chromium.
+- **Legenda mostra a notação, não a letra por extenso** (pedido da usuária após o ep. 1):
+  a voz fala "érre linha", a legenda escreve **R'**; "u dois" → **U2**; "éfe dois éle" → **F2L**;
+  "xis"/"ípsilon" → **x**/**y**. Feito em `producao/motor.js` (`gruposLegenda`). Karaokê continua:
+  palavra falada em amarelo, notação em ciano.
+- Peças "voando" (deslocamento visual `v.off`) explicam conceito sem algoritmo: o par sobe BEM acima
+  do cubo (senão parece colado nele). Slots/cruz se mostram por BAIXO (a cruz fica na face D).
 - Letras faladas por extenso na narração (TTS): "érre", "éle", "u", "éfe", "dê", "xis",
   "ípsilon", "linha" (para `'`), "dois" (para `2`).
