@@ -39,3 +39,28 @@ As durações são só da fala, a 2,5 palavras por segundo. Com os respiros depo
 3. **Produção** (`produtor-video-aula`): integrar o `cubo.html` ao projeto de animação (gravar com Playwright ou portar a lógica para Remotion), gerar voz por clipe, legendas, SFX e render `out/epNN.mp4`.
 4. **Créditos:** mostrar a quantidade e o custo de imagens e vídeos de IA e **esperar o "ok"** antes de gerar.
 5. Pontos a conferir (estão em "⚠️ Conferir" em cada `.md`): no ep. 4, depois do `R U2 R'`, a aresta pode precisar de um ajuste extra antes de cair num caso do ep. 3.
+
+---
+
+# Atualização: skills de gancho viral + vídeo "Formiga zumbi"
+
+## Skills instaladas em `.claude/skills/` (carregam em qualquer sessão com este repo)
+- `viral-hooks` (rediumvex/viral-hooks-skill, MIT): 100 fórmulas de gancho em 10 gatilhos.
+- `ig-reel`, `ig-human`, `ig-viral`, `ig-caption`, `ig-plan` e as outras `ig-*` (Jakeschincariol/instagram-agent-skill, MIT).
+- Pontuador de gancho: `python3 -I .claude/skills/ig-reel/hookscore.py arquivo.txt` (um gancho por linha) ou `--hook "frase"`.
+  **Limitação:** é calibrado pra inglês. Pontue a tradução em inglês do gancho e trate a nota como referência.
+- Outros scripts úteis: `ig-reel/beats.py` (tempo dos beats) e `ig-human/detect.py` / `humanize.py` (tira cara de texto de IA).
+  Todos são Python puro, sem rede.
+
+## Vídeo viral 01: Formiga zumbi (`roteiro/viral01_formiga_zumbi.md`)
+- A usuária pediu: tema engraçado (não o cubo), gancho viral, **no mínimo 1 minuto**.
+- Gancho (nota 80 FORTE): "Nunca suba numa folha ao meio-dia. Pergunta pra formiga zumbi."
+- 15 beats, ~161 palavras, ~1:04. Loop: termina em "meio-dia, longe das folhas". Segundo gancho aos ~45s (fóssil de 48 milhões de anos).
+- Fatos conferidos: Hughes et al. 2011 (BMC Ecology), com o meio-dia solar, ~25 cm do chão e a mandíbula travada com músculos atrofiados; fóssil de Messel, ~48 milhões de anos (Biology Letters 2010).
+- ⚠️ Conferir: os números dos "cemitérios" (Pontoppidan 2009), a simplificação "altura certinha pro fungo" e o The Last of Us (sem logo nem personagens).
+
+## Pendente (viral 01)
+1. Gerar `roteiro/viral01_formiga_zumbi.json` no formato do diretor (clipes + beats).
+2. Passar a narração pela `ig-human` (mantendo números por extenso pro TTS).
+3. Produzir com `produtor-video-aula`, respeitando duração final ≥ 1:00. Mostrar os créditos e esperar o "ok".
+4. Legenda com `ig-caption`. O pedido de engajamento vai só na legenda: "Marca aquele amigo que sobe em qualquer coisa."
