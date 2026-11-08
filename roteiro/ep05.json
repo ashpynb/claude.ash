@@ -1,0 +1,353 @@
+{
+  "ep": 5,
+  "titulo": "Juntando tudo + treino",
+  "ritmo_pps": 2.5,
+  "duracao_s": 74.8,
+  "imagens": {
+    "bg_arena": "Empty pixel-art arena floor seen from the front, glowing cyan grid on the ground, dark purple sky with stars, large empty space in the center for a 3D object, 2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, vertical 9:16, deep navy, dark purple, neon cyan and magenta palette, no text",
+    "hero": "a small adventurer whose head is a tiny 3x3 colorful puzzle cube, cyan scarf, big expressive eyes, purple tunic, full body, idle pose, plain flat magenta-free green background for chroma key, 2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, vertical 9:16, deep navy, dark purple, neon cyan and magenta palette, no text",
+    "chefao": "a giant floating scrambled 3x3 puzzle cube monster with mixed colored tiles, glowing magenta eyes between the tiles, chains around it, menacing pose, plain flat green background for chroma key, 2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, vertical 9:16, deep navy, dark purple, neon cyan and magenta palette, no text",
+    "bg_mapa": "Top-down pixel-art world map with five glowing level nodes connected by a dotted path, each node a small cube-shaped tower, 2D pixel art, 16-bit retro RPG, crisp pixel clusters, clean outlines, no blur, vertical 9:16, deep navy, dark purple, neon cyan and magenta palette, no text"
+  },
+  "clipes": [
+    {
+      "id": "ep05_clip01",
+      "narracao": "Você já sabe tudo pra fazer o éfe dois éle completo. Agora é só juntar as peças. Só que o segredo de quem é rápido não é a mão. É o olho.",
+      "palavras": 32,
+      "duracao_s": 12.8,
+      "t_ini": 0.0,
+      "beats": [
+        {
+          "t_ini": 0.0,
+          "t_fim": 6.8,
+          "fala": "Você já sabe tudo pra fazer o éfe dois éle completo. Agora é só juntar as peças.",
+          "visual": "Castelo final; Chefão com meia barra de HP",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "zoom-out dramático",
+          "texto_tela": "FASE FINAL",
+          "sfx": "trovão 8-bit",
+          "video_ia": true
+        },
+        {
+          "t_ini": 6.8,
+          "t_fim": 11.6,
+          "fala": "Só que o segredo de quem é rápido não é a mão.",
+          "visual": "Mãos pixel girando rápido, depois um X em cima",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "tremida + X carimba",
+          "texto_tela": "NÃO É A MÃO",
+          "sfx": "buzzer",
+          "video_ia": false
+        },
+        {
+          "t_ini": 11.6,
+          "t_fim": 12.8,
+          "fala": "É o olho.",
+          "visual": "Olho pixel abre gigante brilhando ciano",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "punch-in no olho",
+          "texto_tela": "É O OLHO",
+          "sfx": "brilho",
+          "video_ia": false
+        }
+      ]
+    },
+    {
+      "id": "ep05_clip02",
+      "narracao": "A ordem é sempre a mesma. Faz a cruz. Escolhe um par. Leva o slot pra frente à direita com ípsilon. Resolve o caso. Repete até os quatro slots fecharem.",
+      "palavras": 30,
+      "duracao_s": 12.0,
+      "t_ini": 12.8,
+      "beats": [
+        {
+          "t_ini": 12.8,
+          "t_fim": 15.2,
+          "fala": "A ordem é sempre a mesma.",
+          "visual": "Checklist HUD com 5 linhas vazias",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "painel desliza",
+          "texto_tela": "A ORDEM",
+          "sfx": "painel",
+          "video_ia": false
+        },
+        {
+          "t_ini": 15.2,
+          "t_fim": 17.6,
+          "fala": "Faz a cruz. Escolhe um par.",
+          "visual": "CUBO: cruz branca embaixo destaca",
+          "imagem": "cubo.html",
+          "movimento": "check na linha 1",
+          "texto_tela": "1. CRUZ",
+          "sfx": "ding",
+          "video_ia": false
+        },
+        {
+          "t_ini": 17.6,
+          "t_fim": 21.2,
+          "fala": "Leva o slot pra frente à direita com ípsilon.",
+          "visual": "CUBO (foco): um par pisca",
+          "imagem": "cubo.html",
+          "movimento": "check na linha 2",
+          "texto_tela": "2. PAR",
+          "sfx": "ding",
+          "video_ia": false
+        },
+        {
+          "t_ini": 21.2,
+          "t_fim": 22.4,
+          "fala": "Resolve o caso.",
+          "visual": "CUBO: y",
+          "imagem": "cubo.html",
+          "movimento": "giro + check linha 3",
+          "texto_tela": "3. y",
+          "sfx": "whoosh",
+          "video_ia": false
+        },
+        {
+          "t_ini": 22.4,
+          "t_fim": 24.8,
+          "fala": "Repete até os quatro slots fecharem.",
+          "visual": "CUBO: R U R' insere o par; contador ×4",
+          "imagem": "cubo.html",
+          "movimento": "check linhas 4–5 + contador",
+          "texto_tela": "4. CASO · ×4",
+          "sfx": "click ×3",
+          "video_ia": false
+        }
+      ]
+    },
+    {
+      "id": "ep05_clip03",
+      "narracao": "Enquanto resolve um par, olha onde está o próximo. Isso se chama look ahead, olhar adiante. Seus olhos trabalham um par na frente das mãos. Melhor girar devagar sem parar do que rápido e travar.",
+      "palavras": 35,
+      "duracao_s": 14.0,
+      "t_ini": 24.8,
+      "beats": [
+        {
+          "t_ini": 24.8,
+          "t_fim": 31.2,
+          "fala": "Enquanto resolve um par, olha onde está o próximo. Isso se chama look ahead, olhar adiante.",
+          "visual": "CUBO girando R U R' devagar; olho pixel procura outra peça em volta",
+          "imagem": "cubo.html",
+          "movimento": "câmera orbita",
+          "texto_tela": "OLHA O PRÓXIMO",
+          "sfx": "tique",
+          "video_ia": false
+        },
+        {
+          "t_ini": 31.2,
+          "t_fim": 34.8,
+          "fala": "Seus olhos trabalham um par na frente das mãos.",
+          "visual": "Letreiro LOOK AHEAD em neon",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "texto cinético",
+          "texto_tela": "LOOK AHEAD",
+          "sfx": "neon zumbindo",
+          "video_ia": false
+        },
+        {
+          "t_ini": 34.8,
+          "t_fim": 38.8,
+          "fala": "Melhor girar devagar sem parar do que rápido e travar.",
+          "visual": "Corrida: tartaruga constante passa coelho parado com '...'",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "pan lateral",
+          "texto_tela": "DEVAGAR > TRAVAR",
+          "sfx": "passos",
+          "video_ia": false
+        }
+      ]
+    },
+    {
+      "id": "ep05_clip04",
+      "narracao": "Plano de treino. Semana um, só os casos básicos devagar. Semana dois, peças presas e branco pra cima. Semana três, cronômetro e look ahead. Dez minutos por dia.",
+      "palavras": 28,
+      "duracao_s": 11.2,
+      "t_ini": 38.8,
+      "beats": [
+        {
+          "t_ini": 38.8,
+          "t_fim": 40.0,
+          "fala": "Plano de treino.",
+          "visual": "Calendário pixel com 3 semanas",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "páginas virando",
+          "texto_tela": "PLANO",
+          "sfx": "papel",
+          "video_ia": false
+        },
+        {
+          "t_ini": 40.0,
+          "t_fim": 42.8,
+          "fala": "Semana um, só os casos básicos devagar.",
+          "visual": "Semana 1 marcada com carta R U R'",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "carimbo",
+          "texto_tela": "SEMANA 1",
+          "sfx": "carimbo",
+          "video_ia": false
+        },
+        {
+          "t_ini": 42.8,
+          "t_fim": 46.0,
+          "fala": "Semana dois, peças presas e branco pra cima.",
+          "visual": "Semana 2 marcada com carta R U2 R'",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "carimbo",
+          "texto_tela": "SEMANA 2",
+          "sfx": "carimbo",
+          "video_ia": false
+        },
+        {
+          "t_ini": 46.0,
+          "t_fim": 48.4,
+          "fala": "Semana três, cronômetro e look ahead.",
+          "visual": "Semana 3: cronômetro pixel correndo",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "número subindo",
+          "texto_tela": "SEMANA 3",
+          "sfx": "tique-taque",
+          "video_ia": false
+        },
+        {
+          "t_ini": 48.4,
+          "t_fim": 50.0,
+          "fala": "Dez minutos por dia.",
+          "visual": "Ampulheta '10 min'",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "pop",
+          "texto_tela": "10 MIN/DIA",
+          "sfx": "ding",
+          "video_ia": false
+        }
+      ]
+    },
+    {
+      "id": "ep05_clip05",
+      "narracao": "Recapitulando a série. Notação, ideia de par, casos básicos e como transformar caso chato em fácil. Com isso, as duas primeiras camadas saem em quatro pares. Travou? Revê o episódio daquela parte.",
+      "palavras": 32,
+      "duracao_s": 12.8,
+      "t_ini": 50.0,
+      "beats": [
+        {
+          "t_ini": 50.0,
+          "t_fim": 56.4,
+          "fala": "Recapitulando a série. Notação, ideia de par, casos básicos e como transformar caso chato em fácil.",
+          "visual": "Mapa com os 4 nós anteriores acendendo em sequência",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "pan pelo mapa",
+          "texto_tela": "SÉRIE",
+          "sfx": "4 bipes",
+          "video_ia": false
+        },
+        {
+          "t_ini": 56.4,
+          "t_fim": 60.4,
+          "fala": "Com isso, as duas primeiras camadas saem em quatro pares.",
+          "visual": "CUBO: 4 pares entrando em corte rápido, duas camadas completas",
+          "imagem": "cubo.html",
+          "movimento": "whip-pan entre slots",
+          "texto_tela": "4 PARES",
+          "sfx": "click ×4",
+          "video_ia": false
+        },
+        {
+          "t_ini": 60.4,
+          "t_fim": 62.8,
+          "fala": "Travou? Revê o episódio daquela parte.",
+          "visual": "Chefão perde a barra de HP inteira e explode em pixels",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "pico: flash + tremida + partículas",
+          "texto_tela": "F2L COMPLETO",
+          "sfx": "explosão 8-bit",
+          "video_ia": false
+        }
+      ]
+    },
+    {
+      "id": "ep05_clip06",
+      "narracao": "Pergunta final: o que é look ahead? Responde nos comentários com suas palavras. Depois disso falta só a última camada, com o ó éle éle e o pê éle éle.",
+      "palavras": 30,
+      "duracao_s": 12.0,
+      "t_ini": 62.8,
+      "beats": [
+        {
+          "t_ini": 62.8,
+          "t_fim": 65.6,
+          "fala": "Pergunta final: o que é look ahead?",
+          "visual": "Quiz: olho com '?'",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "pulse",
+          "texto_tela": "LOOK AHEAD = ?",
+          "sfx": "tique de quiz",
+          "video_ia": false
+        },
+        {
+          "t_ini": 65.6,
+          "t_fim": 68.0,
+          "fala": "Responde nos comentários com suas palavras.",
+          "visual": "Balão de comentário pixel aparece",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "pop",
+          "texto_tela": "COMENTA",
+          "sfx": "blip",
+          "video_ia": false
+        },
+        {
+          "t_ini": 68.0,
+          "t_fim": 74.8,
+          "fala": "Depois disso falta só a última camada, com o ó éle éle e o pê éle éle.",
+          "visual": "Portão novo no mapa com 'OLL · PLL' trancado",
+          "imagem": "bg_arena/hero/chefao (reuso)",
+          "movimento": "zoom-through no portão",
+          "texto_tela": "PRÓXIMO ARCO",
+          "sfx": "porta rangendo",
+          "video_ia": false
+        }
+      ]
+    }
+  ],
+  "kit": {
+    "resumo": [
+      "Ordem: cruz → escolher par → y até frente-direita → resolver caso → repetir 4×.",
+      "Look ahead: procurar o próximo par enquanto resolve o atual.",
+      "Treino: semana 1 casos básicos, semana 2 casos chatos, semana 3 cronômetro; 10 min/dia."
+    ],
+    "quiz": [
+      [
+        "Qual a ordem do F2L completo?",
+        "Cruz, escolher par, trazer o slot pra frente-direita, resolver o caso, repetir 4 vezes."
+      ],
+      [
+        "O que é look ahead?",
+        "Olhar e procurar o próximo par enquanto ainda resolve o atual."
+      ],
+      [
+        "O que vem depois do F2L?",
+        "A última camada: OLL (orientar) e PLL (permutar)."
+      ]
+    ],
+    "flashcards": [
+      [
+        "Look ahead",
+        "olhar adiante, achar o próximo par"
+      ],
+      [
+        "OLL",
+        "orienta a última camada"
+      ],
+      [
+        "PLL",
+        "permuta a última camada"
+      ],
+      [
+        "Regra de treino",
+        "devagar sem parar > rápido travando"
+      ]
+    ],
+    "metafora": "'Derrotar o Chefão' = terminar o F2L, mas o cubo só fica resolvido depois da última camada.",
+    "conferir": [
+      "Plano de 3 semanas é sugestão didática, não regra oficial."
+    ]
+  }
+}
