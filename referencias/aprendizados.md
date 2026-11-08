@@ -5,6 +5,14 @@ conflita com uma regra geral, vale a da série (está marcada).
 
 ## Regras gerais (todos os vídeos)
 
+### Decisões da usuária (valem pra TODO vídeo, salvo pedido explícito)
+- **Estilo padrão = 3D cartoon** (como o EP01 abelhas). **Pixel art só nos vídeos de economia.**
+- **Sem texto grande na tela em nenhum vídeo.** Só legenda + números/notação que ensinam algo
+  (ex.: "25 cm", "12:00", "R U R'").
+- **Ritmo viral (~3,2–3,3 p/s) em todos os vídeos, menos na série do cubo** (cubo: intro ~3,15,
+  explicação ~2,9). Se o ritmo viral deixar o vídeo abaixo do mínimo de duração, acrescentar
+  frases (só fatos conferidos ou piadas), nunca falar mais devagar.
+
 ### Texto na tela (pedido da usuária, EP01 abelhas)
 - **Nada de texto grande no topo repetindo a fala.** No vídeo das abelhas, a palavra-chave
   gigante em cima + legenda embaixo foi "muita informação"; ficou só a legenda.
@@ -25,8 +33,8 @@ conflita com uma regra geral, vale a da série (está marcada).
 ### Categorias de vídeo (pedido da usuária)
 | Pedido | Estilo | Referências | Status |
 |---|---|---|---|
-| "vídeo de economia" | tópico 2D de economia | 5 reels em `pendentes.md` | aguardando análise (download bloqueado) |
-| "fatos gerais" | 3D cartoon, engraçado (ex.: EP01 abelhas) | — | 1 vídeo feito |
+| "vídeo de economia" | tópico 2D de economia, **pixel art** | 5 reels em `pendentes.md` | aguardando análise (download bloqueado) |
+| "fatos gerais" | 3D cartoon, engraçado (ex.: EP01 abelhas, viral01 formiga zumbi) | — | 1 vídeo feito |
 Nunca misturar as regras de "economia" com as de "fatos gerais".
 
 ## Série "Cubo mágico: F2L" (regras pedidas pela usuária, têm prioridade nesta série)
