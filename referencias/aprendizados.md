@@ -59,6 +59,14 @@ conflita com uma regra geral, vale a da série (está marcada).
 - Ritmo: as referências falam a 2,4–2,6 p/s, mas **a usuária decidiu 3,2 p/s também neste molde**. Cortes a cada ~2 s.
 - Credibilidade: nome científico e estudo em letra pequena; cartão de número ("6 kg por ano").
 
+### Ficha 06: estilo-alvo "E se tu…" (pedido da usuária: "quero vídeos assim")
+- **Personagem 2D "cabeça de feijão"** (mesmo rig sempre) em **cenário com luz de cena** (entardecer, luz de
+  fonte visível, bokeh, poeira). É o estilo que a usuária quer daqui pra frente nos virais de história.
+- **Número concreto a cada frase, mostrado como HUD** (30 km/h, 17 t, NÍVEL 2, 00:23:02).
+- Molde: pergunta "E se tu…?" → personagem com nome → escalada de números → pergunta do espectador
+  respondida → virada → cliffhanger ("Parte 2").
+- Legenda 2–3 palavras com palavra-chave amarela: **8 de 8 referências** (regra estável).
+
 ### Voz / TTS (medido no EP01 abelhas)
 - Voz escolhida pela usuária: **Edge TTS `pt-BR-AntonioNeural`** (preferida às vozes do
   OmniVoice/VoiceStudio e às femininas do Edge).
