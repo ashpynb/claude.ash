@@ -52,7 +52,9 @@ conflita com uma regra geral, vale a da série (está marcada).
   notícia boa e ruim". Fim: "Marca aquele amigo que…" ou "próximo vídeo: X vs Y".
 - Estrutura "problema → solução → novo problema → nova solução" (Além do Óbvio) prende sem precisar de virada.
 
-### Ficha 05: molde "Você é…" (2 referências com o mesmo molde; 1 com 200 mil curtidas)
+### Ficha 05 + 07: molde "Você é…" (3 referências → regra ESTÁVEL; 200 mil e 450 mil curtidas)
+- Ficha 07 (porco, 450 mil): 3D **low-poly em dia claro**, legenda de 1 palavra, 3,12 p/s, fatos ligados por
+  **"Por isso…"** (causa → efeito) antes do refrão; rótulo amarelo pequeno com o objeto flutuando na cena.
 - Abrir em **2ª pessoa com o nome chocante/engraçado** ("Você é uma Maria-sem-vergonha…").
 - Cada fato → **"Esse é seu [objeto do dia a dia]."**, e o objeto **aparece na tela** (+ cartão amarelo curto).
 - Fecho: **"Chamam de [nome] quem [sentido ruim]. Mas você [feitos]."** → repete a 1ª frase (loop).
