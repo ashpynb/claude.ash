@@ -32,6 +32,15 @@ conflita com uma regra geral, vale a da série (está marcada).
 - Antes do render final, um **verificador dá nota 0–10** contra estes aprendizados; refazer se < 8.
 - Ritmo do exemplo: imagem muda a cada frase, cortes sincronizados com a fala, câmera deslizando no 3D.
 
+### Visual, câmera e som (ficha 03: what-if-animation, MEDIDO em vídeo de 4,2M views)
+- **Cortes por mudança de tamanho de plano** (aberto → inserto → médio → close → reação), ~27/min na
+  abertura, plano 0,7–3s. Nunca dois planos vizinhos iguais.
+- **Luz de entardecer com fonte visível + rim light quente + neblina + grão/vinheta.** Meio-tons escuros.
+- **Modelos 3D CC0 prontos (Quaternius/Kenney) em vez de primitivas.** Ver ficha 03 §8.
+- **Som: um efeito por ação, ambiente por lugar, trilha leve que corta na virada; hit na pausa DEPOIS da
+  palavra.**
+- Rodar o **checklist de 11 pontos** (ficha 03 §6) numa folha de quadros antes do render final.
+
 ### Voz / TTS (medido no EP01 abelhas)
 - Voz escolhida pela usuária: **Edge TTS `pt-BR-AntonioNeural`** (preferida às vozes do
   OmniVoice/VoiceStudio e às femininas do Edge).
