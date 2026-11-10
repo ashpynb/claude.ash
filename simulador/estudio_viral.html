@@ -32,9 +32,14 @@ textarea{min-height:150px;resize:vertical;font:13px/1.5 var(--f-dado)}
 select:focus-visible,input:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid var(--amarelo);outline-offset:2px}
 .dica{font-size:12px;color:var(--fg3);margin-top:6px}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{border:1px solid var(--linha);background:var(--painel2);color:var(--fg2);border-radius:999px;padding:7px 12px;font:600 13px var(--f-texto);cursor:pointer}
+.chips{display:grid!important;grid-template-columns:minmax(0,1fr);gap:8px}
+.chip{border:1px solid var(--linha);background:var(--painel2);color:var(--fg);border-radius:12px;padding:10px 12px;font:700 14px var(--f-texto);cursor:pointer;text-align:left;width:100%}
+.chip .q{display:block;font:500 12.5px/1.4 var(--f-texto);color:var(--fg2);margin-top:3px}
+.chip .ex{display:block;font:500 11.5px/1.4 var(--f-dado);color:var(--fg3);margin-top:4px}
+.chip[aria-pressed=true] .q,.chip[aria-pressed=true] .ex{color:#3a3000}
 .chip[aria-pressed=true]{background:var(--amarelo);color:#1a1400;border-color:var(--amarelo)}
-.chip small{display:block;font:500 11px var(--f-dado);opacity:.75}
+.chip small{display:inline-block;font:600 10.5px var(--f-dado);letter-spacing:.5px;text-transform:uppercase;margin-left:6px;padding:2px 6px;border-radius:6px;background:#ffffff14;vertical-align:2px}
+.chip[aria-pressed=true] small{background:#0000001a}
 .toggle{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--fg2)}
 .toggle input{accent-color:var(--amarelo);width:18px;height:18px}
 /* celular */
@@ -83,18 +88,18 @@ tr.agora td{background:#ffd40014}
 
 <header>
  <h1>Estúdio <span>Viral</span></h1>
- <p>Escolha nicho, molde e estilo, ponha os fatos, e veja a prévia tocando no celular. A nota segue as regras medidas nas referências (ficha 01–06 do projeto).</p>
+ <p>Escolha nicho, molde e estilo, ponha os fatos, e veja a prévia tocando no celular. A nota segue as regras medidas nas referências (fichas 01–08 do projeto).</p>
 </header>
 
 <main class="mesa">
  <section class="col">
   <div class="bloco">
-   <h2>1 · Molde do roteiro</h2>
+   <h2>1 · Molde do roteiro: como a história é contada</h2>
    <div class="chips" id="moldes" role="group" aria-label="Molde do roteiro"></div>
    <p class="dica" id="moldeDica"></p>
   </div>
   <div class="bloco">
-   <h2>2 · Estilo visual</h2>
+   <h2>2 · Estilo visual: como o vídeo vai parecer</h2>
    <div class="chips" id="estilos" role="group" aria-label="Estilo visual"></div>
   </div>
   <div class="bloco">
@@ -107,7 +112,7 @@ tr.agora td{background:#ffd40014}
    <div class="campo"><label for="tema">Tema</label><input id="tema" type="text"></div>
    <div class="campo"><label for="nome">Nome do personagem</label><input id="nome" type="text"><p class="dica">Usado no "E se tu…" e no "Problema → solução".</p></div>
    <div class="campo"><label for="gancho">Gancho (primeiros 3 s)</label><input id="gancho" type="text"></div>
-   <div class="campo"><label for="fatos">Fatos, um por linha: <code>fato | destaque</code></label>
+   <div class="campo"><label for="fatos" id="fatosLbl">Fatos, um por linha: <code>fato | destaque</code></label>
     <textarea id="fatos" spellcheck="false"></textarea>
     <p class="dica" id="fatosDica"></p></div>
    <div class="campo"><label for="fecho">Fecho</label><input id="fecho" type="text"></div>
@@ -119,7 +124,7 @@ tr.agora td{background:#ffd40014}
   <div class="celular">
    <div class="tela"><canvas id="cv" width="540" height="960" aria-label="Prévia animada do vídeo"></canvas></div>
    <div class="controles">
-    <button class="btn" id="play" type="button">Pausar</button>
+    <button class="btn" id="play" type="button">⏸ Pausar prévia</button>
     <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Posição do vídeo">
     <span class="tempo" id="tempo">0:00 / 0:00</span>
    </div>
@@ -141,7 +146,7 @@ tr.agora td{background:#ffd40014}
   </div>
   <div class="bloco">
    <h2>Pedido pro Claude</h2>
-   <div class="saida"><button class="btn" id="copiar" type="button">Copiar pedido</button><span class="aviso" id="copiado"></span></div>
+   <div class="saida"><button class="btn" id="copiar" type="button">Copiar pedido pro Claude produzir</button><span class="aviso" id="copiado"></span></div>
    <textarea id="pedido" readonly aria-label="Pedido pronto pra colar no Claude"></textarea>
   </div>
  </section>
@@ -151,15 +156,19 @@ tr.agora td{background:#ffd40014}
 // ---------- regras (de referencias/aprendizados.md) ----------
 const PPS=3.2, RESP=.1, MIN_S=60;
 const MOLDES={
- voce:{nome:'Você é…',sub:'2ª pessoa + "Esse é seu…"',dica:'Cada fato termina num objeto do dia a dia ("Esse é seu velcro"). Fecho ressignifica o nome e volta à 1ª frase.',destaque:'objeto do refrão'},
- ese:{nome:'E se tu…',sub:'hipótese + números',dica:'Pergunta hipotética, personagem com nome, um número por frase (vira HUD), virada e cliffhanger.',destaque:'número pro HUD'},
- prob:{nome:'Problema → solução',sub:'personagem quer algo',dica:'"Fulano quer X, mas existe um problema." Cada fato é uma solução que cria outro problema.',destaque:'solução'}
+ voce:{nome:'Você é…',sub:'bichos',q:'Fala com quem assiste como se fosse o bicho. Cada fato vira um objeto do dia a dia.',ex:'"Você é um ouriço… Esse é seu velcro."',dica:'Cada fato termina num objeto do dia a dia ("Esse é seu velcro"). Fecho ressignifica o nome e volta à 1ª frase. Referências: 200 mil e 450 mil curtidas.',destaque:'objeto do refrão',formato:'fato | objeto'},
+ construiu:{nome:'Você construiu um…',sub:'como funciona',q:'Monta a coisa peça por peça: cada problema pede uma peça nova.',ex:'"Mas o rabo rebola… Então você põe uma barbatana. Essa é a deriva."',dica:'Problema → "Então você…" → "Esse é o [nome técnico]". Termina em "Parabéns! Você construiu um…". Referência: 193 mil views.',destaque:'nome técnico da peça',formato:'problema | solução | nome técnico'},
+ passo:{nome:'Passo a passo',sub:'tutorial',q:'Explica a ordem de montagem com um número em cada passo.',ex:'"Passo três: os caibros. Um a cada cinquenta centímetros."',dica:'"Passo N: [peça]." + explicação curta + número na tela. Fecha com o resumo dos passos. Combina com o estilo isométrico.',destaque:'número do passo',formato:'peça | explicação | número'},
+ ese:{nome:'E se tu…',sub:'história',q:'Pergunta hipotética com um personagem e um número em cada frase.',ex:'"E se tu ficasse sem dormir por onze dias? Esse é o Léo."',dica:'Pergunta hipotética, personagem com nome, um número por frase (vira HUD), virada e cliffhanger. Referências: 500 mil a 1,7 mi de views.',destaque:'número pro HUD',formato:'fato | número'},
+ prob:{nome:'Problema → solução',sub:'humor',q:'Um personagem quer algo simples e cada solução cria outro problema.',ex:'"A Duda só quer levar sorvete pra casa, mas existe um problema."',dica:'"Fulano quer X, mas existe um problema." Cada fato é uma solução que cria outro problema.',destaque:'solução',formato:'problema | solução'}
 };
 const ESTILOS={
- feijao:{nome:'2D cabeça de feijão',sub:'luz de cena · alvo',alvo:true},
- cartoon3d:{nome:'3D cartoon',sub:'fundo do mar'},
- mascote:{nome:'2D mascote plano',sub:'fundo de cor'},
- mapa:{nome:'Mapa explicativo',sub:'satélite + ícones'}
+ feijao:{nome:'2D cabeça de feijão',sub:'alvo',alvo:true,q:'Personagem 2D simples num cenário com luz de entardecer.',ex:'Pra "E se tu…": histórias com gente.'},
+ lowpoly:{nome:'3D low-poly, dia claro',sub:'alvo',alvo:true,q:'Céu azul, grama e peças 3D facetadas montando na mesma cena.',ex:'Pra "Você é…" e "Você construiu…".'},
+ iso:{nome:'Isométrico técnico',sub:'anatomy',alvo:true,q:'Papel claro, peças em tons de cinza com contorno, cartão "Fig 1".',ex:'Pra "Passo a passo" (telhado, motor, fechadura).'},
+ cartoon3d:{nome:'3D cartoon com luz de cena',sub:'',q:'Formas arredondadas, feixes de luz e neblina.',ex:'Ex.: o ouriço no fundo do mar.'},
+ mascote:{nome:'2D mascote plano',sub:'',q:'Mascotes fofos sobre fundo de uma cor só.',ex:'Pra explicar fenômeno com metáfora.'},
+ mapa:{nome:'Mapa explicativo',sub:'',q:'Mapa com ícones, calor e setas por cima.',ex:'Pra clima, geografia e história.'}
 };
 const EXEMPLOS={
  voce:{nicho:'Curiosidades de animais',tema:'ouriço-do-mar',nome:'',gancho:'Você tem o corpo inteiro coberto de paus duros.',
@@ -168,6 +177,12 @@ const EXEMPLOS={
  ese:{nicho:'Corpo humano',tema:'ficar sem dormir',nome:'Léo',gancho:'E se tu ficasse sem dormir por onze dias?',
   fatos:'Com dezessete horas acordado, teu reflexo fica como o de quem bebeu | 17 h\nCom vinte e quatro horas, o efeito dobra | 24 h\nEm mil novecentos e sessenta e quatro, um estudante ficou duzentas e sessenta e quatro horas acordado | 264 h\nTá, mas e depois? Ele dormiu catorze horas seguidas | 14 h',
   fecho:'E na noite seguinte, o Léo ouviu o despertador tocar. Parte dois.'},
+ construiu:{nicho:'Ciência do dia a dia',tema:'avião',nome:'',gancho:'Solta um tubo de setenta toneladas do alto: ele cai feito pedra.',
+  fatos:'nada segura esse tubo no ar | Então você prende duas asas, e elas desviam o ar pra baixo | sustentação\nParado no chão, não passa ar pela asa | Então você pendura motores que jogam o ar pra trás | empuxo\nO nariz sobe e desce feito gangorra | Então você põe uma asinha lá atrás | estabilizador horizontal\nO rabo fica rebolando pros lados | Então você põe uma barbatana em pé | deriva\nLá em cima o ar é ralo e gelado | Então você fecha a cabine e enche de ar | pressurização',
+  fecho:'Parabéns. Você construiu um avião.'},
+ passo:{nicho:'Ciência do dia a dia',tema:'telhado',nome:'',gancho:'Um telhado de telha de barro tem cinco camadas.',
+  fatos:'a tesoura | É o triângulo de madeira que dá a inclinação | 25 %\nas terças | Vigas deitadas de uma tesoura até a outra | 1,5 m\nos caibros | Descem do topo até a beirada | 50–60 cm\nas ripas | As peças mais finas, onde a telha apoia | 32–40 cm\nas telhas | Começa de baixo e vai subindo | 40–50 kg/m²',
+  fecho:'Resumo: tesoura, terça, caibro, ripa e telha.'},
  prob:{nicho:'Ciência do dia a dia',tema:'levar sorvete pra casa no verão',nome:'Duda',gancho:'A Duda só quer levar sorvete pra casa, mas existe um problema.',
   fatos:'O sol derrete a casquinha em minutos | sacola térmica\nA sacola esquenta dentro do carro | gelo seco\nO gelo seco não pode ficar em carro fechado | janela aberta',
   fecho:'Agora sim, a Duda chega em casa com o sorvete inteiro.'}
@@ -180,7 +195,7 @@ function salvar(){try{localStorage.setItem('estudioViral',JSON.stringify({...est
 function campos(){return{nicho:$('nicho').value,tema:$('tema').value,nome:$('nome').value,gancho:$('gancho').value,fatos:$('fatos').value,fecho:$('fecho').value,musica:$('musica').checked}}
 function preencher(d){['nicho','tema','nome','gancho','fatos','fecho'].forEach(k=>{if(d[k]!==undefined)$(k).value=d[k]});$('musica').checked=!!d.musica}
 function chips(box,lista,chave){box.innerHTML='';Object.entries(lista).forEach(([k,v])=>{const b=document.createElement('button');b.type='button';b.className='chip';b.dataset.k=k;
- b.innerHTML=`${v.nome}<small>${v.sub}</small>`;b.setAttribute('aria-pressed',estado[chave]===k);b.onclick=()=>{estado[chave]=k;if(chave==='molde'){preencher(EXEMPLOS[k])}atualizar(true)};box.appendChild(b)})}
+ b.innerHTML=`${v.nome}${v.sub?`<small>${v.sub}</small>`:''}<span class="q">${v.q||''}</span><span class="ex">${v.ex||''}</span>`;b.setAttribute('aria-pressed',estado[chave]===k);b.onclick=()=>{estado[chave]=k;if(chave==='molde'){preencher(EXEMPLOS[k]);estado.estilo={voce:'lowpoly',construiu:'lowpoly',passo:'iso',ese:'feijao',prob:'lowpoly'}[k]}atualizar(true)};box.appendChild(b)})}
 
 // ---------- roteiro ----------
 const palavras=s=>s.trim().split(/\s+/).filter(Boolean).length;
@@ -195,6 +210,10 @@ function gerar(){
  else if(m==='ese'){add(`Esse é o ${nome}.`,'personagem entra');
   fatos.forEach(([f,d])=>add(f.endsWith('?')||f.endsWith('.')?f:f+'.',d?`HUD: ${d}`:'','fato'));
   add(c.fecho,'cliffhanger','fecho')}
+ else if(m==='construiu'){fatos.forEach(([p,sol,n])=>{{const q=p.replace(/^mas /i,'').replace(/\.$/,'');add(`Mas ${q.charAt(0).toLowerCase()+q.slice(1)}.`,'')}if(sol)add(sol.replace(/\.?$/,'.'),'peça entra');if(n)add(`Esse é o ${n}.`,`• ${n.toUpperCase()}`,'refrao')});
+  add(c.fecho||`Parabéns. Você construiu um ${tema}.`,'confete','fecho')}
+ else if(m==='passo'){const ord=['um','dois','três','quatro','cinco','seis','sete','oito'];fatos.forEach(([p,e,n],i)=>{add(`Passo ${ord[i]||i+1}: ${p}.`,`PASSO ${i+1}`,'refrao');if(e)add(e.replace(/\.?$/,'.'),n?`HUD: ${n}`:'','fato')});
+  add(c.fecho,'camadas se separam','fecho')}
  else{fatos.forEach(([f,d])=>{add(f+'.','');if(d)add(`Então ${nome.toLowerCase()==nome?nome:nome} usa ${d}.`,d.toUpperCase(),'refrao')});
   add(c.fecho,'','fecho')}
  let t=0;B.forEach(b=>{b.p=palavras(b.fala);b.d=Math.max(1.2,b.p/PPS+RESP);b.t0=t;t+=b.d;b.t1=t});
@@ -206,15 +225,15 @@ function avaliar(R){
  const c=R.c,g=(c.gancho||'').trim(),gp=palavras(g),L=[];
  const add=(ok,peso,titulo,dica,meio=false)=>L.push({ok,peso,titulo,dica,meio});
  add(gp>0&&gp<=12,14,`Gancho cabe em 3 s (${gp} palavras)`,'Até 12 palavras: a pessoa decide nos primeiros 3 segundos.');
- add(/^(e se|você|voce|tu |o |a )/i.test(g)||/(você|tu)\b/i.test(g),10,'Gancho fala com quem assiste','Use 2ª pessoa ("Você…", "E se tu…") ou um personagem com nome.');
+ add(/^(e se|você|voce|tu |o |a |solta|pega|imagina)/i.test(g)||/(você|voce|(^|\s)tu(\s|$))/i.test(g),10,'Gancho fala com quem assiste','Use 2ª pessoa ("Você…", "E se tu…") ou um personagem com nome.');
  add(R.total>=MIN_S,16,`Duração ${fmt(R.total)} a 3,2 palavras/s`,R.total>=MIN_S?'Passa do mínimo de 1:00.':`Faltam ~${Math.ceil((MIN_S-R.total)*PPS)} palavras. Acrescente fatos conferidos, nunca fale mais devagar.`);
- const comD=R.fatos.filter(f=>f[1]).length;add(R.fatos.length>0&&comD===R.fatos.length,14,`Todo fato tem ${MOLDES[estado.molde].destaque} (${comD}/${R.fatos.length})`,'Cada fato precisa de algo que aparece na tela.');
+ const ncol={voce:2,construiu:3,passo:3,ese:2,prob:2}[estado.molde];const comD=R.fatos.filter(f=>f[ncol-1]).length;add(R.fatos.length>0&&comD===R.fatos.length,14,`Todo fato tem ${MOLDES[estado.molde].destaque} (${comD}/${R.fatos.length})`,'Cada fato precisa de algo que aparece na tela.');
  add(R.fatos.length>=4,8,`Fatos suficientes (${R.fatos.length})`,'De 4 a 6 fatos dá ritmo de 1 a cada ~2 s.');
  const longas=R.B.filter(b=>b.p>14).length;add(longas===0,8,`Frases curtas (${longas} longa${longas===1?'':'s'})`,'Máximo de 14 palavras por frase. Quebre as longas.');
  add(!/\b(segue|me siga|comenta|marca|curte|inscreva)/i.test(R.B.map(b=>b.fala).join(' ')),8,'Pedido só na legenda do post','"Marca aquele amigo…" vai na legenda, não na fala.');
  add(!c.musica,8,'Sem música','Decisão do projeto: só narração e efeitos sonoros.');
- add(ESTILOS[estado.estilo].alvo,8,`Estilo: ${ESTILOS[estado.estilo].nome}`,ESTILOS[estado.estilo].alvo?'É o estilo-alvo das referências de 1,5 mi de views.':'Funciona, mas o alvo agora é o 2D cabeça de feijão com luz de cena.',!ESTILOS[estado.estilo].alvo);
- add(estado.molde!=='prob'||R.fatos.length>=3,6,'Final que prende',estado.molde==='voce'?'Volta à 1ª frase (loop).':estado.molde==='ese'?'Termina em cliffhanger ("Parte dois").':'Fecha resolvendo o último problema.');
+ add(ESTILOS[estado.estilo].alvo,8,`Estilo: ${ESTILOS[estado.estilo].nome}`,ESTILOS[estado.estilo].alvo?'É um dos estilos-alvo das referências (de 193 mil a 1,7 mi de views).':'Funciona, mas os alvos são: cabeça de feijão, low-poly em dia claro ou isométrico.',!ESTILOS[estado.estilo].alvo);
+ add(estado.molde!=='prob'||R.fatos.length>=3,6,'Final que prende',({voce:'Volta à 1ª frase (loop).',ese:'Termina em cliffhanger ("Parte dois").',construiu:'Termina em "Parabéns! Você construiu um…".',passo:'Fecha com o resumo dos passos.',prob:'Fecha resolvendo o último problema.'})[estado.molde]);
  const total=L.reduce((s,x)=>s+(x.ok?x.peso:x.meio?x.peso*.5:0),0);return{L,total:Math.round(total)}
 }
 function fmt(s){s=Math.max(0,s);return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0')}
@@ -222,7 +241,7 @@ function fmt(s){s=Math.max(0,s);return Math.floor(s/60)+':'+String(Math.floor(s%
 // ---------- prévia (canvas) ----------
 const cv=$('cv'),x=cv.getContext('2d'),W=cv.width,H=cv.height;
 let R=null,t0=performance.now(),tocando=true,tPausa=0;
-const KEY=/^(paus|duros|dentes|cu|cocô|teto|pezinhos|olho|corpo|cem|anos|sono|dormir|horas|reflexo|sorvete|problema|sol|gelo|nunca|morre|real|perigo|zumbi|velcro|vulcão)/i;
+const KEY=/^(sustenta|empuxo|deriva|asas|motores|pressuriza|passo|tesoura|terças|caibros|ripas|telhas|camadas|paus|duros|dentes|cu|cocô|teto|pezinhos|olho|corpo|cem|anos|sono|dormir|horas|reflexo|sorvete|problema|sol|gelo|nunca|morre|real|perigo|zumbi|velcro|vulcão)/i;
 function pedacos(b){const ws=b.fala.split(/\s+/);const out=[];let cur=[];ws.forEach((w,i)=>{cur.push(w);if(cur.length===3||/[.,?!:]$/.test(w)||i===ws.length-1){out.push(cur);cur=[]}});
  const tot=out.reduce((s,c)=>s+c.length,0);let acc=0;return out.map(c=>{const ini=b.t0+(b.d-RESP)*acc/tot;acc+=c.length;return{ini,txt:c}})}
 function legenda(b,t){const ps=pedacos(b);let p=ps[0];ps.forEach(q=>{if(q.ini<=t)p=q});
@@ -269,12 +288,23 @@ function cenaMascote(i,t){const cores=['#7cc6ff','#ff8a8a','#ffd27a','#9be8b0','
 function cenaMapa(i,t){x.fillStyle='#0d3d63';x.fillRect(0,0,W,H);x.save();const z=[1,1.4,2,1.2][i%4];x.translate(W/2,H/2);x.scale(z,z);x.translate(-W/2,-H/2);
  x.fillStyle='#3f7d3a';[[150,300,120,160],[380,260,90,200],[300,560,140,120],[120,640,70,90]].forEach(([a,b,w,h])=>{x.beginPath();x.ellipse(a,b,w,h,.3,0,7);x.fill()});
  const hg=x.createRadialGradient(W*.42,H*.5,10,W*.42,H*.5,180);hg.addColorStop(0,`rgba(255,80,40,${.5+.2*Math.sin(t*2)})`);hg.addColorStop(1,'#0000');x.fillStyle=hg;x.fillRect(0,0,W,H);x.restore()}
+function cenaLowpoly(i,t){const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#4a95f0');g.addColorStop(.55,'#cfe9ff');g.addColorStop(.56,'#7cc24a');g.addColorStop(1,'#5aa83a');x.fillStyle=g;x.fillRect(0,0,W,H);
+ [[80,160],[340,110],[200,240]].forEach(([a,b],k)=>{x.fillStyle='#fff';for(let j=0;j<4;j++){x.beginPath();const cx=a+j*26+Math.sin(t*.3+k)*8;x.moveTo(cx,b);x.lineTo(cx+24,b-22);x.lineTo(cx+48,b);x.closePath();x.fill()}});
+ const z=[1,1.4,1.9,1.15][i%4];x.save();x.translate(W/2,H*.6);x.scale(z,z);const cs=['#f4f6f8','#d9dee4','#b9c2cc'];
+ [[-120,-20,240,60],[-40,-70,80,60],[-160,-10,60,20],[100,-10,60,20]].forEach(([a,b,w,h],k)=>{x.fillStyle=cs[k%3];x.beginPath();x.moveTo(a,b);x.lineTo(a+w,b);x.lineTo(a+w-14,b+h);x.lineTo(a+14,b+h);x.closePath();x.fill()});x.restore()}
+function cenaIso(i,t){x.fillStyle='#f1f1ee';x.fillRect(0,0,W,H);x.strokeStyle='#cfcfca';x.lineWidth=2;rr(22,22,W-44,H-44,8);x.stroke();
+ x.fillStyle='#7a7a74';x.font='500 15px "JetBrains Mono", monospace';x.textAlign='left';x.fillText('FIG 1',40,52);x.textAlign='right';x.fillText('PASSO '+Math.min(5,Math.max(1,Math.ceil(i/2))),W-40,52);
+ const z=[1,1.3,1.7,1.1][i%4];x.save();x.translate(W/2,H*.56);x.scale(z,z);const n=Math.min(5,1+Math.floor(i/2));
+ for(let k=0;k<n;k++){const y=-k*26,lit=k===n-1;const top=lit?'#3a3a3e':'#fafaf7',l=lit?'#2a2a2e':'#e2e2dd',r2=lit?'#4a4a4e':'#d0d0ca';
+  x.strokeStyle='#55554f';x.lineWidth=1.5;x.fillStyle=top;x.beginPath();x.moveTo(0,y-60);x.lineTo(120,y);x.lineTo(0,y+60);x.lineTo(-120,y);x.closePath();x.fill();x.stroke();
+  x.fillStyle=l;x.beginPath();x.moveTo(-120,y);x.lineTo(0,y+60);x.lineTo(0,y+78);x.lineTo(-120,y+18);x.closePath();x.fill();x.stroke();
+  x.fillStyle=r2;x.beginPath();x.moveTo(120,y);x.lineTo(0,y+60);x.lineTo(0,y+78);x.lineTo(120,y+18);x.closePath();x.fill();x.stroke()}x.restore()}
 function quadro(){const total=R.total;let t=tocando?((performance.now()-t0)/1000)%total:tPausa;if(tocando)tPausa=t;
  const i=Math.max(0,R.B.findIndex(b=>t>=b.t0&&t<b.t1));const b=R.B[i]||R.B[0];const lt=t-b.t0;
- ({feijao:cenaFeijao,cartoon3d:cena3d,mascote:cenaMascote,mapa:cenaMapa})[estado.estilo](i,t,b);
+ ({feijao:cenaFeijao,lowpoly:cenaLowpoly,iso:cenaIso,cartoon3d:cena3d,mascote:cenaMascote,mapa:cenaMapa})[estado.estilo](i,t,b);
  if(lt<.07){x.fillStyle='#ffffff30';x.fillRect(0,0,W,H)}
  if(i===0)titulo(b.fala,t);
- if(b.tipo==='refrao'||(b.tela&&/^ESSE|^ESSA|^[A-Z ]+$/.test(b.tela)&&estado.molde!=='ese'&&i>0&&b.tipo!=='fecho'))cartao(b.tela,lt/.4);
+ if(b.tipo==='refrao'||(b.tela&&/^ESSE|^ESSA|^[A-ZÀ-Ú0-9 •]+$/.test(b.tela)&&estado.molde!=='ese'&&i>0&&b.tipo!=='fecho'))cartao(b.tela,lt/.4);
  if(b.tela&&b.tela.startsWith('HUD: '))hud(b.tela.slice(5),lt/.4);
  legenda(b,t);
  const v=x.createRadialGradient(W/2,H*.45,W*.4,W/2,H*.45,W*1.05);v.addColorStop(0,'#0000');v.addColorStop(1,'#000a');x.fillStyle=v;x.fillRect(0,0,W,H);
@@ -284,7 +314,7 @@ function quadro(){const total=R.total;let t=tocando?((performance.now()-t0)/1000
 
 // ---------- tela ----------
 function atualizar(reiniciar){chips($('moldes'),MOLDES,'molde');chips($('estilos'),ESTILOS,'estilo');$('moldeDica').textContent=MOLDES[estado.molde].dica;
- $('fatosDica').textContent=`Destaque = ${MOLDES[estado.molde].destaque}. Números por extenso na fala (a voz lê melhor).`;
+ $('fatosDica').textContent=`Neste molde, cada linha é: ${MOLDES[estado.molde].formato}. Números por extenso na fala (a voz lê melhor).`;$('fatosLbl').innerHTML=`Fatos, um por linha: <code>${MOLDES[estado.molde].formato}</code>`;
  R=gerar();const A=avaliar(R);
  $('rDur').textContent=fmt(R.total);$('rPal').textContent=R.pal;$('rCenas').textContent=R.B.length;
  $('linhas').innerHTML=R.B.map(b=>`<tr><td class="t">${b.t0.toFixed(1)}s</td><td>${esc(b.fala)}</td><td class="tela-c">${esc(b.tela)}</td></tr>`).join('');
@@ -304,10 +334,10 @@ function esc(s){return String(s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt
 let salvo=null;try{salvo=JSON.parse(localStorage.getItem('estudioViral')||'null')}catch(e){}
 if(salvo&&salvo.molde){estado.molde=salvo.molde;estado.estilo=salvo.estilo||'feijao';preencher(salvo)}else preencher(EXEMPLOS.voce);
 ['nicho','tema','nome','gancho','fatos','fecho','musica'].forEach(k=>$(k).addEventListener('input',()=>atualizar(false)));
-$('play').onclick=()=>{tocando=!tocando;if(tocando)t0=performance.now()-tPausa*1000;$('play').textContent=tocando?'Pausar':'Tocar'};
+$('play').onclick=()=>{tocando=!tocando;if(tocando)t0=performance.now()-tPausa*1000;$('play').textContent=tocando?'⏸ Pausar prévia':'▶ Tocar prévia'};
 $('scrub').oninput=e=>{tPausa=e.target.value/1000*R.total;t0=performance.now()-tPausa*1000;if(!tocando)quadro1()};
 function quadro1(){const was=tocando;tocando=false;}
 $('copiar').onclick=async()=>{try{await navigator.clipboard.writeText($('pedido').value);$('copiado').textContent='Copiado.'}catch(e){$('pedido').select();$('copiado').textContent='Selecionei o texto: use Copiar do teclado.'}};
-if(matchMedia('(prefers-reduced-motion: reduce)').matches){tocando=false;$('play').textContent='Tocar'}
+if(matchMedia('(prefers-reduced-motion: reduce)').matches){tocando=false;$('play').textContent='▶ Tocar prévia'}
 atualizar(true);requestAnimationFrame(quadro);
 </script>
