@@ -1,4 +1,4 @@
-"""Som do viral 07 (Sérgio): efeitos sintetizados por evento da página (eventos.json). SEM MÚSICA.
+"""Som dos virais 3D (07 Sérgio, 08 represa): efeitos sintetizados por evento da página (eventos.json). SEM MÚSICA.
 Uso: python mix07.py narracao.wav eventos.json saida.wav
 Tipos: whoosh boing boing2 pop pipoca buzz tic marreta flip tchan queda queda2 tum zum sino
 """
@@ -35,6 +35,23 @@ def tum(): t = tt(.6); return tom(120 * np.exp(-t * 3) + 50, t) * env(t, .003, .
 def zum(): t = tt(1.4); return (np.sin(2 * np.pi * 70 * t) + .4 * np.sin(2 * np.pi * 73 * t)) * np.minimum(1, t / .6) * np.minimum(1, (1.4 - t) / .3)
 def sino(): t = tt(1.1); return (np.sin(2 * np.pi * 1320 * t) + .5 * np.sin(2 * np.pi * 2650 * t)) * np.exp(-t * 4)
 GAN = dict(whoosh=.05, boing=.22, boing2=.18, pop=.2, pipoca=.12, buzz=.08, tic=.18, marreta=.3, flip=.12, tchan=.12, queda=.13, queda2=.12, tum=.3, zum=.1, sino=.08)
+def splash(d=.7): t = tt(d); return lp(rng.normal(0, 1, len(t)), 6) * env(t, .005, .18)
+def splash2(): return np.concatenate([splash(.5), lp(rng.normal(0, 1, int(1.2 * SR)), 10) * .5 * np.linspace(1, 0, int(1.2 * SR))])
+def cava():
+    s = np.zeros(int(1.2 * SR))
+    for k in range(4): b = marreta() * .6 + lp(rng.normal(0, 1, len(marreta())), 3) * .3 * env(tt(.4), .002, .05); i = int(k * .28 * SR); s[i:i + len(b)] += b[:len(s) - i]
+    return s
+def tremor(): t = tt(1.0); return (np.sin(2 * np.pi * 45 * t) + lp(rng.normal(0, 1, len(t)), 30)) * np.minimum(1, t / .2) * np.minimum(1, (1 - t) / .3)
+def chuva(): t = tt(3.0); return lp(rng.normal(0, 1, len(t)), 2) * .35 * np.minimum(1, t / .5) * np.minimum(1, (3 - t) / .5)
+def alarme(): t = tt(1.2); return np.sign(np.sin(2 * np.pi * (700 + 200 * np.sign(np.sin(2 * np.pi * 3 * t))) * t)) * .35 * np.minimum(1, (1.2 - t) / .1)
+def motor(): t = tt(1.2); return (np.sin(2 * np.pi * (60 + 40 * t) * t) + .5 * np.sign(np.sin(2 * np.pi * 120 * t))) * .4 * np.minimum(1, t / .1) * np.minimum(1, (1.2 - t) / .2)
+def whoosh2(): return whoosh(.6)
+def bolhas():
+    s = np.zeros(int(.9 * SR))
+    for k in range(8):
+        b = pop(500 + rng.random() * 900, .06); i = int(rng.random() * (len(s) - len(b))); s[i:i + len(b)] += b * (.5 + rng.random() * .5)
+    return s
+GAN.update(splash=.25, splash2=.2, cava=.25, tremor=.2, chuva=.08, alarme=.07, motor=.12, whoosh2=.08, bolhas=.15)
 for e in EV:
     f = globals()[e['tipo']]; add(f(), e['t'], GAN[e['tipo']])
 v = voz / np.max(np.abs(voz)) * .85; out = np.zeros(N); out[:len(v)] += v; out += mix; out = out[:len(v)]
