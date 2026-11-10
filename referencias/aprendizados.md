@@ -7,8 +7,10 @@ conflita com uma regra geral, vale a da série (está marcada).
 
 ### Decisões da usuária (valem pra TODO vídeo, salvo pedido explícito)
 - **Estilo padrão = 3D cartoon** (como o EP01 abelhas). **Pixel art só nos vídeos de economia.**
-- **Sem texto grande na tela em nenhum vídeo.** Só legenda + números/notação que ensinam algo
-  (ex.: "25 cm", "12:00", "R U R'").
+- **Título grande SÓ nos primeiros segundos (gancho, ~0–3s), depois some.** No resto do vídeo, sem
+  texto grande: só legenda + números/notação que ensinam algo (ex.: "25 cm", "12:00", "R U R'").
+  (Corrigido pela usuária após a ficha 01: o título grande fixo da referência era o problema, não o
+  título no gancho.)
 - **Ritmo viral (~3,2–3,3 p/s) em todos os vídeos, menos na série do cubo** (cubo: intro ~3,15,
   explicação ~2,9). Se o ritmo viral deixar o vídeo abaixo do mínimo de duração, acrescentar
   frases (só fatos conferidos ou piadas), nunca falar mais devagar.

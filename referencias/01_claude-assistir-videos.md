@@ -27,7 +27,7 @@ palavra por palavra" (58–68 s) → 6. CTA: "comenta repo" + "me segue".
 - Gancho de **dor do espectador em pergunta** ("Sabe quando…?") nos primeiros ~3,5 s.
 - Fala corrida ~3,4 p/s (bate com o nosso ritmo viral).
 - CTA de palavra-chave nos comentários ("comenta X") em vez de "segue".
-- **Não** copiar: título grande fixo na tela (a usuária não gosta) e plano longo de 7 s (no nosso
+- Título grande **só nos primeiros segundos** (no gancho), depois some. Não deixar fixo como na referência e plano longo de 7 s (no nosso
   3D cartoon os cortes são a cada 1,5–2,5 s).
 
 ## O que o vídeo ensina (método)
