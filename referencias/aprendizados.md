@@ -26,6 +26,12 @@ conflita com uma regra geral, vale a da série (está marcada).
 - CTA de **palavra-chave nos comentários** ("comenta X") funciona melhor que "me segue" no fim.
 - Ritmo da referência: 3,4 p/s (confirma o ritmo viral ~3,2–3,4).
 
+### Roteiro e processo (ficha 02, descrita pelo Gemini — 1 referência)
+- Fórmula viral: **gancho com paradoxo → cenário → escalada → virada**.
+- Gancho de **prova social com número grande** ("29 milhões de views") também funciona.
+- Antes do render final, um **verificador dá nota 0–10** contra estes aprendizados; refazer se < 8.
+- Ritmo do exemplo: imagem muda a cada frase, cortes sincronizados com a fala, câmera deslizando no 3D.
+
 ### Voz / TTS (medido no EP01 abelhas)
 - Voz escolhida pela usuária: **Edge TTS `pt-BR-AntonioNeural`** (preferida às vozes do
   OmniVoice/VoiceStudio e às femininas do Edge).
