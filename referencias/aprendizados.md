@@ -6,7 +6,9 @@ conflita com uma regra geral, vale a da série (está marcada).
 ## Regras gerais (todos os vídeos)
 
 ### Decisões da usuária (valem pra TODO vídeo, salvo pedido explícito)
-- **Estilo padrão = 3D cartoon** (como o EP01 abelhas). **Pixel art só nos vídeos de economia.**
+- **Só vídeos virais em 3D cartoon** (como o EP01 abelhas e o low-poly da ficha 04). No máximo, **2D
+  explicativo** no estilo do Traço Curioso (ficha 04). **Sem pixel art. Plano de economia cancelado.**
+- **Nenhum vídeo tem música.** Só narração (Edge TTS Antônio, já configurada) + efeitos sonoros.
 - **Título grande SÓ nos primeiros segundos (gancho, ~0–3s), depois some.** No resto do vídeo, sem
   texto grande: só legenda + números/notação que ensinam algo (ex.: "25 cm", "12:00", "R U R'").
   (Corrigido pela usuária após a ficha 01: o título grande fixo da referência era o problema, não o
@@ -37,9 +39,18 @@ conflita com uma regra geral, vale a da série (está marcada).
   abertura, plano 0,7–3s. Nunca dois planos vizinhos iguais.
 - **Luz de entardecer com fonte visível + rim light quente + neblina + grão/vinheta.** Meio-tons escuros.
 - **Modelos 3D CC0 prontos (Quaternius/Kenney) em vez de primitivas.** Ver ficha 03 §8.
-- **Som: um efeito por ação, ambiente por lugar, trilha leve que corta na virada; hit na pausa DEPOIS da
-  palavra.**
+- **Som: um efeito por ação, ambiente por lugar; hit na pausa DEPOIS da palavra.** (Sem música, por decisão
+  da usuária; a "trilha que corta na virada" da referência NÃO se aplica.)
 - Rodar o **checklist de 11 pontos** (ficha 03 §6) numa folha de quadros antes do render final.
+
+### Ficha 04: 3 reels virais (medidos: cortes, transcrição, quadros)
+- **Legenda de 2–3 palavras por vez, centro da tela, palavra-chave em amarelo** (3 de 3 reels: regra estável).
+- **Animação contínua** (câmera/objetos se movendo) em vez de muitos cortes secos: 4–11 cortes detectados em
+  66–77s. O que muda a cada frase é um elemento novo entrando (ícone, número, objeto), não o plano.
+- Ritmo 2,5–3,2 p/s (o viral de 1,9M curtidas: 3,22 p/s).
+- Ganchos: "Imagina se…" (cenário hipotético) · "Fulano quer X, mas existe um problema" · "Vocês pediram…
+  notícia boa e ruim". Fim: "Marca aquele amigo que…" ou "próximo vídeo: X vs Y".
+- Estrutura "problema → solução → novo problema → nova solução" (Além do Óbvio) prende sem precisar de virada.
 
 ### Voz / TTS (medido no EP01 abelhas)
 - Voz escolhida pela usuária: **Edge TTS `pt-BR-AntonioNeural`** (preferida às vozes do
@@ -52,12 +63,12 @@ conflita com uma regra geral, vale a da série (está marcada).
   a legenda e o corte ficam sincronizados sem esticar a voz.
 - Edge TTS nesta nuvem: precisa de `--proxy "$HTTPS_PROXY"` e `SSL_CERT_FILE=/root/.ccr/ca-bundle.crt`.
 
-### Categorias de vídeo (pedido da usuária)
-| Pedido | Estilo | Referências | Status |
-|---|---|---|---|
-| "vídeo de economia" | tópico 2D de economia, **pixel art** | 5 reels em `pendentes.md` | aguardando análise (download bloqueado) |
-| "fatos gerais" | 3D cartoon, engraçado (ex.: EP01 abelhas, viral01 formiga zumbi) | — | 1 vídeo feito |
-Nunca misturar as regras de "economia" com as de "fatos gerais".
+### Formatos (pedido da usuária, 2026-11-10)
+| Formato | Estilo | Referências |
+|---|---|---|
+| viral 3D (padrão) | 3D cartoon / low-poly, engraçado ou curioso | EP01 abelhas, viral01 formiga, ficha 04 (Além do Óbvio) |
+| 2D explicativo (no máximo) | 2D plano com mascotes, fundo de cor por cena | ficha 04 (Traço Curioso) |
+| mapa explicativo | mapa de satélite + ícones/heatmaps | ficha 04 (GeoGlobeTales) |
 
 ## Série "Cubo mágico: F2L" (regras pedidas pela usuária, têm prioridade nesta série)
 - **Duração:** mínimo **exato 1:00** (pedido da usuária), máximo 1:30.
