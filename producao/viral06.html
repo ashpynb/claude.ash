@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><style>
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#8fd3ff;font-family:'Inter',sans-serif}
+canvas{display:block}
+#ui{position:absolute;inset:0;pointer-events:none}
+#titulo{position:absolute;left:50px;right:50px;top:260px;text-align:center;font:900 112px/1.0 'Inter';color:#fff;-webkit-text-stroke:16px #0e2236;paint-order:stroke fill;opacity:0}
+#titulo b{color:#FFD400}
+#leg{position:absolute;left:60px;right:60px;top:1390px;text-align:center;font:900 92px/1.05 'Inter';color:#fff;text-transform:uppercase;-webkit-text-stroke:15px #0e1622;paint-order:stroke fill}
+#leg .k{color:#FFD400}
+#etq{position:absolute;opacity:0;transform:translate(-50%,-50%)}
+#etq span{display:inline-flex;align-items:center;gap:14px;background:#fff;color:#14202c;font:800 46px 'Inter';padding:14px 30px;border-radius:999px;box-shadow:0 8px 24px #0004;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+#etq i{width:22px;height:22px;border-radius:50%;background:#ff3b3b;display:block}
+#num{position:absolute;left:0;right:0;top:300px;text-align:center;opacity:0}
+#num span{display:inline-block;background:#0e2236e6;border:6px solid #FFD400;color:#FFD400;font:900 84px 'Inter';padding:10px 40px;border-radius:999px}
+#flash{position:absolute;inset:0;background:#fff;opacity:0}#verm{position:absolute;inset:0;background:#ff3b3b;opacity:0;mix-blend-mode:multiply}
+#vin{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 60%,rgba(10,30,50,.35) 100%)}
+</style></head><body>
+<div id="ui"><div id="vin"></div><div id="titulo"></div><div id="num"><span></span></div><div id="etq"><span><i></i><b></b></span></div><div id="leg"></div><div id="verm"></div><div id="flash"></div></div>
+<script src="viral06_aviao_tempo.js"></script>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+<script type="module">
+// Viral 06 — Como um avião fica no ar. Molde "Você construiu um…" (ficha 08): 3D low-poly em dia claro,
+// avião montado peça por peça, etiqueta com o nome de cada peça, ar desviado pra baixo pela asa (NASA). Tudo por código.
+import * as THREE from 'three';
+const W=1080,H=1920,$=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),lerp=(a,b,t)=>a+(b-a)*t,ease=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2},
+ out=x=>{x=clamp(x);return 1-Math.pow(1-x,3)},back=x=>{x=clamp(x);const c=1.7;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+let sd=5;const rnd=()=>(sd=(sd*16807)%2147483647)/2147483647;
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});r.setSize(W,H);r.setPixelRatio(1);
+r.outputEncoding=THREE.sRGBEncoding;r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=1.05;r.shadowMap.enabled=true;r.shadowMap.type=THREE.PCFSoftShadowMap;document.body.prepend(r.domElement);
+const scene=new THREE.Scene();scene.fog=new THREE.Fog(0xbfe6ff,60,220);
+const cam=new THREE.PerspectiveCamera(40,W/H,.1,600);
+const C=h=>new THREE.Color(h).convertSRGBToLinear();
+const lam=(c,o={})=>new THREE.MeshLambertMaterial(Object.assign({color:C(c),flatShading:true},o));
+function mesh(g,m,p=scene,pos=[0,0,0],s=[1,1,1]){const x=new THREE.Mesh(g,m);x.position.set(...pos);x.scale.set(...s);x.castShadow=true;x.receiveShadow=true;p.add(x);return x}
+const grupo=(p=scene)=>{const g=new THREE.Group();p.add(g);return g};
+// céu
+const ceu=new THREE.Mesh(new THREE.SphereGeometry(400,32,16),new THREE.ShaderMaterial({side:THREE.BackSide,depthWrite:false,fog:false,
+ vertexShader:'varying vec3 p;void main(){p=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+ fragmentShader:'varying vec3 p;void main(){float h=clamp(p.y*1.3+.1,0.,1.);gl_FragColor=vec4(mix(vec3(.82,.93,1.),vec3(.26,.58,.95),h),1.);}'}));scene.add(ceu);
+scene.add(new THREE.HemisphereLight(C(0xe8f6ff),C(0x5a7a3a),.85));
+const sol=new THREE.DirectionalLight(C(0xfff4e0),1.6);sol.position.set(30,50,20);sol.castShadow=true;sol.shadow.mapSize.set(2048,2048);Object.assign(sol.shadow.camera,{left:-30,right:30,top:30,bottom:-30,near:1,far:150});scene.add(sol);scene.add(sol.target);
+// chão low-poly, pista, aeroporto, árvores
+const chaoG=new THREE.PlaneGeometry(600,600,60,60).rotateX(-Math.PI/2);{const p=chaoG.attributes.position;for(let i=0;i<p.count;i++){const x=p.getX(i),z=p.getZ(i);const d=Math.abs(z);p.setY(i,d<25?0:(Math.sin(x*.03)+Math.cos(z*.025))*6*clamp((d-25)/60))}chaoG.computeVertexNormals()}
+const chao=mesh(chaoG,lam(0x7cc24a));chao.castShadow=false;
+const pista=grupo();mesh(new THREE.BoxGeometry(400,.1,12),lam(0x4a4f57),pista,[0,.05,0]);for(let i=0;i<40;i++)mesh(new THREE.BoxGeometry(5,.12,.5),lam(0xffffff),pista,[-200+i*10,.06,0]);
+for(const s of [-1,1])mesh(new THREE.BoxGeometry(400,.12,.35),lam(0xffffff),pista,[0,.06,s*5.6]);
+const aeroporto=grupo();aeroporto.position.set(-60,0,-70);mesh(new THREE.BoxGeometry(30,8,12),lam(0xe8e8e8),aeroporto,[0,4,0]);mesh(new THREE.BoxGeometry(30.5,.6,12.5),lam(0x3a7bd5),aeroporto,[0,8.2,0]);
+mesh(new THREE.CylinderGeometry(1.5,1.8,16,8),lam(0xdddddd),aeroporto,[20,8,0]);mesh(new THREE.CylinderGeometry(3.2,3,3,8),lam(0x2a5a8a),aeroporto,[20,17,0]);
+for(let i=0;i<70;i++){const tr=grupo();const x=(rnd()-.5)*380,z=(rnd()<.5?-1:1)*(28+rnd()*120);tr.position.set(x,0,z);mesh(new THREE.CylinderGeometry(.3,.4,2,6),lam(0x7a5230),tr,[0,1,0]);mesh(new THREE.ConeGeometry(2,5,7),lam([0x3f8f3a,0x4fa045,0x2f7a32][i%3]),tr,[0,4.5,0]);tr.scale.setScalar(.8+rnd())}
+// nuvens
+const nuvens=[];function nuvem(x,y,z,s){const g=grupo();g.position.set(x,y,z);const m=lam(0xffffff);for(let k=0;k<5;k++)mesh(new THREE.IcosahedronGeometry(2.4+rnd()*2,0),m,g,[(k-2)*2.6,rnd()*1.5,(rnd()-.5)*2.5]);g.scale.setScalar(s);g.traverse(o=>{if(o.isMesh)o.castShadow=false});nuvens.push(g);return g}
+for(let i=0;i<40;i++)nuvem((rnd()-.5)*400,30+rnd()*25,(rnd()-.5)*300,1+rnd()*1.5);
+const marNuvens=[];for(let i=0;i<60;i++){const g=nuvem((rnd()-.5)*260,-14+rnd()*3,(rnd()-.5)*200,2+rnd()*2);marNuvens.push(g)}
+
+// ---------- avião (nariz em +x) ----------
+const A=grupo();const branco=lam(0xf4f6f8),azul=lam(0x2f6fd6),cinza=lam(0x9aa3ad),escuro=lam(0x1c2430),vidro=lam(0x2a3f5a);
+const fus=mesh(new THREE.CylinderGeometry(1.25,1.25,16,12).rotateZ(Math.PI/2),branco,A);
+const faixa=mesh(new THREE.CylinderGeometry(1.27,1.27,16,12,1,true,Math.PI*.55,Math.PI*.12).rotateZ(Math.PI/2),azul,A);
+for(let i=0;i<14;i++){mesh(new THREE.BoxGeometry(.45,.38,.05),vidro,A,[-6+i*.95,.45,1.24]);mesh(new THREE.BoxGeometry(.45,.38,.05),vidro,A,[-6+i*.95,.45,-1.24])}
+const tampa=mesh(new THREE.CylinderGeometry(1.25,1.25,.2,12).rotateZ(Math.PI/2),cinza,A,[8.1,0,0]);       // nariz "quadrado" (antes da aerodinâmica)
+const nariz=mesh(new THREE.SphereGeometry(1.25,12,10,0,Math.PI*2,0,Math.PI/2).rotateZ(-Math.PI/2),branco,A,[8,0,0],[2.1,1,1]);
+mesh(new THREE.BoxGeometry(.8,.4,1.6),vidro,A,[8.9,.55,0]);
+const cauda=mesh(new THREE.ConeGeometry(1.25,4,12).rotateZ(Math.PI/2),branco,A,[-10,.45,0],[1,1,1]);cauda.rotation.z=Math.PI/2+.12;
+function asaGeo(env,raiz,ponta,esp){const g=new THREE.BoxGeometry(raiz,esp,env);const p=g.attributes.position;for(let i=0;i<p.count;i++){const z=p.getZ(i);if(Math.abs(z)>env*.49){p.setX(i,p.getX(i)*ponta/raiz-(raiz-ponta)*.5)}}g.computeVertexNormals();return g}
+const asas=grupo(A);asas.position.set(.5,-.6,0);
+const asaE=mesh(asaGeo(9,4,1.6,.35),branco,asas,[0,0,5.2]);asaE.rotation.x=-.06;const asaD=mesh(asaGeo(9,4,1.6,.35),branco,asas,[0,0,-5.2]);asaD.rotation.x=.06;
+const ail=[];for(const s of [1,-1]){const piv=grupo(asas);piv.position.set(-1.9,0,s*8.6);const a=mesh(new THREE.BoxGeometry(.8,.12,2.4),lam(0xffb020),piv,[-.4,0,0]);ail.push(piv)}
+const motores=grupo(A);for(const s of [1,-1]){const m=grupo(motores);m.position.set(2,-1.6,s*4.4);mesh(new THREE.CylinderGeometry(.75,.6,3,12).rotateZ(Math.PI/2),cinza,m);mesh(new THREE.CylinderGeometry(.62,.62,.1,12).rotateZ(Math.PI/2),escuro,m,[1.52,0,0]);mesh(new THREE.BoxGeometry(1.2,.6,.2),branco,m,[.2,.8,0])}
+const estab=grupo(A);estab.position.set(-10.2,.9,0);for(const s of [1,-1]){const e=mesh(asaGeo(3.6,2,1,.2),branco,estab,[0,0,s*2.1])}
+const prof=grupo(estab);prof.position.set(-.9,0,0);mesh(new THREE.BoxGeometry(.5,.1,6.6),lam(0xffb020),prof,[-.25,0,0]);
+const deriva=grupo(A);deriva.position.set(-10.4,1.2,0);{const g=new THREE.BoxGeometry(3,4,.22);const p=g.attributes.position;for(let i=0;i<p.count;i++){if(p.getY(i)>0)p.setX(i,p.getX(i)*.5-1.1)}g.computeVertexNormals();mesh(g,branco,deriva,[0,2,0]);mesh(new THREE.BoxGeometry(3.05,1.1,.24),azul,deriva,[-.6,3.2,0])}
+const trem=grupo(A);for(const p of [[6,-1.9,0],[0,-2.1,1.6],[0,-2.1,-1.6]]){mesh(new THREE.CylinderGeometry(.12,.12,1,6),cinza,trem,[p[0],p[1]+.5,p[2]]);mesh(new THREE.CylinderGeometry(.45,.45,.35,12).rotateX(Math.PI/2),escuro,trem,p)}
+// cabine por dentro (pressurização): poltronas + ar
+const dentro=grupo(A);dentro.visible=false;for(let i=0;i<12;i++)for(const z of [-.6,.6])mesh(new THREE.BoxGeometry(.5,.6,.45),lam(0x3a6ad8),dentro,[-5.5+i*.9,-.4,z]);
+const vidroFus=new THREE.MeshLambertMaterial({color:C(0xf4f6f8),transparent:true,opacity:.25,flatShading:true,depthWrite:false});
+const NAR=80,arD=[];for(let i=0;i<NAR;i++){const m=mesh(new THREE.SphereGeometry(.08,6,4),new THREE.MeshBasicMaterial({color:0x7fd8ff}),dentro);m.userData={x:(rnd()-.5)*13,y:(rnd()-.5)*1.6,z:(rnd()-.5)*1.8,f:rnd()}}
+// setas (sustentação, empuxo, arrasto)
+function seta(cor){const g=grupo();g.visible=false;const m=new THREE.MeshBasicMaterial({color:cor});mesh(new THREE.CylinderGeometry(.22,.22,3,10),m,g,[0,1.5,0]);mesh(new THREE.ConeGeometry(.6,1.2,12),m,g,[0,3.6,0]);return g}
+const sSust=seta(0xffd400),sEmp=seta(0xffd400),sArr=seta(0xff4b4b);
+// manche
+const manche=grupo();manche.visible=false;mesh(new THREE.TorusGeometry(.8,.12,8,20,Math.PI*1.2),lam(0x222831),manche).rotation.z=Math.PI*-.1;mesh(new THREE.CylinderGeometry(.12,.12,1.6,8),lam(0x222831),manche,[0,-1,0]);mesh(new THREE.BoxGeometry(.5,.3,.3),lam(0xff4b4b),manche,[0,0,0]);
+// partículas de ar (linhas de corrente)
+const NP=420,pg=new THREE.BufferGeometry(),pp=new Float32Array(NP*3),pv=[];for(let i=0;i<NP;i++)pv.push([rnd(),(rnd()-.5)*6,(rnd()-.5)*20,rnd()]);
+pg.setAttribute('position',new THREE.BufferAttribute(pp,3));const ar=new THREE.Points(pg,new THREE.PointsMaterial({color:0x1e7bff,size:.32,transparent:true,opacity:.85,depthWrite:false}));scene.add(ar);
+const NF=160,fg=new THREE.BufferGeometry(),fp=new Float32Array(NF*3),fv=[];for(let i=0;i<NF;i++)fv.push([rnd(),(rnd()-.5),(rnd()-.5),rnd()]);fg.setAttribute('position',new THREE.BufferAttribute(fp,3));
+const jato=new THREE.Points(fg,new THREE.PointsMaterial({color:0xdde8f0,size:.35,transparent:true,opacity:.6,depthWrite:false}));scene.add(jato);
+// confete final
+const conf=[];for(let i=0;i<90;i++){const m=mesh(new THREE.BoxGeometry(.3,.05,.18),new THREE.MeshBasicMaterial({color:[0xff3b3b,0xffd400,0x3dd56d,0x3b8bff][i%4]}));m.visible=false;m.userData={x:(rnd()-.5)*30,z:(rnd()-.5)*20,f:rnd()};conf.push(m)}
+
+// ---------- tempo ----------
+const B=TEMPO.beats;
+const norm=w=>w.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9-]/g,'');
+function palavra(bi,a,n=1){let c=0;for(const x of B[bi].words)if(norm(x.w).startsWith(norm(a))&&++c===n)return x.t0;throw new Error('palavra '+a+' '+bi)}
+const tw=(bi,a,n)=>{try{return palavra(bi,a,n)}catch(e){return B[bi].t0+.3}};
+const CHAVE=new Set(['setenta','toneladas','pedra','asas','baixo','cima','sustentacao','motores','empuxo','duzentos','cinquenta','pista','decolagem','freia','nariz','aerodinamica','gangorra','asinha','estabilizador','horizontal','rabo','barbatana','deriva','curva','ailerons','descola','some','estol','treme','onze','quilometros','abaixo','zero','pressurizacao','parabens','aviao']);
+B.forEach(b=>{const toks=b.fala.split(' ');const ws=b.words;let wi=0;const tt=toks.map(tk=>{const n=norm(tk);for(let j=wi;j<ws.length;j++){const m=norm(ws[j].w);if(m===n||(n&&m.startsWith(n))||(m&&n.startsWith(m))){wi=j+1;return ws[j]}}return null});
+ const ch=[];let cur=[];toks.forEach((tk,i)=>{cur.push({tk,w:tt[i]});if(cur.length===3||/[.,?!:]$/.test(tk)||i===toks.length-1){ch.push(cur);cur=[]}});
+ b.chunks=ch.map(c=>({t0:(c.find(x=>x.w)||{w:{t0:b.t0}}).w.t0,html:c.map(x=>CHAVE.has(norm(x.tk))?`<span class="k">${x.tk}</span>`:x.tk).join(' ')}))});
+function legenda(b,t){let c=b.chunks[0];for(const x of b.chunks)if(x.t0<=t+.04)c=x;$('leg').innerHTML=c.html;$('leg').style.transform=`scale(${.92+.08*back((t-c.t0)/.16)})`}
+function num(txt,t0,t){if(t<t0)return;const n=$('num');n.firstChild.textContent=txt;n.style.opacity=clamp((t-t0)/.1);n.style.transform=`scale(${.6+.4*back((t-t0)/.25)})`}
+// etiqueta presa a um ponto 3D
+const V3=new THREE.Vector3();function etiqueta(txt,pt,t0,t){if(t<t0)return;V3.set(...pt).project(cam);const e=$('etq');e.querySelector('b').textContent=txt;
+ e.style.left=((V3.x+1)/2*W)+'px';e.style.top=((1-V3.y)/2*H)+'px';e.style.opacity=clamp((t-t0)/.1);e.style.transform=`translate(-50%,-50%) scale(${.6+.4*back((t-t0)/.25)})`}
+// quando cada peça é montada
+let T_ASA,T_MOT,T_NAR,T_EST,T_DER,T_AIL;
+function prep(){T_ASA=tw(1,'asas');T_MOT=tw(5,'motores');T_NAR=tw(11,'nariz');T_EST=tw(14,'asinha');T_DER=tw(17,'barbatana');T_AIL=tw(19,'abas')}prep();
+const DUR=.5;
+function encaixe(obj,tm,t,de){const k=(t-tm)/DUR;obj.visible=k>0;if(!obj.userData.p0)obj.userData.p0=obj.position.clone();const p0=obj.userData.p0;const e=1-back(k);obj.position.set(p0.x+de[0]*e,p0.y+de[1]*e,p0.z+de[2]*e)}
+// ar ao redor da asa: corrente que desce depois da asa (downwash); no estol, redemoinho em cima
+function fluxo(t,vis,{estol=0,vel=1}={}){ar.visible=vis;if(!vis)return;const ax=A.position.x,ay=A.position.y,az=A.position.z;
+ for(let i=0;i<NP;i++){const v=pv[i];const x=18-((v[0]*36+t*14*vel)%36);const y0=v[1];let y=y0;const perto=Math.exp(-y0*y0/5);
+  if(x<2.5){const k=clamp((2.5-x)/5);y=y0-2.2*perto*k*(1-estol)}
+  if(estol>0&&y0>-.5&&x<2.5&&x>-8){y+=Math.sin(x*2+t*9+i)*.8*estol;}
+  pp[i*3]=ax+x;pp[i*3+1]=ay-.4+y*.9;pp[i*3+2]=az+v[2]}
+ pg.attributes.position.needsUpdate=true}
+function fumaca(t,vis){jato.visible=vis;if(!vis)return;for(let i=0;i<NF;i++){const v=fv[i];const s=i%2?1:-1;const k=(v[0]+t*1.6)%1;fp[i*3]=A.position.x+.5-k*14;fp[i*3+1]=A.position.y-1.6+v[1]*k*1.2;fp[i*3+2]=A.position.z+s*4.4+v[2]*k*1.2}fg.attributes.position.needsUpdate=true}
+let ZOOM=2.1;function camOlha(p,a){cam.position.set(a[0]+(p[0]-a[0])*ZOOM,a[1]+(p[1]-a[1])*ZOOM,a[2]+(p[2]-a[2])*ZOOM);cam.lookAt(...a)}
+window.renderAt=(t)=>{
+ const bi0=B.findIndex(b=>t>=b.t0&&t<b.t1);const bi=bi0<0?B.length-1:bi0;const b=B[bi],u=clamp((t-b.t0)/(b.t1-b.t0)),lt=t-b.t0;
+ ['titulo','num','etq'].forEach(i=>$(i).style.opacity=0);let flash=0,verm=0;ZOOM=2.1;const ALTO=90;marNuvens.forEach((n,i)=>{if(n.userData.y0===undefined)n.userData.y0=n.position.y;n.position.y=ALTO+n.userData.y0});
+ // montagem
+ encaixe(asas,T_ASA,t,[0,6,0]);encaixe(motores,T_MOT,t,[0,-5,0]);encaixe(estab,T_EST,t,[-5,3,0]);encaixe(deriva,T_DER,t,[0,6,0]);
+ nariz.visible=t>=T_NAR;tampa.visible=t<T_NAR+.05;if(t>=T_NAR){const k=back((t-T_NAR)/.5);nariz.scale.set(2.1*k,k,k)}
+ ail.forEach(a=>a.visible=t>=T_AIL);prof.visible=t>=T_EST;
+ [sSust,sEmp,sArr,manche].forEach(o=>o.visible=false);dentro.visible=false;fus.material=branco;conf.forEach(c=>c.visible=false);
+ trem.visible=true;marNuvens.forEach(n=>n.visible=false);
+ // posição base do avião: no ar acima da pista
+ let voo=true;A.position.set(0,14,0);A.rotation.set(0,0,0);let estol=0,vel=1,mostraAr=false,mostraJato=t>=T_MOT;
+ let cp=[18,16,26],ca=[0,13.5,0];
+ switch(bi){
+  case 0:{const k=lt/1.6;A.position.set(0,lerp(40,12,ease(k)),0);A.rotation.set(lt*.6,0,-.3-lt*.4);mostraJato=false;cp=[22,8,30];ca=[0,A.position.y,0];
+   if(lt<2.6){const e=$('titulo');e.innerHTML='COMO UM AVIÃO<br><b>FICA NO AR</b>';e.style.opacity=clamp(lt/.1)*clamp((2.6-lt)/.3);e.style.transform=`scale(${.7+.3*back(lt/.3)})`}
+   if(lt>1.5&&lt<1.6)flash=.4;break}
+  case 1:{A.position.set(0,10,0);A.rotation.z=Math.sin(t*2)*.04;cp=[14,16,22];ca=[0,9,0];break}
+  case 2:{mostraAr=true;cp=[2,11.5,24];ca=[-1,9.5,0];A.position.set(0,10,0);break}
+  case 3:{mostraAr=true;A.position.set(0,10+out(lt/1)*1.2,0);sSust.visible=true;sSust.position.set(.5,A.position.y+.2,5);sSust.scale.setScalar(out(lt/.4));etiqueta('Sustentação',[.5,A.position.y+5,5],b.t0+.1,t);cp=[6,12,24];ca=[0,11,0];break}
+  case 4:{voo=false;break}
+  case 5:{voo=false;break}
+  case 6:{voo=false;sEmp.visible=true;sEmp.rotation.z=-Math.PI/2;sEmp.position.set(4,1.6+.2,4.4);sEmp.scale.setScalar(out(lt/.4));etiqueta('Empuxo',[9,3.5,4.4],b.t0+.1,t);break}
+  case 7:{voo=false;num('250 km/h',tw(7,'duzentos'),t);break}
+  case 8:{voo=false;break}
+  case 9:{voo=false;break}
+  case 10:{mostraAr=true;sArr.visible=true;sArr.rotation.z=Math.PI/2;sArr.position.set(-2,14.4,0);sArr.scale.setScalar(out(lt/.4));cp=[16,15,20];ca=[0,14,0];break}
+  case 11:{cp=[18,15,9];ca=[6,14,0];break}
+  case 12:{mostraAr=true;etiqueta('Aerodinâmica',[9,16.5,0],b.t0+.1,t);cp=[18,15,12];ca=[4,14,0];break}
+  case 13:{A.rotation.z=Math.sin(t*5)*.22;cp=[0,15,26];ca=[0,14,0];break}
+  case 14:{A.rotation.z=Math.sin(t*5)*.22*(1-clamp((t-T_EST)/1.2));cp=[-22,17,16];ca=[-8,14,0];break}
+  case 15:{A.rotation.z=0;etiqueta('Estabilizador horizontal',[-10,17,0],b.t0+.1,t);prof.rotation.z=Math.sin(t*3)*.25;cp=[-20,18,14];ca=[-8,14,0];break}
+  case 16:{A.rotation.y=Math.sin(t*5)*.16;cp=[-8,22,12];ca=[0,14,0];break}
+  case 17:{A.rotation.y=Math.sin(t*5)*.16*(1-clamp((t-T_DER)/1.2));cp=[-22,18,-14];ca=[-8,15,0];break}
+  case 18:{etiqueta('Deriva',[-11,20,0],b.t0+.1,t);cp=[-20,18,-12];ca=[-9,15,0];break}
+  case 19:{const k=ease((t-T_AIL-.6)/1.2);ail[0].rotation.z=-.5*k;ail[1].rotation.z=.5*k;A.rotation.x=-.5*k;A.rotation.y=.25*k;cp=[24,22,2];ca=[0,14,0];break}
+  case 20:{ail[0].rotation.z=-.5;ail[1].rotation.z=.5;A.rotation.x=-.5;A.rotation.y=.25+lt*.1;etiqueta('Ailerons',[-1,15.5,8.6],b.t0+.1,t);cp=[14,20,20];ca=[0,14,0];break}
+  case 21:{mostraAr=true;const td=tw(21,'descola');A.rotation.z=lerp(0,.5,ease(lt/1.2));estol=clamp((t-td)/.6);if(t>td)A.position.y=14-(t-td)*(t-td)*1.5;if(t>td&&t-td<.3)verm=.22;cp=[2,15,26];ca=[0,13,0];break}
+  case 22:{mostraAr=true;estol=1;A.rotation.z=.5;A.position.y=12-lt*.8;etiqueta('Estol',[0,A.position.y+3.5,0],b.t0+.1,t);manche.visible=t>tw(22,'manche');manche.position.set(3.8,A.position.y+1.5,9);
+   manche.rotation.set(Math.sin(t*40)*.15,0,Math.sin(t*37)*.12);cp=[4,A.position.y+2,22];ca=[0,A.position.y,0];verm=.12;break}
+  case 23:{A.position.set(0,ALTO,0);marNuvens.forEach(n=>n.visible=true);num('11 km · −50 °C',tw(23,'onze'),t);cp=[26,ALTO+6,20];ca=[0,ALTO,0];break}
+  case 24:{A.position.set(0,ALTO,0);marNuvens.forEach(n=>n.visible=true);dentro.visible=true;fus.material=vidroFus;
+   dentro.children.slice(24).forEach((m,i)=>{const d=m.userData;const k=clamp((lt-d.f*1.2)/.6);m.visible=k>0;m.position.set(d.x*k+(1-k)*8,d.y*k,d.z*k)});ZOOM=1.4;cp=[4,ALTO+3,12];ca=[0,ALTO,0];break}
+  case 25:{A.position.set(0,ALTO,0);marNuvens.forEach(n=>n.visible=true);dentro.visible=true;fus.material=vidroFus;dentro.children.slice(24).forEach(m=>{const d=m.userData;m.visible=true;m.position.set(d.x+Math.sin(t*2+d.f*9)*.1,d.y,d.z)});
+   etiqueta('Pressurização',[0,ALTO+2.6,0],b.t0+.1,t);ZOOM=1.4;cp=[5,ALTO+4,14];ca=[0,ALTO,0];break}
+  case 26:{A.position.set(0,ALTO,0);marNuvens.forEach(n=>n.visible=true);mostraAr=true;conf.forEach(c=>{const d=c.userData;c.visible=true;const k=(lt*.6+d.f)%1;c.position.set(d.x,ALTO+12-k*20,d.z);c.rotation.set(t*4+d.f*9,t*3,0)});
+   cp=[lerp(20,26,u),ALTO+lerp(6,9,u),lerp(22,16,u)];ca=[0,ALTO,0];if(lt<.1)flash=.35;break}
+ }
+ // no chão (beats 4–9): taxia, acelera e decola
+ if(!voo){trem.visible=true;let x=-40;if(bi===8){x=lerp(-40,40,ease(u))}if(bi===9){x=40+lt*30}A.position.set(x,2.5,0);
+  if(bi===9){const k=ease((lt-.4)/1.4);A.rotation.z=.15*k;A.position.y=2.5+k*k*10}
+  mostraAr=bi>=8;vel=bi>=8?1.4:0;
+  const alvo=[A.position.x,A.position.y,0];cp=bi===4?[A.position.x+18,7,22]:bi===5?[A.position.x+10,4,14]:bi===6?[A.position.x+14,4,12]:bi===7?[A.position.x+20,5,16]:bi===8?[A.position.x+10,5,20]:[A.position.x-6,6,24];ca=alvo;
+  if(bi===9)etiqueta('Decolagem',[A.position.x,A.position.y+4,0],b.t0+.3,t)}
+ else if(bi>0&&bi<23){/* voando acima da pista */}
+ fluxo(t,mostraAr&&t>=T_ASA,{estol,vel});fumaca(t,mostraJato&&bi!==0);
+ nuvens.forEach((n,i)=>{n.position.x=((n.position.x+200+(voo?0:0))%400)-200});
+ cp=[cp[0]+Math.sin(t*.5)*.6,cp[1]+Math.sin(t*.4)*.3,cp[2]];camOlha(cp,ca);
+ sol.position.set(A.position.x+30,A.position.y+50,20);sol.target.position.copy(A.position);
+ legenda(b,t);
+ for(const x of B)if(x.t0>0&&t>=x.t0&&t-x.t0<.05)flash=Math.max(flash,.12);
+ $('flash').style.opacity=flash;$('verm').style.opacity=verm;r.render(scene,cam)};
+window.TOTAL=TEMPO.total;window.EVENTOS=()=>({EV:B.map(b=>({t:b.t0,tipo:'corte'})),NOTA:[]});window.pronto=true;
+</script></body></html>
