@@ -185,6 +185,7 @@ const MOLDES={
  prob:{nome:'Problema → solução',sub:'humor',q:'Um personagem quer algo simples e cada solução cria outro problema.',ex:'"A Duda só quer levar sorvete pra casa, mas existe um problema."',dica:'"Fulano quer X, mas existe um problema." Cada fato é uma solução que cria outro problema.',destaque:'solução',formato:'problema | solução'}
 };
 const ESTILOS={
+ primitivas:{nome:'3D boneco de primitivas',sub:'novo · alvo',alvo:true,q:'Personagem de cápsulas e esferas com rosto pintado, móveis com textura, luz suave e coisas caindo com física.',ex:'Ex.: o Sérgio na cama (ficha 09).'},
  feijao:{nome:'2D cabeça de feijão',sub:'alvo',alvo:true,q:'Personagem 2D simples num cenário com luz de entardecer.',ex:'Pra "E se tu…": histórias com gente.'},
  lowpoly:{nome:'3D low-poly, dia claro',sub:'alvo',alvo:true,q:'Céu azul, grama e peças 3D facetadas montando na mesma cena.',ex:'Pra "Você é…" e "Você construiu…".'},
  iso:{nome:'Isométrico técnico',sub:'anatomy',alvo:true,q:'Papel claro, peças em tons de cinza com contorno, cartão "Fig 1".',ex:'Pra "Passo a passo" (telhado, motor, fechadura).'},
@@ -220,7 +221,7 @@ function temPers(){return estado.molde==='ese'||estado.molde==='prob'}
 function campos(){return{nicho:$('nicho').value,tema:$('tema').value,nome:$('nome').value,gancho:$('gancho').value,fatos:$('fatos').value,fecho:$('fecho').value}}
 function preencher(d){['nicho','tema','nome','gancho','fatos','fecho'].forEach(k=>{if(d[k]!==undefined)$(k).value=d[k]})}
 function chips(box,lista,chave){box.innerHTML='';Object.entries(lista).forEach(([k,v])=>{const b=document.createElement('button');b.type='button';b.className='chip';b.dataset.k=k;
- b.innerHTML=`${v.nome}${v.sub?`<small>${v.sub}</small>`:''}<span class="q">${v.q||''}</span><span class="ex">${v.ex||''}</span>`;b.setAttribute('aria-pressed',estado[chave]===k);b.onclick=()=>{estado[chave]=k;if(chave==='molde'){preencher(EXEMPLOS[k]);estado.estilo={voce:'lowpoly',construiu:'lowpoly',passo:'iso',ese:'feijao',prob:'lowpoly'}[k]}atualizar(true)};box.appendChild(b)})}
+ b.innerHTML=`${v.nome}${v.sub?`<small>${v.sub}</small>`:''}<span class="q">${v.q||''}</span><span class="ex">${v.ex||''}</span>`;b.setAttribute('aria-pressed',estado[chave]===k);b.onclick=()=>{estado[chave]=k;if(chave==='molde'){preencher(EXEMPLOS[k]);estado.estilo={voce:'lowpoly',construiu:'lowpoly',passo:'iso',ese:'primitivas',prob:'primitivas'}[k]}atualizar(true)};box.appendChild(b)})}
 
 // ---------- roteiro ----------
 const palavras=s=>s.trim().split(/\s+/).filter(Boolean).length;
@@ -258,9 +259,9 @@ function avaliar(R){
  add(ideia.length>=6,20,'Ideia em uma frase',ideia?'Ótimo: com isso eu escrevo o roteiro.':'Escreva a ideia (ex.: "ficar um mês sem se mexer na cama").');
  const casa={voce:/animais/i,ese:/sobreviv|corpo/i,construiu:/ciência/i,passo:/ciência|história/i,prob:/ciência|sobreviv/i}[estado.molde];
  add(casa.test(c.nicho),12,`Molde combina com o nicho`,casa.test(c.nicho)?'Esse par é o que mais aparece nas referências.':'Funciona, mas o molde rende mais em outro nicho.',!casa.test(c.nicho));
- const par={voce:['lowpoly','cartoon3d'],construiu:['lowpoly'],passo:['iso'],ese:['feijao','mascote'],prob:['lowpoly','feijao','mascote']}[estado.molde];
+ const par={voce:['lowpoly','cartoon3d'],construiu:['lowpoly'],passo:['iso'],ese:['primitivas','feijao','mascote'],prob:['primitivas','lowpoly','feijao','mascote']}[estado.molde];
  add(par.includes(estado.estilo),14,'Estilo combina com o molde',par.includes(estado.estilo)?'Combinação das referências que viralizaram.':`Pra "${MOLDES[estado.molde].nome}" os melhores são: ${par.map(k=>ESTILOS[k].nome).join(', ')}.`,!par.includes(estado.estilo));
- add(ESTILOS[estado.estilo].alvo,10,`Estilo: ${ESTILOS[estado.estilo].nome}`,ESTILOS[estado.estilo].alvo?'É um dos estilos-alvo das referências (de 193 mil a 1,7 mi de views).':'Funciona, mas os alvos são: cabeça de feijão, low-poly em dia claro ou isométrico.',!ESTILOS[estado.estilo].alvo);
+ add(ESTILOS[estado.estilo].alvo,10,`Estilo: ${ESTILOS[estado.estilo].nome}`,ESTILOS[estado.estilo].alvo?'É um dos estilos-alvo das referências (de 193 mil a 1,7 mi de views).':'Funciona, mas os alvos são: boneco de primitivas, cabeça de feijão, low-poly em dia claro ou isométrico.',!ESTILOS[estado.estilo].alvo);
  if(temPers()){add(!!c.nome.trim(),12,'Personagem tem nome','Nome curto e comum ("Sérgio", "Duda") faz a gente torcer por ele.');
   add(P.acessorio!=='nenhum'||P.cabelo!=='curto',8,'Personagem marcante','Um detalhe (óculos, boné, cabelo diferente) faz ele ser reconhecido no próximo vídeo.',true)}
  const g=c.gancho,gp=palavras(g);add(gp<=12,8,`Gancho cabe em 3 s (${gp} palavras)`,R.auto?'Eu escrevo um gancho de até 12 palavras.':'Até 12 palavras: a pessoa decide nos primeiros 3 segundos.');
@@ -386,7 +387,7 @@ function cenaIso(i,t){x.fillStyle='#f1f1ee';x.fillRect(0,0,W,H);x.strokeStyle='#
   x.fillStyle=r2;x.beginPath();x.moveTo(120,y);x.lineTo(0,y+60);x.lineTo(0,y+78);x.lineTo(120,y+18);x.closePath();x.fill();x.stroke()}x.restore()}
 function quadro(){const total=R.total;let t=tocando?((performance.now()-t0)/1000)%total:tPausa;if(tocando)tPausa=t;
  const i=Math.max(0,R.B.findIndex(b=>t>=b.t0&&t<b.t1));const b=R.B[i]||R.B[0];const lt=t-b.t0;
- ({feijao:cenaFeijao,lowpoly:cenaLowpoly,iso:cenaIso,cartoon3d:cena3d,mascote:cenaMascote,mapa:cenaMapa})[estado.estilo](i,t,b);
+ ({primitivas:cenaFeijao,feijao:cenaFeijao,lowpoly:cenaLowpoly,iso:cenaIso,cartoon3d:cena3d,mascote:cenaMascote,mapa:cenaMapa})[estado.estilo](i,t,b);
  if(lt<.07){x.fillStyle='#ffffff30';x.fillRect(0,0,W,H)}
  if(i===0)titulo(b.fala,t);
  if(b.tipo==='refrao'||(b.tela&&/^ESSE|^ESSA|^[A-ZÀ-Ú0-9 •]+$/.test(b.tela)&&estado.molde!=='ese'&&i>0&&b.tipo!=='fecho'))cartao(b.tela,lt/.4);

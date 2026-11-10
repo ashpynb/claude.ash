@@ -69,6 +69,16 @@ conflita com uma regra geral, vale a da série (está marcada).
   respondida → virada → cliffhanger ("Parte 2").
 - Legenda 2–3 palavras com palavra-chave amarela: **8 de 8 referências** (regra estável).
 
+### Ficha 09: 3D "boneco de primitivas" (pedido da usuária: "tenta criar esse tipo de modelo")
+- **Objetos com textura procedural, não cor chapada** (madeira, tecido, estampa, palha). A usuária
+  achou "fraco" o jeito de criar objetos; a referência ganha pela textura + luz suave + sombra de contato.
+- Personagem de **cápsulas e esferas com rosto pintado** (kit `producao/kit3d.js`); expressão muda
+  trocando o desenho do rosto, olhos piscam.
+- **Física de verdade** pra coisas caindo (cannon-es, pré-calculada).
+- **Insertos**: degradê de uma cor + disco de chão + poeirinha, um objeto grande no centro.
+- Legenda em fonte arredondada grossa (Lilita One), amarela/branca com contorno marrom.
+- Corte a cada ~3,4 s na referência (o nosso molde viral corta a cada frase, ~3,5 s: ok).
+
 ### Voz / TTS (medido no EP01 abelhas)
 - Voz escolhida pela usuária: **Edge TTS `pt-BR-AntonioNeural`** (preferida às vozes do
   OmniVoice/VoiceStudio e às femininas do Edge).

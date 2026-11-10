@@ -7,6 +7,7 @@
 | **3D com luz de cena** (entardecer, contorno, neblina, sombras suaves, desfoque) | ✅ testado | ficha 03 | dar acabamento "profissional" a qualquer um dos dois acima |
 | **Objeto 3D explicativo** (CSS 3D) | ✅ feito | série do cubo (eps. 1–3) | ensinar passo a passo com um objeto |
 | **Infográfico animado** (números contando, cartões, raio-X, linha do tempo, régua, setas) | ✅ feito em partes | formiga (régua, raio-X, linha do tempo), abelhas (contadores) | fatos com número |
+| **3D boneco de primitivas** (cápsulas, rosto pintado, texturas procedurais, física) | ✅ feito | viral07 Sérgio, ficha 09 | histórias com personagem em casa; "E se tu…" |
 | **2D plano com mascotes** (estilo Traço Curioso) | 🟡 sei fazer, ainda não fiz | ficha 04 | explicar fenômeno com metáfora (panela de pressão) |
 | **Mapa explicativo** (mapa-múndi + ícones, calor, setas de vento) | 🟡 dá pra fazer com mapa de domínio público (NASA), precisa liberar o site | ficha 04 (GeoGlobeTales) | clima, geografia, história |
 
