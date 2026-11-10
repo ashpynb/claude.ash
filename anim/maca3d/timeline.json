@@ -1,0 +1,22 @@
+{
+  "titulo": "Maca improvisada com 2 paus e 1 cobertor",
+  "duracao": 71,
+  "fps": 30,
+  "beats": [
+    {"t": 0.0,  "fim": 3.0,  "modo": "hook",    "cap": "2 PAUS + 1 COBERTOR", "sub": "Calma. Dois paus e um cobertor carregam seu amigo.", "cam": [3.2, 2.4, 3.4], "alvo": [0, 0.6, 0], "sfx": "impacto"},
+    {"t": 3.0,  "fim": 7.0,  "modo": "regra",   "cap": "ANTES: REGRA DE OURO", "sub": "Mas antes, uma regra que salva vidas.", "cam": [0.2, 1.1, 2.6], "alvo": [0, 0.2, 0], "sfx": "whoosh"},
+    {"t": 7.0,  "fim": 13.0, "modo": "regra",   "cap": "COLUNA? NÃO MEXA", "sub": "Se pode ter batida na cabeça, no pescoço ou na coluna, não mexa. Liga cento e noventa e dois.", "cam": [1.0, 1.5, 1.2], "alvo": [0, 0.1, 0.6], "sfx": "alerta", "extra": "x192"},
+    {"t": 13.0, "fim": 17.0, "modo": "regra",   "cap": "SÓ SE FOR PERIGOSO", "sub": "Só move se ficar ali for mais perigoso, ou se o socorro não consegue chegar.", "cam": [-2.4, 2.0, 2.2], "alvo": [0, 0.2, 0], "sfx": "whoosh"},
+    {"t": 17.0, "fim": 22.0, "modo": "build",   "cap": "PASSO 1: DOIS PAUS", "sub": "Passo um: dois paus fortes, mais compridos que a pessoa.", "cam": [2.6, 2.2, 2.6], "alvo": [0, 0.2, 0], "sfx": "pop", "passo": 1},
+    {"t": 22.0, "fim": 27.0, "modo": "build",   "cap": "1/3 DO COBERTOR", "sub": "Abre o cobertor no chão e põe o primeiro pau a um terço da largura.", "cam": [0.0, 3.2, 1.2], "alvo": [0, 0, 0], "sfx": "pop", "passo": 2, "extra": "tercos"},
+    {"t": 27.0, "fim": 32.0, "modo": "build",   "cap": "DOBRA POR CIMA", "sub": "Dobra esse terço por cima do pau.", "cam": [-1.8, 1.6, 2.0], "alvo": [-0.2, 0.1, 0], "sfx": "whoosh", "passo": 3},
+    {"t": 32.0, "fim": 38.0, "modo": "build",   "cap": "2º PAU NA DOBRA", "sub": "Põe o segundo pau em cima da dobra, mais ou menos na largura dos ombros.", "cam": [1.6, 1.8, 2.2], "alvo": [0.1, 0.1, 0], "sfx": "pop", "passo": 4, "extra": "ombros"},
+    {"t": 38.0, "fim": 43.0, "modo": "build",   "cap": "DOBRA O RESTO", "sub": "Agora dobra o resto do cobertor por cima de tudo.", "cam": [2.2, 1.5, 1.8], "alvo": [0.1, 0.1, 0], "sfx": "whoosh", "passo": 5},
+    {"t": 43.0, "fim": 49.0, "modo": "build",   "cap": "O PESO TRAVA O PANO", "sub": "O segredo: o peso da pessoa prende o pano. Sem nó e sem prego.", "cam": [0.0, 0.9, 3.0], "alvo": [0, 0.15, 0], "sfx": "impacto", "extra": "peso"},
+    {"t": 49.0, "fim": 53.0, "modo": "build",   "cap": "TESTA ANTES", "sub": "Testa antes com alguém que não está machucado.", "cam": [2.4, 2.0, 2.4], "alvo": [0, 0.2, 0], "sfx": "ding", "extra": "check"},
+    {"t": 53.0, "fim": 58.0, "modo": "jaqueta", "cap": "SEM COBERTOR? JAQUETAS", "sub": "Sem cobertor? Duas ou três jaquetas fechadas, mangas pra dentro, e os paus passam pelas mangas.", "cam": [2.2, 1.6, 2.4], "alvo": [0, 0.1, 0], "sfx": "whoosh"},
+    {"t": 58.0, "fim": 64.0, "modo": "carry",   "cap": "LEVANTA NO 3", "sub": "Pra carregar: um em cada canto, costas retas, e todo mundo levanta junto na contagem.", "cam": [3.4, 1.8, 3.0], "alvo": [0, 0.6, 0], "sfx": "contagem", "extra": "conta"},
+    {"t": 64.0, "fim": 68.0, "modo": "carry",   "cap": "MANDA PRO SEU GRUPO", "sub": "Agora você sabe. Manda pra quem faz trilha com você.", "cam": [-3.0, 2.2, 3.2], "alvo": [0, 0.7, 0], "sfx": "ding"},
+    {"t": 68.0, "fim": 71.0, "modo": "carry",   "cap": "2 PAUS + 1 COBERTOR", "sub": "E lembra: calma. Dois paus e um cobertor.", "cam": [3.2, 2.4, 3.4], "alvo": [0, 0.6, 0], "sfx": "impacto"}
+  ]
+}

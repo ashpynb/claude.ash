@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maca improvisada 3D</title>
+<style>
+  :root{--amarelo:#ffd23f;--verm:#ff3b3b;--verde:#2ee59d}
+  html,body{margin:0;background:#000;overflow:hidden}
+  #palco{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:"Inter Display","Inter",system-ui,sans-serif;transform-origin:0 0}
+  canvas{display:block}
+  .ov{position:absolute;pointer-events:none}
+  /* zona segura: y 230..1440, 250px livres à direita */
+  #barra{left:70px;right:250px;top:236px;height:10px;border-radius:6px;background:#ffffff33;overflow:hidden}
+  #barra i{display:block;height:100%;width:0;background:var(--amarelo)}
+  #passo{left:70px;top:270px;font-weight:900;font-size:40px;color:#111;background:var(--amarelo);padding:8px 20px;border-radius:14px;letter-spacing:1px}
+  #cap{left:70px;right:250px;top:350px;text-align:center;font-weight:900;font-size:96px;line-height:1.02;color:#fff;
+       -webkit-text-stroke:6px #000;paint-order:stroke fill;text-shadow:0 10px 0 #0008;transform-origin:50% 60%}
+  #sub{left:70px;right:250px;top:1215px;text-align:center;font-weight:800;font-size:54px;line-height:1.18;color:#fff;
+       -webkit-text-stroke:4px #000;paint-order:stroke fill}
+  #sub b{color:var(--amarelo)}
+  #card192{left:120px;top:640px;width:460px;padding:26px 0;border-radius:36px;background:var(--verm);color:#fff;font-weight:900;font-size:120px;text-align:center;box-shadow:0 16px 0 #0006}
+  #card192 small{display:block;font-size:40px;letter-spacing:2px}
+  #xis{left:610px;top:640px;font-size:230px;font-weight:900;color:var(--verm);-webkit-text-stroke:8px #000;paint-order:stroke fill;line-height:1}
+  #conta{left:70px;right:250px;top:620px;text-align:center;font-size:300px;font-weight:900;color:var(--amarelo);-webkit-text-stroke:10px #000;paint-order:stroke fill}
+  #check{left:70px;right:250px;top:600px;text-align:center;font-size:300px;font-weight:900;color:var(--verde);-webkit-text-stroke:10px #000;paint-order:stroke fill}
+  .flash{inset:0;background:#fff}
+  #vinheta{inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 55%,#0007 100%)}
+</style>
+</head>
+<body>
+<div id="palco">
+  <div id="vinheta" class="ov"></div>
+  <div id="barra" class="ov"><i></i></div>
+  <div id="passo" class="ov"></div>
+  <div id="cap" class="ov"></div>
+  <div id="card192" class="ov"><small>LIGUE</small>192</div>
+  <div id="xis" class="ov">✕</div>
+  <div id="conta" class="ov"></div>
+  <div id="check" class="ov">✓</div>
+  <div id="sub" class="ov"></div>
+  <div id="flash" class="ov flash"></div>
+</div>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+
+const TL = await (await fetch('timeline.json')).json();
+const W = 1080, H = 1920;
+const palco = document.getElementById('palco');
+
+// ---------- Renderer / cena ----------
+const renderer = new THREE.WebGLRenderer({antialias:true, preserveDrawingBuffer:true});
+renderer.setPixelRatio(1); renderer.setSize(W, H);
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+palco.prepend(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color('#9fd3f0');
+scene.fog = new THREE.Fog('#9fd3f0', 7, 18);
+const camera = new THREE.PerspectiveCamera(50, W/H, 0.05, 60);
+
+scene.add(new THREE.HemisphereLight('#e8f6ff', '#4a7a35', 1.1));
+const sol = new THREE.DirectionalLight('#fff4dd', 2.2);
+sol.position.set(3, 6, 2.5); sol.castShadow = true;
+sol.shadow.mapSize.set(1024, 1024);
+Object.assign(sol.shadow.camera, {left:-3, right:3, top:3, bottom:-3, near:1, far:15});
+scene.add(sol);
+
+// chão de grama com textura procedural
+function texCanvas(w, h, desenha){ const c=document.createElement('canvas'); c.width=w; c.height=h; desenha(c.getContext('2d'), w, h); const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; return t; }
+const grama = texCanvas(256, 256, (g, w, h) => {
+  g.fillStyle = '#5c9a3c'; g.fillRect(0,0,w,h);
+  for(let i=0;i<2500;i++){ g.fillStyle = `hsl(${95+Math.random()*25},45%,${28+Math.random()*22}%)`; g.fillRect(Math.random()*w, Math.random()*h, 2, 5); }
+});
+grama.wrapS = grama.wrapT = THREE.RepeatWrapping; grama.repeat.set(14, 14);
+const chao = new THREE.Mesh(new THREE.CircleGeometry(20, 64), new THREE.MeshStandardMaterial({map:grama, roughness:1}));
+chao.rotation.x = -Math.PI/2; chao.receiveShadow = true; scene.add(chao);
+
+// árvores de fundo (low-poly)
+const troncoMat = new THREE.MeshStandardMaterial({color:'#6b4a2b'});
+const copaMat = new THREE.MeshStandardMaterial({color:'#2f7a3a', flatShading:true});
+for(let i=0;i<14;i++){
+  const a = i/14*Math.PI*2 + 0.3, r = 6 + (i%3)*1.5;
+  const g = new THREE.Group();
+  const tr = new THREE.Mesh(new THREE.CylinderGeometry(.08,.12,1.2,8), troncoMat); tr.position.y=.6;
+  const cp = new THREE.Mesh(new THREE.ConeGeometry(.7,1.8,7), copaMat); cp.position.y=1.9;
+  g.add(tr, cp); g.position.set(Math.cos(a)*r, 0, Math.sin(a)*r); g.scale.setScalar(1 + (i%4)*.2);
+  scene.add(g);
+}
+
+// ---------- Maca: cobertor em 3 faixas + 2 paus ----------
+const xadrez = texCanvas(256, 256, (g, w, h) => {
+  g.fillStyle = '#c62f2f'; g.fillRect(0,0,w,h);
+  g.globalAlpha = .55; g.fillStyle = '#1d2b5a';
+  for(let i=0;i<w;i+=64){ g.fillRect(i,0,22,h); g.fillRect(0,i,w,22); }
+  g.globalAlpha = .5; g.fillStyle = '#ffd23f';
+  for(let i=30;i<w;i+=64){ g.fillRect(i,0,4,h); g.fillRect(0,i,w,4); }
+});
+xadrez.wrapS = xadrez.wrapT = THREE.RepeatWrapping; xadrez.repeat.set(1, 3.6);
+const panoMat = new THREE.MeshStandardMaterial({map:xadrez, roughness:.95, side:THREE.DoubleSide});
+const L = 2.0, FX = 0.6, R = 0.03; // comprimento, largura de cada terço, raio do pau
+const maca = new THREE.Group(); scene.add(maca);
+function faixa(){ const m=new THREE.Mesh(new THREE.BoxGeometry(FX, .012, L), panoMat); m.castShadow=m.receiveShadow=true; return m; }
+// faixa do meio (fixa)
+const meio = faixa(); meio.position.set(0, .006, 0); maca.add(meio);
+// faixa A (esquerda) gira em torno do pau 1 (x=-0.3)
+const pivA = new THREE.Group(); pivA.position.set(-0.3, R, 0); maca.add(pivA);
+const fA = faixa(); fA.position.set(-FX/2, -R+.006, 0); pivA.add(fA);
+// faixa C (direita) gira em torno do pau 2 (x=+0.3), acima da dobra A
+const pivC = new THREE.Group(); pivC.position.set(0.3, 0.06, 0); maca.add(pivC);
+const fC = faixa(); fC.position.set(FX/2, -0.06+.007, 0); pivC.add(fC);
+
+const madeira = new THREE.MeshStandardMaterial({color:'#8a5a2b', roughness:.8});
+function pau(){ const m=new THREE.Mesh(new THREE.CylinderGeometry(R, R, 2.4, 14), madeira); m.rotation.x=Math.PI/2; m.castShadow=true; return m; }
+const pau1 = pau(), pau2 = pau(); maca.add(pau1, pau2);
+
+// ---------- Jaquetas (método alternativo) ----------
+const jaq = new THREE.Group(); scene.add(jaq);
+const jaqMats = ['#2d6cdf','#2fae5f','#e2832b'].map(c => new THREE.MeshStandardMaterial({color:c, roughness:.9}));
+const paus3 = [pau(), pau()]; paus3[0].position.x=-0.3; paus3[1].position.x=0.3; jaq.add(...paus3);
+const jaquetas = [];
+for(let i=0;i<3;i++){
+  const g = new THREE.Group();
+  const corpo = new THREE.Mesh(new THREE.BoxGeometry(.62, .05, .6), jaqMats[i]); corpo.castShadow = corpo.receiveShadow = true; corpo.position.y=.035;
+  g.add(corpo);
+  for(const sx of [-.3,.3]){ const m=new THREE.Mesh(new THREE.CylinderGeometry(.055,.055,.6,12,1,true), jaqMats[i]); m.material.side=THREE.DoubleSide; m.rotation.x=Math.PI/2; m.position.set(sx,.03,0); m.castShadow=true; g.add(m); }
+  g.position.z = (i-1)*.62; jaq.add(g); jaquetas.push(g);
+}
+
+// ---------- Bonecos ----------
+const peleMat = new THREE.MeshStandardMaterial({color:'#e9b48c', roughness:.7});
+function boneco(cor){
+  const roupa = new THREE.MeshStandardMaterial({color:cor, roughness:.8});
+  const calca = new THREE.MeshStandardMaterial({color:'#2b2f3a', roughness:.8});
+  const g = new THREE.Group(), p = {};
+  const mk = (geo, mat, x, y, z) => { const m=new THREE.Mesh(geo, mat); m.position.set(x,y,z); m.castShadow=true; g.add(m); return m; };
+  p.tronco = mk(new THREE.CapsuleGeometry(.17,.42,6,12), roupa, 0, 1.1, 0);
+  p.cabeca = mk(new THREE.SphereGeometry(.13,20,16), peleMat, 0, 1.58, 0);
+  p.pernaE = mk(new THREE.CapsuleGeometry(.075,.62,4,10), calca, -.09, .43, 0);
+  p.pernaD = mk(new THREE.CapsuleGeometry(.075,.62,4,10), calca, .09, .43, 0);
+  // braços com pivô no ombro
+  for(const [k,sx] of [['bracoE',-.25],['bracoD',.25]]){
+    const piv = new THREE.Group(); piv.position.set(sx, 1.33, 0); g.add(piv);
+    const b = new THREE.Mesh(new THREE.CapsuleGeometry(.055,.5,4,10), roupa); b.position.y = -.3; b.castShadow = true; piv.add(b);
+    p[k] = piv;
+  }
+  g.userData.p = p; return g;
+}
+const vitima = boneco('#f2f2f2'); scene.add(vitima);
+const carregadores = [['#ff7a00',-0.3,-1.38,0],['#3a7bff',0.3,-1.38,0],['#8e44ff',-0.3,1.38,Math.PI],['#00a88f',0.3,1.38,Math.PI]].map(([c,x,z,ry]) => {
+  const b = boneco(c); b.userData.base = {x,z,ry}; scene.add(b); return b;
+});
+
+// seta de peso
+const seta = new THREE.ArrowHelper(new THREE.Vector3(0,-1,0), new THREE.Vector3(0,1.25,0), .7, 0xffd23f, .22, .16);
+seta.line.material.linewidth = 4; scene.add(seta);
+// anel de alerta (pescoço/coluna)
+const anel = new THREE.Mesh(new THREE.TorusGeometry(.22,.025,10,40), new THREE.MeshBasicMaterial({color:'#ff3b3b'}));
+anel.rotation.x = -Math.PI/2; scene.add(anel);
+// marcas de terços
+const marcas = new THREE.Group(); scene.add(marcas);
+for(const x of [-0.3, 0.3]){
+  const m = new THREE.Mesh(new THREE.BoxGeometry(.012,.002,L+.2), new THREE.MeshBasicMaterial({color:'#ffffff'})); m.position.set(x,.02,0); marcas.add(m);
+}
+
+// ---------- Utilidades de tempo ----------
+const clamp = (v,a=0,b=1) => Math.min(b, Math.max(a, v));
+const k = (t,a,b) => clamp((t-a)/(b-a));
+const ease = x => x<.5 ? 4*x*x*x : 1-Math.pow(-2*x+2,3)/2;
+const back = x => { const c1=1.70158, c3=c1+1; return 1 + c3*Math.pow(x-1,3) + c1*Math.pow(x-1,2); };
+const lerp = (a,b,x) => a + (b-a)*x;
+const beatEm = t => TL.beats.find(b => t >= b.t && t < b.fim) || TL.beats[TL.beats.length-1];
+
+// pose do boneco deitado sobre a maca (ao longo de z)
+function deitar(b, y){ b.rotation.set(-Math.PI/2, 0, 0); b.position.set(0, y + .17, .78); }
+function emPe(b){ b.rotation.set(0,0,0); }
+
+// ---------- Estado da cena em função de t ----------
+const elCap=document.getElementById('cap'), elSub=document.getElementById('sub'), elPasso=document.getElementById('passo'),
+      elBar=document.querySelector('#barra i'), el192=document.getElementById('card192'), elX=document.getElementById('xis'),
+      elConta=document.getElementById('conta'), elCheck=document.getElementById('check'), elFlash=document.getElementById('flash');
+
+let camPos = new THREE.Vector3(), camAlvo = new THREE.Vector3();
+function camEm(t){
+  const i = TL.beats.indexOf(beatEm(t)), b = TL.beats[i], a = TL.beats[Math.max(0,i-1)];
+  const x = ease(k(t, b.t, b.t + .7));
+  const P = new THREE.Vector3(...a.cam).lerp(new THREE.Vector3(...b.cam), i===0?1:x);
+  const A = new THREE.Vector3(...a.alvo).lerp(new THREE.Vector3(...b.alvo), i===0?1:x);
+  // deriva lenta contínua (nunca parado) + punch-in no início do beat
+  const d = (t - b.t);
+  P.applyAxisAngle(new THREE.Vector3(0,1,0), d*0.035);
+  const punch = 1 - 0.06*Math.exp(-d*5) ;
+  P.sub(A).multiplyScalar(1.35 * punch * (1 - d*0.008)).add(A);
+  return [P, A];
+}
+
+function seek(t){
+  const b = beatEm(t), modo = b.modo, d = t - b.t;
+
+  // --- maca ---
+  let dobraA = 1, dobraC = 1, p2y = 0.09, mostraMaca = true, ergue = 0;
+  if(modo === 'regra' || modo === 'jaqueta') mostraMaca = false;
+  if(modo === 'build'){
+    dobraA = ease(k(t, 28, 30.5));
+    p2y = lerp(1.4, 0.09, ease(k(t, 33, 34.6)));
+    dobraC = ease(k(t, 39, 41.5));
+  }
+  if(modo === 'hook') ergue = lerp(.45, .75, back(k(t, 0, 1.0)));
+  if(modo === 'carry') ergue = back(k(t, 62.2, 63.4)) * .75;
+  maca.visible = mostraMaca;
+  // paus entram caindo no passo 1
+  const caiP1 = modo==='build' ? ease(k(t, 17.6, 18.8)) : 1;
+  const caiP2 = modo==='build' ? ease(k(t, 18.4, 19.6)) : 1;
+  // cobertor aparece no passo 2 (antes disso só os paus, lado a lado)
+  const temPano = !(modo==='build' && t < 22.6);
+  meio.visible = fA.visible = fC.visible = temPano;
+  const abre = modo==='build' ? ease(k(t, 22.6, 24)) : 1;
+  maca.scale.set(1, 1, temPano ? lerp(.15, 1, abre) : 1);
+  if(modo==='build' && t < 22.6){ // paus soltos no passo 1
+    pau1.position.set(-0.45, lerp(1.6, R, caiP1), 0); pau2.position.set(0.45, lerp(1.6, R, caiP2), 0);
+  } else {
+    pau1.position.set(-0.3, R, 0);
+    const p2visivel = !(modo==='build' && t < 33);
+    pau2.visible = p2visivel;
+    pau2.position.set(0.3, modo==='build' ? p2y : 0.09, 0);
+  }
+  if(!(modo==='build' && t < 33)) pau2.visible = true;
+  if(modo==='build' && t >= 22.6 && t < 33) pau2.visible = false;
+  pivA.rotation.z = -Math.PI * dobraA;
+  pivC.rotation.z = Math.PI * dobraC;
+  maca.position.y = ergue;
+  marcas.visible = (b.extra === 'tercos');
+  marcas.children.forEach((m,i) => m.scale.z = ease(k(t, 23.6 + i*.3, 24.8 + i*.3)));
+
+  // --- vítima ---
+  vitima.visible = true;
+  if(modo === 'regra'){
+    vitima.rotation.set(-Math.PI/2, 0, 0); vitima.position.set(0, .17, .78);
+  } else if(modo === 'hook' || modo === 'carry'){
+    deitar(vitima, ergue + .12);
+  } else if(modo === 'build' && t >= 43.3){
+    const desce = ease(k(t, 43.3, 44.6));
+    deitar(vitima, .12 + (1-desce)*.8);
+  } else vitima.visible = false;
+  if(modo === 'jaqueta') vitima.visible = false;
+
+  // --- carregadores ---
+  const vis = (modo === 'hook' || modo === 'carry');
+  carregadores.forEach((c, i) => {
+    c.visible = vis; const {x,z,ry} = c.userData.base, p = c.userData.p;
+    c.position.set(x, 0, z); c.rotation.set(0, ry, 0);
+    const agach = 1 - (ergue/.75); // 1 = agachado
+    // agachar: pernas encurtam, corpo desce, tronco inclina
+    p.pernaE.scale.y = p.pernaD.scale.y = lerp(1, .55, agach);
+    p.pernaE.position.y = p.pernaD.position.y = lerp(.43, .26, agach);
+    const desc = lerp(0, .38, agach);
+    p.tronco.position.y = 1.1 - desc; p.cabeca.position.y = 1.58 - desc;
+    p.bracoE.position.y = p.bracoD.position.y = 1.33 - desc;
+    // braços apontando para a ponta do pau
+    p.bracoE.rotation.x = p.bracoD.rotation.x = lerp(.75, .9, agach);
+    c.rotation.x = 0;
+    // caminhada leve no fim
+    if(modo === 'carry' && t > 64){ const w = Math.sin((t-64)*7)*.25; p.pernaE.rotation.x = w; p.pernaD.rotation.x = -w; c.position.z += (t-64)*.05*(z<0?1:1); }
+    else { p.pernaE.rotation.x = p.pernaD.rotation.x = 0; }
+  });
+  if(modo === 'carry' && t > 64){ const avanco=(t-64)*.05; maca.position.z = avanco; vitima.position.z += avanco; }
+  else maca.position.z = 0;
+
+  // --- jaquetas ---
+  jaq.visible = (modo === 'jaqueta');
+  if(jaq.visible){
+    jaquetas.forEach((j,i) => { const e = ease(k(t, 53.3 + i*.45, 54.1 + i*.45)); j.position.y = (1-e)*1.2; j.rotation.y = (1-e)*1.2; });
+    const ent = ease(k(t, 55.2, 57.2)); paus3.forEach(p => { p.position.z = lerp(-3.2, 0, ent); p.position.y = .03; });
+  }
+
+  // --- extras 3D ---
+  seta.visible = (b.extra === 'peso');
+  if(seta.visible){ const y = 1.25 + Math.sin(t*6)*.05; seta.position.set(0, y, 0); }
+  anel.visible = (modo === 'regra' && t >= 7 && t < 13);
+  anel.position.set(0, .03, .2); anel.scale.setScalar(1 + .15*Math.sin(t*8));
+
+  // --- câmera ---
+  const [P, A] = camEm(t);
+  // tremida de impacto
+  const choque = (b.sfx === 'impacto') ? Math.exp(-d*6)*.04 : 0;
+  const lift = (modo==='carry') ? Math.exp(-Math.abs(t-62.3)*6)*.05 : 0;
+  P.x += Math.sin(t*90)*(choque+lift); P.y += Math.cos(t*77)*(choque+lift);
+  camera.position.copy(P); camera.lookAt(A);
+
+  // --- overlays ---
+  elBar.style.width = (t / TL.duracao * 100).toFixed(2) + '%';
+  elPasso.style.display = b.passo ? 'block' : 'none';
+  if(b.passo) elPasso.textContent = `PASSO ${b.passo}/5`;
+  const pop = back(k(t, b.t, b.t + .35));
+  elCap.innerHTML = b.cap.replace(/(\d+\/?\d*º?|NÃO|192)/g, '<span style="color:var(--amarelo)">$1</span>');
+  elCap.style.transform = `scale(${lerp(.6, 1, pop)}) rotate(${lerp(-4,0,pop)}deg)`;
+  elCap.style.opacity = clamp(d/.12);
+  // legenda: palavra a palavra com destaque na atual
+  const palavras = b.sub.split(' ');
+  const dur = (b.fim - b.t) - .4;
+  const n = Math.min(palavras.length, Math.floor(clamp(d/dur) * palavras.length) + 1);
+  elSub.innerHTML = palavras.map((p,i) => i < n-1 ? p : i === n-1 ? `<b>${p}</b>` : `<span style="opacity:0">${p}</span>`).join(' ');
+  el192.style.display = elX.style.display = (b.extra === 'x192') ? 'block' : 'none';
+  if(b.extra === 'x192'){ const s = back(k(t, 9.2, 9.6)); el192.style.transform = `scale(${s})`; elX.style.transform = `scale(${back(k(t,7.3,7.7))})`; }
+  elConta.style.display = 'none';
+  if(b.extra === 'conta'){
+    const num = t < 59.5 ? '' : t < 60.5 ? '1' : t < 61.5 ? '2' : t < 62.6 ? '3' : 'JÁ!';
+    if(num){ elConta.style.display='block'; elConta.textContent=num; const f=(t-59.5)%1; elConta.style.transform=`scale(${lerp(1.4,1,ease(clamp(f/.25)))})`; elConta.style.fontSize = num==='JÁ!'?'220px':'300px'; }
+  }
+  elCheck.style.display = (b.extra === 'check' && t > 50.8) ? 'block' : 'none';
+  if(elCheck.style.display==='block') elCheck.style.transform = `scale(${back(k(t,50.8,51.2))})`;
+  // flash branco de 2 quadros nos impactos
+  elFlash.style.opacity = (b.sfx === 'impacto' && d < 0.067) ? .85 : (modo==='carry' && Math.abs(t-62.6) < .034 ? .6 : 0);
+
+  renderer.render(scene, camera);
+}
+
+window.seek = seek;
+window.TL = TL;
+window.pronto = true;
+
+// prévia ao vivo (sem ?gravar): toca em tempo real e cabe na janela
+const q = new URLSearchParams(location.search);
+if(!q.has('gravar')){
+  const esc = Math.min(innerWidth / W, innerHeight / H); palco.style.transform = `scale(${esc})`;
+  const t0 = performance.now() - (+(q.get('t')||0))*1000;
+  (function loop(){ seek(((performance.now()-t0)/1000) % TL.duracao); requestAnimationFrame(loop); })();
+} else if(q.has('t')) seek(+q.get('t'));
+</script>
+</body>
+</html>
