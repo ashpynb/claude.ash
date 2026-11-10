@@ -149,3 +149,31 @@ export function simular(objs,{chaoY=0,estaticos=[],dur=4,dt=1/120}={}){
 export function poeira(n=60,cor='#ffe6b0'){const g=new THREE.BufferGeometry();const p=new Float32Array(n*3);for(let i=0;i<n;i++){p[i*3]=(hash(i)-.5)*8;p[i*3+1]=hash(i+3)*8;p[i*3+2]=(hash(i+5)-.5)*4-1}
  g.setAttribute('position',new THREE.BufferAttribute(p,3));const pts=new THREE.Points(g,new THREE.PointsMaterial({color:lin(cor),size:.05,transparent:true,opacity:.8}));pts.userData.base=p.slice();return pts}
 export function animaPoeira(pts,t){const a=pts.geometry.attributes.position,b=pts.userData.base;for(let i=0;i<a.count;i++){a.array[i*3+1]=((b[i*3+1]+t*.15+Math.sin(t+i)*.05)%8);a.array[i*3]=b[i*3]+Math.sin(t*.5+i)*.08}a.needsUpdate=true}
+
+// ---------- ficha 10: corte transversal, etiquetas, câmera em trilha ----------
+// corte(renderer, grupo, plano): recorta todos os materiais do grupo no plano (mostra o lado de dentro).
+// Ex.: corte(r, terreno, new THREE.Plane(new THREE.Vector3(0,0,-1), 0)) corta tudo com z > 0.
+export function corte(r,grupo,plano){r.localClippingEnabled=true;grupo.traverse(o=>{if(!o.isMesh)return;const ms=Array.isArray(o.material)?o.material:[o.material];
+ o.material=ms.map(m=>{const c=m.clone();c.clippingPlanes=[plano];c.clipShadows=true;c.side=THREE.DoubleSide;return c});if(o.material.length===1)o.material=o.material[0]})}
+// face de corte: textura de terra/parede no plano de corte (põe no lugar do que foi cortado)
+// furos: [[x0,y0,x1,y1],...] em coordenadas da face (centro em 0,0) pra deixar ver o que está cortado por dentro
+export function faceCorte(w,h,tipo='terra',furos=[]){const t=tex(512,512,(g,W,H)=>{if(tipo==='terra'){g.fillStyle='#7a3a22';g.fillRect(0,0,W,H);for(let i=0;i<900;i++){g.fillStyle=`rgba(${hash(i)>.5?'40,15,5':'150,80,50'},${.25+hash(i+1)*.3})`;g.beginPath();g.arc(hash(i+2)*W,hash(i+3)*H,1+hash(i+4)*4,0,7);g.fill()}}
+  else{g.fillStyle='#d9d4c8';g.fillRect(0,0,W,H);g.strokeStyle='rgba(0,0,0,.12)';for(let y=0;y<H;y+=32){g.beginPath();g.moveTo(0,y);g.lineTo(W,y);g.stroke()}}});t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(.25,.25);
+ const sh=new THREE.Shape();sh.moveTo(-w/2,-h/2);sh.lineTo(w/2,-h/2);sh.lineTo(w/2,h/2);sh.lineTo(-w/2,h/2);sh.closePath();
+ furos.forEach(([x0,y0,x1,y1])=>{const f=new THREE.Path();f.moveTo(x0,y0);f.lineTo(x0,y1);f.lineTo(x1,y1);f.lineTo(x1,y0);f.closePath();sh.holes.push(f)});
+ return new THREE.Mesh(new THREE.ShapeGeometry(sh),new THREE.MeshStandardMaterial({map:t,roughness:.95}))}
+// etiquetas: pílula branca com ponto colorido que segue um ponto 3D (HTML por cima do canvas)
+const ETQ=[];
+export function etiqueta(texto,alvo,{cor='#e8503c',dy=0}={}){const e=document.createElement('div');e.className='etq';e.innerHTML=`<i style="background:${cor}"></i>${texto}`;
+ Object.assign(e.style,{position:'absolute',left:0,top:0,display:'flex',alignItems:'center',gap:'12px',background:'#fff',color:'#1b1626',font:"34px 'Lilita','Inter',sans-serif",padding:'10px 22px 12px',borderRadius:'40px',boxShadow:'0 8px 0 rgba(0,0,0,.25)',opacity:0,whiteSpace:'nowrap',pointerEvents:'none'});
+ e.firstChild&&Object.assign(e.firstChild.style,{display:'inline-block',width:'18px',height:'18px',borderRadius:'50%'});document.body.appendChild(e);const o={e,alvo,dy,t0:null};ETQ.push(o);return o}
+// chamar depois de posicionar a câmera, a cada quadro: mostra as etiquetas cujo t0 <= t
+export function atualizaEtiquetas(cam,t,W,H){const v=new THREE.Vector3();for(const o of ETQ){if(o.t0===null||t<o.t0||(o.t1&&t>o.t1)){o.e.style.opacity=0;continue}
+ (o.alvo.isObject3D?o.alvo.getWorldPosition(v):v.copy(o.alvo));v.y+=o.dy;v.project(cam);if(v.z>1){o.e.style.opacity=0;continue}const k=clamp((t-o.t0)/.25);
+ o.e.style.opacity=clamp((t-o.t0)/.1);o.e.style.transform=`translate(${(v.x*.5+.5)*W}px,${(-v.y*.5+.5)*H}px) translate(-50%,-100%) scale(${.5+.5*back(k)})`}}
+// câmera em trilha: pontos [[x,y,z],...] e alvos; u de 0 a 1 percorre a curva (voo contínuo)
+export function trilha(pontos,alvos){const c=new THREE.CatmullRomCurve3(pontos.map(p=>new THREE.Vector3(...p)),false,'centripetal');const a=new THREE.CatmullRomCurve3(alvos.map(p=>new THREE.Vector3(...p)),false,'centripetal');
+ return (cam,u)=>{u=clamp(u);cam.position.copy(c.getPointAt(u));cam.lookAt(a.getPointAt(u))}}
+// muitas cópias baratas (carros, árvores): InstancedMesh com lista de [x,y,z,rotY,escala]
+export function copias(geo,m,lista){const im=new THREE.InstancedMesh(geo,m,lista.length);im.castShadow=im.receiveShadow=true;const M=new THREE.Matrix4(),Q=new THREE.Quaternion(),E=new THREE.Euler();
+ lista.forEach((p,i)=>{E.set(0,p[3]||0,0);Q.setFromEuler(E);M.compose(new THREE.Vector3(p[0],p[1],p[2]),Q,new THREE.Vector3().setScalar(p[4]||1));im.setMatrixAt(i,M)});return im}

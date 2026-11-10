@@ -79,6 +79,14 @@ conflita com uma regra geral, vale a da série (está marcada).
 - Legenda em fonte arredondada grossa (Lilita One), amarela/branca com contorno marrom.
 - Corte a cada ~3,4 s na referência (o nosso molde viral corta a cada frase, ~3,5 s: ok).
 
+### Ficha 10: três TikToks (pedágio 943 mil, 1 trilhão 690 mil, casa x tornado 608 mil views)
+- **"Você construiu um…" em 3D usa corte transversal** (terreno cortado como bolo) pra mostrar o
+  mecanismo escondido, e **etiquetas presas no objeto** ("• PAGOU") quando o nome é falado.
+- **Câmera que voa sem cortar** dentro do mesmo cenário + borrão de movimento nas passagens.
+- **Escala absurda** (molde novo): cada número vira objeto/contador (pilha até o espaço, balança,
+  calendário correndo, personagem envelhecendo). Fecha com pergunta pro público.
+- Ritmo medido: 2,5–3,1 p/s; seguimos 3,2.
+
 ### Voz / TTS (medido no EP01 abelhas)
 - Voz escolhida pela usuária: **Edge TTS `pt-BR-AntonioNeural`** (preferida às vozes do
   OmniVoice/VoiceStudio e às femininas do Edge).

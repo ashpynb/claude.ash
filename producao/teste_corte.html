@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><style>
+@font-face{font-family:'Lilita';src:url(vendor/fonts/LilitaOne.woff2) format('woff2')}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#8fd0ff}canvas{display:block;position:absolute;inset:0}
+</style></head><body>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+<script type="module">
+// Demonstração do kit (ficha 10): terreno em corte, casa sobre pistões, etiquetas, árvores em InstancedMesh, câmera em trilha.
+import {THREE,lin,mat,G,malha,criarRender,corte,faceCorte,etiqueta,atualizaEtiquetas,trilha,copias,T,ease} from './kit3d.js';
+const W=1080,H=1920;const {r,env}=criarRender(W,H);const cena=new THREE.Scene();cena.environment=env;cena.background=T.grad('#5fb6ff','#d6f0ff');
+const cam=new THREE.PerspectiveCamera(34,W/H,.1,300);
+cena.add(new THREE.HemisphereLight(lin('#ffffff'),lin('#5a7a4a'),.6));const sol=new THREE.DirectionalLight(lin('#fff1dc'),1.6);sol.position.set(8,14,10);sol.castShadow=true;sol.shadow.mapSize.set(2048,2048);
+Object.assign(sol.shadow.camera,{left:-12,right:12,top:12,bottom:-12});sol.shadow.radius=5;cena.add(sol);
+// terreno: bloco de terra com o poço; cortado no plano z=0 (a frente some, vemos o lado de dentro)
+const terreno=new THREE.Group();cena.add(terreno);
+const grama=malha(G.cx(30,.3,30,.02),mat('#5bbf4a'));grama.position.y=-.15;terreno.add(grama);
+const terra=malha(G.cx(30,8,30,.02),mat('#7a3a22',{rough:1}));terra.position.y=-4.3;terreno.add(terra);
+corte(r,terreno,new THREE.Plane(new THREE.Vector3(0,0,-1),0));
+const face=faceCorte(30,8.3,'terra',[[-3.25,-1.95,3.25,4.15]]);face.position.set(0,-4.15,0);cena.add(face);
+// poço de concreto (aberto na frente)
+const poco=new THREE.Group();cena.add(poco);const conc=mat('#cfcac0',{rough:.9});
+[[-3.1,0],[3.1,0]].forEach(([x])=>{const p=malha(G.cx(.25,6,6,.02),conc);p.position.set(x,-3,-3);poco.add(p)});const fundo=malha(G.cx(6.4,.25,6,.02),conc);fundo.position.set(0,-6,-3);poco.add(fundo);const tras=malha(G.cx(6.4,6,.25,.02),conc);tras.position.set(0,-3,-6);poco.add(tras);
+// pistões
+const pist=[];[-2,2].forEach(x=>{const cil=malha(G.cil(.3,.3,3.2,24),mat('#2b2b3a',{metal:.6,rough:.3}));cil.position.set(x,-4.4,-2.5);poco.add(cil);const haste=malha(G.cil(.16,.16,3.2,20),mat('#e8e8ee',{metal:.9,rough:.15}));haste.position.set(x,-1.8,-2.5);poco.add(haste);pist.push(haste)});
+// casinha
+const casa=new THREE.Group();casa.position.set(0,-.1,-3);cena.add(casa);const piso=malha(G.cx(5.9,.3,5.8,.03),mat('#9aa0ad',{metal:.4}));piso.position.y=-.15;casa.add(piso);const corpo=malha(G.cx(4.4,3,4.4,.05),mat('#e9dcc2',{rough:.9}));corpo.position.y=1.5;casa.add(corpo);
+const tel=malha(new THREE.ConeGeometry(3.6,1.8,4),mat('#d9482b',{rough:.7}));tel.rotation.y=Math.PI/4;tel.position.y=3.9;casa.add(tel);
+[[-1.1,1.9],[1.1,1.9]].forEach(([x,y])=>{const j=malha(G.cx(.9,.9,.1,.03),mat('#3f8fe0',{rough:.2}));j.position.set(x,y,2.22);casa.add(j)});const porta=malha(G.cx(.8,1.4,.1,.03),mat('#2f6fc0'));porta.position.set(0,.7,2.22);casa.add(porta);
+// árvores em InstancedMesh
+const tr=[];for(let i=0;i<60;i++){const a=i*2.4,rr=9+(i%7)*1.6;tr.push([Math.cos(a)*rr,0,-Math.abs(Math.sin(a))*rr-4,0,.8+(i%3)*.25])}
+const copa=copias(G.esf(1,12),mat('#2f8a3a',{rough:.9}),tr.map(p=>[p[0],2.2*p[4],p[2],0,p[4]]));cena.add(copa);const tronco=copias(G.cil(.18,.22,1.6,8),mat('#6b4028'),tr.map(p=>[p[0],.8*p[4],p[2],0,p[4]]));cena.add(tronco);
+// etiquetas
+const e1=etiqueta('PISTÃO HIDRÁULICO',pist[1],{dy:-1.2}),e2=etiqueta('POÇO DE CONCRETO',new THREE.Vector3(-2.2,-5.6,-1),{cor:'#3ddc97'});e1.t0=0;e2.t0=0;
+const voo=trilha([[0,9,30],[4,3,24],[2,-.5,19]],[[0,2,-4],[0,0,-3],[0,-2.4,-3]]);
+window.renderAt=t=>{const u=ease(t/3);voo(cam,u);const desce=ease(Math.max(0,t-1)/2)*5.6;casa.position.y=-.1-desce;pist.forEach(h=>h.position.y=-1.8-desce);r.render(cena,cam);atualizaEtiquetas(cam,t,W,H)};
+window.pronto=true;
+</script></body></html>
