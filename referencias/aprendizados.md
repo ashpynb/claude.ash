@@ -19,6 +19,11 @@ conflita com uma regra geral, vale a da série (está marcada).
 - Elementos no meio da tela só quando ensinam algo que a fala sozinha não mostra
   (contador, quiz, notação do cubo).
 
+### Gancho e CTA (ficha 01, 1 referência — confirmar em mais vídeos)
+- Gancho de **dor do espectador em pergunta** nos primeiros ~3,5s ("Sabe quando você…?").
+- CTA de **palavra-chave nos comentários** ("comenta X") funciona melhor que "me segue" no fim.
+- Ritmo da referência: 3,4 p/s (confirma o ritmo viral ~3,2–3,4).
+
 ### Voz / TTS (medido no EP01 abelhas)
 - Voz escolhida pela usuária: **Edge TTS `pt-BR-AntonioNeural`** (preferida às vozes do
   OmniVoice/VoiceStudio e às femininas do Edge).
