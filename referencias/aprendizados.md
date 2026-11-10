@@ -52,6 +52,13 @@ conflita com uma regra geral, vale a da série (está marcada).
   notícia boa e ruim". Fim: "Marca aquele amigo que…" ou "próximo vídeo: X vs Y".
 - Estrutura "problema → solução → novo problema → nova solução" (Além do Óbvio) prende sem precisar de virada.
 
+### Ficha 05: molde "Você é…" (2 referências com o mesmo molde; 1 com 200 mil curtidas)
+- Abrir em **2ª pessoa com o nome chocante/engraçado** ("Você é uma Maria-sem-vergonha…").
+- Cada fato → **"Esse é seu [objeto do dia a dia]."**, e o objeto **aparece na tela** (+ cartão amarelo curto).
+- Fecho: **"Chamam de [nome] quem [sentido ruim]. Mas você [feitos]."** → repete a 1ª frase (loop).
+- Nesse molde o ritmo é mais calmo: 2,4–2,6 p/s, cortes a cada ~2 s.
+- Credibilidade: nome científico e estudo em letra pequena; cartão de número ("6 kg por ano").
+
 ### Voz / TTS (medido no EP01 abelhas)
 - Voz escolhida pela usuária: **Edge TTS `pt-BR-AntonioNeural`** (preferida às vozes do
   OmniVoice/VoiceStudio e às femininas do Edge).
