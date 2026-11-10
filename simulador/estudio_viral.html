@@ -1,0 +1,313 @@
+<title>Estúdio Viral</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: mesa de edição noturna — controles à esquerda, celular tocando a prévia no centro, roteiro e nota à direita.
+   Visual comprometido com um só tema escuro (a "ilha de edição"), cores do estilo-alvo: entardecer roxo/laranja + amarelo de legenda. */
+:root{
+ color-scheme:dark;
+ --bg:#14111c; --painel:#1d1928; --painel2:#262035; --linha:#3a3150; --fg:#f2eef8; --fg2:#b9b0cc; --fg3:#8a809e;
+ --amarelo:#ffd400; --laranja:#ff8a3d; --roxo:#7b5cff; --ok:#3ddc97; --alerta:#ffb020; --ruim:#ff5d6c;
+ --f-titulo:'Bricolage Grotesque','Inter',system-ui,sans-serif; --f-texto:'Inter',system-ui,sans-serif; --f-dado:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.5 var(--f-texto);padding-block:24px 48px;
+ padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{max-width:1280px;margin:0 auto 20px;display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 18px}
+h1{font:800 34px/1.05 var(--f-titulo);margin:0;letter-spacing:-.5px;text-wrap:balance}
+h1 span{color:var(--amarelo)}
+header p{margin:0;color:var(--fg2);max-width:62ch}
+.mesa{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:minmax(0,330px) minmax(0,390px) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:1100px){.mesa{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.col-dir{grid-column:1/-1}}
+@media (max-width:720px){.mesa{grid-template-columns:minmax(0,1fr)}}
+.bloco{background:var(--painel);border:1px solid var(--linha);border-radius:14px;padding:16px;min-width:0}
+.bloco h2{font:700 12px/1 var(--f-dado);letter-spacing:1.5px;text-transform:uppercase;color:var(--fg3);margin:0 0 12px}
+.col{display:flex;flex-direction:column;gap:16px;min-width:0}
+label{display:block;font-weight:600;font-size:13px;color:var(--fg2);margin:0 0 6px}
+.campo{display:flex;flex-direction:column;gap:0;margin-bottom:14px}
+.campo:last-child{margin-bottom:0}
+select,input[type=text],textarea{width:100%;background:var(--painel2);color:var(--fg);border:1px solid var(--linha);border-radius:10px;padding:10px 12px;font:14px/1.4 var(--f-texto)}
+textarea{min-height:150px;resize:vertical;font:13px/1.5 var(--f-dado)}
+select:focus-visible,input:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid var(--amarelo);outline-offset:2px}
+.dica{font-size:12px;color:var(--fg3);margin-top:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--linha);background:var(--painel2);color:var(--fg2);border-radius:999px;padding:7px 12px;font:600 13px var(--f-texto);cursor:pointer}
+.chip[aria-pressed=true]{background:var(--amarelo);color:#1a1400;border-color:var(--amarelo)}
+.chip small{display:block;font:500 11px var(--f-dado);opacity:.75}
+.toggle{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--fg2)}
+.toggle input{accent-color:var(--amarelo);width:18px;height:18px}
+/* celular */
+.celular{background:#0b0a10;border-radius:38px;padding:12px;border:1px solid var(--linha);box-shadow:0 30px 60px #0008;max-width:390px;margin:0 auto;width:100%}
+.tela{position:relative;aspect-ratio:9/16;border-radius:28px;overflow:hidden;background:#000;max-width:100%}
+canvas{width:100%;height:100%;display:block}
+.controles{display:flex;align-items:center;gap:10px;margin-top:12px}
+.btn{background:var(--amarelo);color:#1a1400;border:0;border-radius:10px;padding:10px 14px;font:800 14px var(--f-texto);cursor:pointer}
+.btn.sec{background:var(--painel2);color:var(--fg);border:1px solid var(--linha)}
+input[type=range]{flex:1;accent-color:var(--amarelo);min-width:0}
+.tempo{font:700 13px var(--f-dado);color:var(--fg2);font-variant-numeric:tabular-nums;min-width:86px;text-align:right}
+.faixa{display:flex;height:10px;border-radius:6px;overflow:hidden;margin-top:12px;gap:2px}
+.faixa i{display:block;height:100%;background:var(--roxo);opacity:.55}
+.faixa i.gancho{background:var(--laranja);opacity:1}
+.faixa i.agora{background:var(--amarelo);opacity:1}
+/* nota */
+.nota{display:flex;align-items:center;gap:16px}
+.anel{--p:0;width:92px;height:92px;border-radius:50%;flex:none;display:grid;place-items:center;
+ background:conic-gradient(var(--cor,var(--ok)) calc(var(--p)*1%),var(--painel2) 0)}
+.anel b{display:grid;place-items:center;width:72px;height:72px;border-radius:50%;background:var(--painel);font:800 30px var(--f-titulo);font-variant-numeric:tabular-nums}
+.nota p{margin:0;color:var(--fg2)}
+.nota strong{display:block;font:800 18px var(--f-titulo);color:var(--fg)}
+.checks{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.checks li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:start;font-size:13.5px;padding:8px 10px;background:var(--painel2);border-radius:10px}
+.checks .st{width:18px;height:18px;border-radius:50%;margin-top:1px}
+.checks .ok .st{background:var(--ok)} .checks .meio .st{background:var(--alerta)} .checks .ruim .st{background:var(--ruim)}
+.checks em{display:block;font-style:normal;color:var(--fg3);font-size:12.5px}
+.checks .pts{font:700 12px var(--f-dado);color:var(--fg3);font-variant-numeric:tabular-nums}
+/* roteiro */
+.tabela{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{font:700 11px var(--f-dado);letter-spacing:1px;text-transform:uppercase;color:var(--fg3);text-align:left;padding:6px 8px;border-bottom:1px solid var(--linha)}
+td{padding:8px;border-bottom:1px solid var(--linha);vertical-align:top}
+td.t{font:600 12px var(--f-dado);color:var(--fg3);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.tela-c{color:var(--amarelo);font:700 12px var(--f-dado)}
+tr.agora td{background:#ffd40014}
+.resumo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.resumo div{background:var(--painel2);border-radius:10px;padding:10px}
+.resumo b{display:block;font:800 22px var(--f-titulo);font-variant-numeric:tabular-nums}
+.resumo span{font:600 11px var(--f-dado);color:var(--fg3);text-transform:uppercase;letter-spacing:1px}
+.saida{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.saida textarea{min-height:110px;margin-top:10px}
+.aviso{font-size:12.5px;color:var(--fg3)}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+
+<header>
+ <h1>Estúdio <span>Viral</span></h1>
+ <p>Escolha nicho, molde e estilo, ponha os fatos, e veja a prévia tocando no celular. A nota segue as regras medidas nas referências (ficha 01–06 do projeto).</p>
+</header>
+
+<main class="mesa">
+ <section class="col">
+  <div class="bloco">
+   <h2>1 · Molde do roteiro</h2>
+   <div class="chips" id="moldes" role="group" aria-label="Molde do roteiro"></div>
+   <p class="dica" id="moldeDica"></p>
+  </div>
+  <div class="bloco">
+   <h2>2 · Estilo visual</h2>
+   <div class="chips" id="estilos" role="group" aria-label="Estilo visual"></div>
+  </div>
+  <div class="bloco">
+   <h2>3 · Conteúdo</h2>
+   <div class="campo"><label for="nicho">Nicho</label>
+    <select id="nicho">
+     <option>Curiosidades de animais</option><option>Corpo humano</option><option>Sobrevivência / "e se"</option>
+     <option>História e mundo medieval</option><option>Jogos e nerd</option><option>Ciência do dia a dia</option>
+    </select></div>
+   <div class="campo"><label for="tema">Tema</label><input id="tema" type="text"></div>
+   <div class="campo"><label for="nome">Nome do personagem</label><input id="nome" type="text"><p class="dica">Usado no "E se tu…" e no "Problema → solução".</p></div>
+   <div class="campo"><label for="gancho">Gancho (primeiros 3 s)</label><input id="gancho" type="text"></div>
+   <div class="campo"><label for="fatos">Fatos, um por linha: <code>fato | destaque</code></label>
+    <textarea id="fatos" spellcheck="false"></textarea>
+    <p class="dica" id="fatosDica"></p></div>
+   <div class="campo"><label for="fecho">Fecho</label><input id="fecho" type="text"></div>
+   <label class="toggle"><input id="musica" type="checkbox"> Música de fundo</label>
+  </div>
+ </section>
+
+ <section class="col">
+  <div class="celular">
+   <div class="tela"><canvas id="cv" width="540" height="960" aria-label="Prévia animada do vídeo"></canvas></div>
+   <div class="controles">
+    <button class="btn" id="play" type="button">Pausar</button>
+    <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Posição do vídeo">
+    <span class="tempo" id="tempo">0:00 / 0:00</span>
+   </div>
+   <div class="faixa" id="faixa" aria-hidden="true"></div>
+  </div>
+  <p class="aviso">Prévia de ritmo e composição, desenhada no navegador. O vídeo final é renderizado em 3D/2D pelo Claude no projeto.</p>
+ </section>
+
+ <section class="col col-dir">
+  <div class="bloco">
+   <h2>Nota viral</h2>
+   <div class="nota"><div class="anel" id="anel"><b id="notaN">0</b></div><p><strong id="notaTxt">—</strong><span id="notaSub"></span></p></div>
+   <ul class="checks" id="checks"></ul>
+  </div>
+  <div class="bloco">
+   <h2>Roteiro gerado</h2>
+   <div class="resumo"><div><b id="rDur">0:00</b><span>duração</span></div><div><b id="rPal">0</b><span>palavras</span></div><div><b id="rCenas">0</b><span>cenas</span></div></div>
+   <div class="tabela"><table><thead><tr><th>tempo</th><th>fala</th><th>tela</th></tr></thead><tbody id="linhas"></tbody></table></div>
+  </div>
+  <div class="bloco">
+   <h2>Pedido pro Claude</h2>
+   <div class="saida"><button class="btn" id="copiar" type="button">Copiar pedido</button><span class="aviso" id="copiado"></span></div>
+   <textarea id="pedido" readonly aria-label="Pedido pronto pra colar no Claude"></textarea>
+  </div>
+ </section>
+</main>
+
+<script>
+// ---------- regras (de referencias/aprendizados.md) ----------
+const PPS=3.2, RESP=.1, MIN_S=60;
+const MOLDES={
+ voce:{nome:'Você é…',sub:'2ª pessoa + "Esse é seu…"',dica:'Cada fato termina num objeto do dia a dia ("Esse é seu velcro"). Fecho ressignifica o nome e volta à 1ª frase.',destaque:'objeto do refrão'},
+ ese:{nome:'E se tu…',sub:'hipótese + números',dica:'Pergunta hipotética, personagem com nome, um número por frase (vira HUD), virada e cliffhanger.',destaque:'número pro HUD'},
+ prob:{nome:'Problema → solução',sub:'personagem quer algo',dica:'"Fulano quer X, mas existe um problema." Cada fato é uma solução que cria outro problema.',destaque:'solução'}
+};
+const ESTILOS={
+ feijao:{nome:'2D cabeça de feijão',sub:'luz de cena · alvo',alvo:true},
+ cartoon3d:{nome:'3D cartoon',sub:'fundo do mar'},
+ mascote:{nome:'2D mascote plano',sub:'fundo de cor'},
+ mapa:{nome:'Mapa explicativo',sub:'satélite + ícones'}
+};
+const EXEMPLOS={
+ voce:{nicho:'Curiosidades de animais',tema:'ouriço-do-mar',nome:'',gancho:'Você tem o corpo inteiro coberto de paus duros.',
+  fatos:'Esses paus não ficam parados. Cada um gira numa juntinha | armadura de palito de churrasco\nSua boca fica embaixo e tem cinco dentes e uns sessenta músculos | triturador de pia\nO cu fica lá em cima, no meio das costas. Você come por baixo e faz cocô pelo teto | vulcão\nPra andar, você solta uns pezinhos moles que grudam em tudo | velcro\nOlho você não tem. Mas cientistas acham que seu corpo inteiro funciona como um olho gigante | câmera 360\nQuando o sol aperta, você se cobre de concha, pedra e alga | boné\nO ouriço vermelho pode passar dos cem anos. E ainda tem filhote igual a um de dez | aposentadoria que nunca chega',
+  fecho:'Chamam de ouriço quem é espinhoso e mal-humorado. Mas você enxerga com o corpo inteiro, usa boné de concha e faz cocô pelo teto.'},
+ ese:{nicho:'Corpo humano',tema:'ficar sem dormir',nome:'Léo',gancho:'E se tu ficasse sem dormir por onze dias?',
+  fatos:'Com dezessete horas acordado, teu reflexo fica como o de quem bebeu | 17 h\nCom vinte e quatro horas, o efeito dobra | 24 h\nEm mil novecentos e sessenta e quatro, um estudante ficou duzentas e sessenta e quatro horas acordado | 264 h\nTá, mas e depois? Ele dormiu catorze horas seguidas | 14 h',
+  fecho:'E na noite seguinte, o Léo ouviu o despertador tocar. Parte dois.'},
+ prob:{nicho:'Ciência do dia a dia',tema:'levar sorvete pra casa no verão',nome:'Duda',gancho:'A Duda só quer levar sorvete pra casa, mas existe um problema.',
+  fatos:'O sol derrete a casquinha em minutos | sacola térmica\nA sacola esquenta dentro do carro | gelo seco\nO gelo seco não pode ficar em carro fechado | janela aberta',
+  fecho:'Agora sim, a Duda chega em casa com o sorvete inteiro.'}
+};
+// ⚠️ Os exemplos são ilustrativos: confira cada fato com fonte antes de produzir (regra da skill roteiro-humor).
+
+const $=id=>document.getElementById(id);
+const estado={molde:'voce',estilo:'feijao'};
+function salvar(){try{localStorage.setItem('estudioViral',JSON.stringify({...estado,...campos()}))}catch(e){}}
+function campos(){return{nicho:$('nicho').value,tema:$('tema').value,nome:$('nome').value,gancho:$('gancho').value,fatos:$('fatos').value,fecho:$('fecho').value,musica:$('musica').checked}}
+function preencher(d){['nicho','tema','nome','gancho','fatos','fecho'].forEach(k=>{if(d[k]!==undefined)$(k).value=d[k]});$('musica').checked=!!d.musica}
+function chips(box,lista,chave){box.innerHTML='';Object.entries(lista).forEach(([k,v])=>{const b=document.createElement('button');b.type='button';b.className='chip';b.dataset.k=k;
+ b.innerHTML=`${v.nome}<small>${v.sub}</small>`;b.setAttribute('aria-pressed',estado[chave]===k);b.onclick=()=>{estado[chave]=k;if(chave==='molde'){preencher(EXEMPLOS[k])}atualizar(true)};box.appendChild(b)})}
+
+// ---------- roteiro ----------
+const palavras=s=>s.trim().split(/\s+/).filter(Boolean).length;
+function gerar(){
+ const c=campos(),m=estado.molde,tema=c.tema.trim()||'esse bicho',nome=c.nome.trim()||'Léo';
+ const fatos=c.fatos.split('\n').map(l=>l.split('|').map(x=>x.trim())).filter(x=>x[0]);
+ const B=[];const add=(fala,tela='',tipo='')=>{if(fala.trim())B.push({fala:fala.trim(),tela,tipo})};
+ add(c.gancho||'',m==='voce'?'TÍTULO GRANDE':'TÍTULO GRANDE','gancho');
+ if(m==='voce'){add(`Você é ${/^[aeiouáéí]/i.test(tema)?'um':'um'} ${tema}. E isso é só o começo.`,'nome científico (pequeno)');
+  fatos.forEach(([f,d])=>{add(f+'.','');if(d)add(`Esse é seu ${d}.`,`ESSE É SEU ${d.toUpperCase()}`,'refrao')});
+  add(c.fecho,'3 ícones','fecho');add(c.gancho,'mesmo plano do gancho','loop')}
+ else if(m==='ese'){add(`Esse é o ${nome}.`,'personagem entra');
+  fatos.forEach(([f,d])=>add(f.endsWith('?')||f.endsWith('.')?f:f+'.',d?`HUD: ${d}`:'','fato'));
+  add(c.fecho,'cliffhanger','fecho')}
+ else{fatos.forEach(([f,d])=>{add(f+'.','');if(d)add(`Então ${nome.toLowerCase()==nome?nome:nome} usa ${d}.`,d.toUpperCase(),'refrao')});
+  add(c.fecho,'','fecho')}
+ let t=0;B.forEach(b=>{b.p=palavras(b.fala);b.d=Math.max(1.2,b.p/PPS+RESP);b.t0=t;t+=b.d;b.t1=t});
+ return{B,total:t,pal:B.reduce((s,b)=>s+b.p,0),fatos,c}
+}
+
+// ---------- nota ----------
+function avaliar(R){
+ const c=R.c,g=(c.gancho||'').trim(),gp=palavras(g),L=[];
+ const add=(ok,peso,titulo,dica,meio=false)=>L.push({ok,peso,titulo,dica,meio});
+ add(gp>0&&gp<=12,14,`Gancho cabe em 3 s (${gp} palavras)`,'Até 12 palavras: a pessoa decide nos primeiros 3 segundos.');
+ add(/^(e se|você|voce|tu |o |a )/i.test(g)||/(você|tu)\b/i.test(g),10,'Gancho fala com quem assiste','Use 2ª pessoa ("Você…", "E se tu…") ou um personagem com nome.');
+ add(R.total>=MIN_S,16,`Duração ${fmt(R.total)} a 3,2 palavras/s`,R.total>=MIN_S?'Passa do mínimo de 1:00.':`Faltam ~${Math.ceil((MIN_S-R.total)*PPS)} palavras. Acrescente fatos conferidos, nunca fale mais devagar.`);
+ const comD=R.fatos.filter(f=>f[1]).length;add(R.fatos.length>0&&comD===R.fatos.length,14,`Todo fato tem ${MOLDES[estado.molde].destaque} (${comD}/${R.fatos.length})`,'Cada fato precisa de algo que aparece na tela.');
+ add(R.fatos.length>=4,8,`Fatos suficientes (${R.fatos.length})`,'De 4 a 6 fatos dá ritmo de 1 a cada ~2 s.');
+ const longas=R.B.filter(b=>b.p>14).length;add(longas===0,8,`Frases curtas (${longas} longa${longas===1?'':'s'})`,'Máximo de 14 palavras por frase. Quebre as longas.');
+ add(!/\b(segue|me siga|comenta|marca|curte|inscreva)/i.test(R.B.map(b=>b.fala).join(' ')),8,'Pedido só na legenda do post','"Marca aquele amigo…" vai na legenda, não na fala.');
+ add(!c.musica,8,'Sem música','Decisão do projeto: só narração e efeitos sonoros.');
+ add(ESTILOS[estado.estilo].alvo,8,`Estilo: ${ESTILOS[estado.estilo].nome}`,ESTILOS[estado.estilo].alvo?'É o estilo-alvo das referências de 1,5 mi de views.':'Funciona, mas o alvo agora é o 2D cabeça de feijão com luz de cena.',!ESTILOS[estado.estilo].alvo);
+ add(estado.molde!=='prob'||R.fatos.length>=3,6,'Final que prende',estado.molde==='voce'?'Volta à 1ª frase (loop).':estado.molde==='ese'?'Termina em cliffhanger ("Parte dois").':'Fecha resolvendo o último problema.');
+ const total=L.reduce((s,x)=>s+(x.ok?x.peso:x.meio?x.peso*.5:0),0);return{L,total:Math.round(total)}
+}
+function fmt(s){s=Math.max(0,s);return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0')}
+
+// ---------- prévia (canvas) ----------
+const cv=$('cv'),x=cv.getContext('2d'),W=cv.width,H=cv.height;
+let R=null,t0=performance.now(),tocando=true,tPausa=0;
+const KEY=/^(paus|duros|dentes|cu|cocô|teto|pezinhos|olho|corpo|cem|anos|sono|dormir|horas|reflexo|sorvete|problema|sol|gelo|nunca|morre|real|perigo|zumbi|velcro|vulcão)/i;
+function pedacos(b){const ws=b.fala.split(/\s+/);const out=[];let cur=[];ws.forEach((w,i)=>{cur.push(w);if(cur.length===3||/[.,?!:]$/.test(w)||i===ws.length-1){out.push(cur);cur=[]}});
+ const tot=out.reduce((s,c)=>s+c.length,0);let acc=0;return out.map(c=>{const ini=b.t0+(b.d-RESP)*acc/tot;acc+=c.length;return{ini,txt:c}})}
+function legenda(b,t){const ps=pedacos(b);let p=ps[0];ps.forEach(q=>{if(q.ini<=t)p=q});
+ x.save();x.textAlign='center';x.font='900 44px Inter, system-ui';x.lineJoin='round';const linha=p.txt.map(w=>w.toUpperCase());
+ const ws=linha.map(w=>x.measureText(w+' ').width);let tw=ws.reduce((a,b)=>a+b,0);let xx=W/2-tw/2;const y=H*.72;
+ const k=Math.min(1,(t-p.ini)/.12);x.translate(W/2,y);x.scale(.9+.1*k,.9+.1*k);x.translate(-W/2,-y);
+ linha.forEach((w,i)=>{x.lineWidth=9;x.strokeStyle='#0b0b12';x.textAlign='left';x.strokeText(w,xx,y);x.fillStyle=KEY.test(p.txt[i])?'#ffd400':'#fff';x.fillText(w,xx,y);xx+=ws[i]});x.restore()}
+function titulo(texto,t){if(t>2.6)return;const a=Math.min(1,t/.15)*Math.min(1,(2.6-t)/.3);x.save();x.globalAlpha=a;x.textAlign='center';x.lineJoin='round';
+ x.font='800 50px "Bricolage Grotesque", Inter, sans-serif';const ws=texto.toUpperCase().split(' ');let linhas=[],cur='';ws.forEach(w=>{if(x.measureText(cur+' '+w).width>W*.82){linhas.push(cur);cur=w}else cur=(cur?cur+' ':'')+w});linhas.push(cur);
+ linhas.slice(0,3).forEach((l,i)=>{const y=H*.17+i*56;x.lineWidth=12;x.strokeStyle='#0b0b12';x.strokeText(l,W/2,y);x.fillStyle=i===linhas.length-1?'#ffd400':'#fff';x.fillText(l,W/2,y)});x.restore()}
+function cartao(txt,k){if(!txt)return;x.save();const s=.6+.4*Math.min(1,k*1.4);x.translate(W/2,H*.15);x.rotate((1-Math.min(1,k*2))*-.06);x.scale(s,s);
+ x.font='900 26px Inter';const linhas=txt.length>18?[txt.split(' ').slice(0,3).join(' '),txt.split(' ').slice(3).join(' ')]:[txt];const lw=Math.max(...linhas.map(l=>x.measureText(l).width))+44,lh=40*linhas.length+20;
+ x.fillStyle='#b38f00';rr(-lw/2,-lh/2+6,lw,lh,16);x.fill();x.fillStyle='#ffd400';rr(-lw/2,-lh/2,lw,lh,16);x.fill();x.fillStyle='#141000';x.textAlign='center';x.textBaseline='middle';
+ linhas.forEach((l,i)=>x.fillText(l,0,-lh/2+30+i*40));x.restore()}
+function hud(txt,k){x.save();x.translate(W*.74,H*.36);const s=.6+.4*Math.min(1,k*1.5);x.scale(s,s);x.font='700 15px "JetBrains Mono", monospace';x.fillStyle='#ffffffaa';x.textAlign='center';
+ x.fillText('MEDIDA',0,-44);x.font='800 54px "Bricolage Grotesque", Inter';x.lineWidth=10;x.strokeStyle='#0008';x.strokeText(txt,0,4);x.fillStyle='#ffd400';x.fillText(txt,0,4);x.restore()}
+function rr(a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath()}
+// personagem "cabeça de feijão"
+function feijao(cx,cy,s,t,cor='#f4c08a',camisa='#3f6df2',fala=false){x.save();x.translate(cx,cy+Math.sin(t*2.2)*2*s);x.scale(s,s);
+ x.fillStyle='#00000040';x.beginPath();x.ellipse(0,150,70,14,0,0,7);x.fill();
+ x.fillStyle=camisa;rr(-48,10,96,140,40);x.fill();x.fillStyle='#2b2b3a';rr(-40,120,30,40,10);x.fill();rr(10,120,30,40,10);x.fill();
+ x.fillStyle=cor;x.beginPath();x.ellipse(0,-50,62,70,0,0,7);x.fill();x.fillStyle='#3a2416';x.beginPath();x.ellipse(0,-98,58,30,0,Math.PI,0);x.fill();
+ const pis=(Math.sin(t*1.3)>.97)?.1:1;x.fillStyle='#1b1b22';[-20,20].forEach(d=>{x.beginPath();x.ellipse(d,-52,7,7*pis,0,0,7);x.fill()});
+ x.strokeStyle='#1b1b22';x.lineWidth=5;x.lineCap='round';[-20,20].forEach(d=>{x.beginPath();x.moveTo(d-10,-72);x.lineTo(d+10,-70+(d<0?2:-2));x.stroke()});
+ x.beginPath();if(fala&&Math.sin(t*14)>0){x.ellipse(0,-22,9,7,0,0,7);x.fillStyle='#5a2020';x.fill()}else{x.moveTo(-10,-22);x.quadraticCurveTo(0,-16,10,-22);x.stroke()}
+ // contorno de luz (rim)
+ x.strokeStyle='#ffb36b88';x.lineWidth=4;x.beginPath();x.ellipse(0,-50,62,70,0,-.9,.6);x.stroke();x.restore()}
+function cenaFeijao(i,t,b){const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#2a1f55');g.addColorStop(.45,'#8a4f8f');g.addColorStop(.62,'#ff9a5a');g.addColorStop(.63,'#3a2b3f');g.addColorStop(1,'#1a1422');x.fillStyle=g;x.fillRect(0,0,W,H);
+ const plano=i%4;const z=[1,1.6,2.4,1.25][plano];x.save();x.translate(W/2,H*.62);x.scale(z,z);x.translate(-W/2,-H*.62);
+ for(let k=0;k<9;k++){const bx=k*70-20,bh=160+((k*53)%120);x.fillStyle='#2b2140';x.fillRect(bx,H*.62-bh,62,bh);for(let j=0;j<6;j++)for(let q=0;q<3;q++){if(((k*7+j*3+q)%4)===0){x.fillStyle='#ffd48a';x.fillRect(bx+8+q*18,H*.62-bh+14+j*24,10,12)}}}
+ for(let k=0;k<14;k++){const a=(k*97)%W,yb=(k*61)%(H*.5);x.fillStyle=`rgba(255,200,140,${.08+.06*Math.sin(t+k)})`;x.beginPath();x.arc(a,yb+80,10+(k%4)*6,0,7);x.fill()}
+ x.fillStyle='#2d2233';x.fillRect(0,H*.62,W,H*.4);x.restore();
+ const s=[.55,.8,1.35,.7][plano],cx=W*(plano===3?.32:.5),cy=H*[.5,.5,.55,.5][plano];feijao(cx,cy,s,t,'#f4c08a','#3f6df2',true);
+ const lg=x.createRadialGradient(W*.8,H*.2,10,W*.8,H*.2,W*.9);lg.addColorStop(0,'#ffcf9040');lg.addColorStop(1,'#0000');x.fillStyle=lg;x.fillRect(0,0,W,H)}
+function cena3d(i,t){const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#5fd0ec');g.addColorStop(.5,'#0d5b7c');g.addColorStop(1,'#052636');x.fillStyle=g;x.fillRect(0,0,W,H);
+ for(let k=0;k<6;k++){x.save();x.globalAlpha=.08;x.fillStyle='#e8fbff';x.translate(k*110-40+Math.sin(t*.5+k)*10,0);x.rotate(.25);x.fillRect(0,-50,60,H*1.2);x.restore()}
+ x.fillStyle='#d9c597';x.beginPath();x.ellipse(W/2,H*.86,W*.9,H*.18,0,0,7);x.fill();
+ const z=[1,1.5,2.1,1.2][i%4];const cx=W/2,cy=H*.6,r=70*z;for(let k=0;k<90;k++){const a=k/90*Math.PI*2+Math.sin(t+k)*.03;x.strokeStyle='#3d1450';x.lineWidth=3*z;x.beginPath();x.moveTo(cx+Math.cos(a)*r*.8,cy+Math.sin(a)*r*.6);x.lineTo(cx+Math.cos(a)*r*1.9,cy+Math.sin(a)*r*1.5);x.stroke()}
+ const bg=x.createRadialGradient(cx-r*.3,cy-r*.3,r*.1,cx,cy,r);bg.addColorStop(0,'#9a5cc0');bg.addColorStop(1,'#3a1650');x.fillStyle=bg;x.beginPath();x.ellipse(cx,cy,r,r*.72,0,0,7);x.fill();
+ for(let k=0;k<30;k++){x.fillStyle='#eaffff88';x.beginPath();x.arc((k*83+t*20)%W,(k*131-t*30)%H+(k*131-t*30<0?H:0),2,0,7);x.fill()}}
+function cenaMascote(i,t){const cores=['#7cc6ff','#ff8a8a','#ffd27a','#9be8b0','#c7a6ff'];x.fillStyle=cores[i%cores.length];x.fillRect(0,0,W,H);
+ const z=[1,1.4,1.9,1.1][i%4];x.save();x.translate(W/2,H*.55);x.scale(z,z);x.fillStyle='#ff8a3d';x.beginPath();x.moveTo(-90,60);x.quadraticCurveTo(-95,-90,0,-95);x.quadraticCurveTo(95,-90,90,60);x.closePath();x.fill();
+ x.fillStyle='#fff';[-30,30].forEach(d=>{x.beginPath();x.arc(d,-25,22,0,7);x.fill()});x.fillStyle='#222';[-30,30].forEach(d=>{x.beginPath();x.arc(d+4,-22,10,0,7);x.fill()});x.restore()}
+function cenaMapa(i,t){x.fillStyle='#0d3d63';x.fillRect(0,0,W,H);x.save();const z=[1,1.4,2,1.2][i%4];x.translate(W/2,H/2);x.scale(z,z);x.translate(-W/2,-H/2);
+ x.fillStyle='#3f7d3a';[[150,300,120,160],[380,260,90,200],[300,560,140,120],[120,640,70,90]].forEach(([a,b,w,h])=>{x.beginPath();x.ellipse(a,b,w,h,.3,0,7);x.fill()});
+ const hg=x.createRadialGradient(W*.42,H*.5,10,W*.42,H*.5,180);hg.addColorStop(0,`rgba(255,80,40,${.5+.2*Math.sin(t*2)})`);hg.addColorStop(1,'#0000');x.fillStyle=hg;x.fillRect(0,0,W,H);x.restore()}
+function quadro(){const total=R.total;let t=tocando?((performance.now()-t0)/1000)%total:tPausa;if(tocando)tPausa=t;
+ const i=Math.max(0,R.B.findIndex(b=>t>=b.t0&&t<b.t1));const b=R.B[i]||R.B[0];const lt=t-b.t0;
+ ({feijao:cenaFeijao,cartoon3d:cena3d,mascote:cenaMascote,mapa:cenaMapa})[estado.estilo](i,t,b);
+ if(lt<.07){x.fillStyle='#ffffff30';x.fillRect(0,0,W,H)}
+ if(i===0)titulo(b.fala,t);
+ if(b.tipo==='refrao'||(b.tela&&/^ESSE|^ESSA|^[A-Z ]+$/.test(b.tela)&&estado.molde!=='ese'&&i>0&&b.tipo!=='fecho'))cartao(b.tela,lt/.4);
+ if(b.tela&&b.tela.startsWith('HUD: '))hud(b.tela.slice(5),lt/.4);
+ legenda(b,t);
+ const v=x.createRadialGradient(W/2,H*.45,W*.4,W/2,H*.45,W*1.05);v.addColorStop(0,'#0000');v.addColorStop(1,'#000a');x.fillStyle=v;x.fillRect(0,0,W,H);
+ $('scrub').value=Math.round(t/total*1000);$('tempo').textContent=fmt(t)+' / '+fmt(total);
+ document.querySelectorAll('#faixa i').forEach((e,k)=>e.classList.toggle('agora',k===i));document.querySelectorAll('#linhas tr').forEach((e,k)=>e.classList.toggle('agora',k===i));
+ requestAnimationFrame(quadro)}
+
+// ---------- tela ----------
+function atualizar(reiniciar){chips($('moldes'),MOLDES,'molde');chips($('estilos'),ESTILOS,'estilo');$('moldeDica').textContent=MOLDES[estado.molde].dica;
+ $('fatosDica').textContent=`Destaque = ${MOLDES[estado.molde].destaque}. Números por extenso na fala (a voz lê melhor).`;
+ R=gerar();const A=avaliar(R);
+ $('rDur').textContent=fmt(R.total);$('rPal').textContent=R.pal;$('rCenas').textContent=R.B.length;
+ $('linhas').innerHTML=R.B.map(b=>`<tr><td class="t">${b.t0.toFixed(1)}s</td><td>${esc(b.fala)}</td><td class="tela-c">${esc(b.tela)}</td></tr>`).join('');
+ $('faixa').innerHTML=R.B.map((b,k)=>`<i class="${k===0?'gancho':''}" style="flex:${b.d}"></i>`).join('');
+ const cor=A.total>=80?'var(--ok)':A.total>=60?'var(--alerta)':'var(--ruim)';$('anel').style.setProperty('--p',A.total);$('anel').style.setProperty('--cor',cor);$('notaN').textContent=A.total;
+ $('notaTxt').textContent=A.total>=80?'Pronto pra produzir':A.total>=60?'Quase lá':'Precisa de ajuste';$('notaSub').textContent=` ${A.L.filter(l=>!l.ok).length} ponto(s) pra melhorar.`;
+ $('checks').innerHTML=A.L.map(l=>`<li class="${l.ok?'ok':l.meio?'meio':'ruim'}"><span class="st" aria-label="${l.ok?'ok':'falta'}"></span><span>${esc(l.titulo)}<em>${esc(l.dica)}</em></span><span class="pts">${l.ok?l.peso:l.meio?Math.round(l.peso/2):0}/${l.peso}</span></li>`).join('');
+ const c=R.c;$('pedido').value=`Faz um vídeo viral no molde "${MOLDES[estado.molde].nome}", estilo ${ESTILOS[estado.estilo].nome}, nicho ${c.nicho}.
+Tema: ${c.tema}${estado.molde!=='voce'?` · personagem: ${c.nome}`:''}.
+Segue o referencias/aprendizados.md (3,2 palavras/s, mínimo 1:00, legenda 1–3 palavras com palavra-chave amarela, título grande só no gancho, sem música, voz Antônio). Confere cada fato com fonte antes de narrar e me mostra o roteiro antes de produzir.
+
+Roteiro (${fmt(R.total)}, ${R.pal} palavras):
+${R.B.map((b,k)=>`${k+1}. ${b.fala}${b.tela?`  [tela: ${b.tela}]`:''}`).join('\n')}`;
+ if(reiniciar)t0=performance.now();salvar()}
+function esc(s){return String(s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
+
+let salvo=null;try{salvo=JSON.parse(localStorage.getItem('estudioViral')||'null')}catch(e){}
+if(salvo&&salvo.molde){estado.molde=salvo.molde;estado.estilo=salvo.estilo||'feijao';preencher(salvo)}else preencher(EXEMPLOS.voce);
+['nicho','tema','nome','gancho','fatos','fecho','musica'].forEach(k=>$(k).addEventListener('input',()=>atualizar(false)));
+$('play').onclick=()=>{tocando=!tocando;if(tocando)t0=performance.now()-tPausa*1000;$('play').textContent=tocando?'Pausar':'Tocar'};
+$('scrub').oninput=e=>{tPausa=e.target.value/1000*R.total;t0=performance.now()-tPausa*1000;if(!tocando)quadro1()};
+function quadro1(){const was=tocando;tocando=false;}
+$('copiar').onclick=async()=>{try{await navigator.clipboard.writeText($('pedido').value);$('copiado').textContent='Copiado.'}catch(e){$('pedido').select();$('copiado').textContent='Selecionei o texto: use Copiar do teclado.'}};
+if(matchMedia('(prefers-reduced-motion: reduce)').matches){tocando=false;$('play').textContent='Tocar'}
+atualizar(true);requestAnimationFrame(quadro);
+</script>
