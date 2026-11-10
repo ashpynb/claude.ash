@@ -56,7 +56,7 @@ conflita com uma regra geral, vale a da série (está marcada).
 - Abrir em **2ª pessoa com o nome chocante/engraçado** ("Você é uma Maria-sem-vergonha…").
 - Cada fato → **"Esse é seu [objeto do dia a dia]."**, e o objeto **aparece na tela** (+ cartão amarelo curto).
 - Fecho: **"Chamam de [nome] quem [sentido ruim]. Mas você [feitos]."** → repete a 1ª frase (loop).
-- Nesse molde o ritmo é mais calmo: 2,4–2,6 p/s, cortes a cada ~2 s.
+- Ritmo: as referências falam a 2,4–2,6 p/s, mas **a usuária decidiu 3,2 p/s também neste molde**. Cortes a cada ~2 s.
 - Credibilidade: nome científico e estudo em letra pequena; cartão de número ("6 kg por ano").
 
 ### Voz / TTS (medido no EP01 abelhas)
