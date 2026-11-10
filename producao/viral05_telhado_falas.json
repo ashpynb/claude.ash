@@ -1,0 +1,128 @@
+[
+ {
+  "id": "b00",
+  "texto": "Um telhado de telha de barro tem cinco camadas. E cada uma segura a de cima.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b01",
+  "texto": "Passo um: a tesoura. É esse triângulo de madeira nas pontas da casa.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b02",
+  "texto": "Ela dá a inclinação. Pra telha colonial, pelo menos uns vinte e cinco por cento.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b03",
+  "texto": "Vinte e cinco por cento quer dizer: a cada metro deitado, o telhado sobe vinte e cinco centímetros.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b04",
+  "texto": "Passo dois: as terças. São vigas deitadas que vão de uma tesoura até a outra.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b05",
+  "texto": "Elas ficam mais ou menos a um metro e meio uma da outra.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b06",
+  "texto": "Passo três: os caibros. Descem do topo até a beirada, por cima das terças.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b07",
+  "texto": "Um a cada cinquenta ou sessenta centímetros.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b08",
+  "texto": "Passo quatro: as ripas. São as peças mais finas, deitadas por cima dos caibros.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b09",
+  "texto": "A distância entre elas se chama galga. Vai de trinta e dois a quarenta centímetros.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b10",
+  "texto": "E quem manda na galga é a telha. Errou a galga, a telha não encaixa ou quebra quando alguém pisa.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b11",
+  "texto": "Passo cinco: as telhas. Começa de baixo, na beirada, e vai subindo.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b12",
+  "texto": "Na colonial, primeiro vai o canal, virado pra cima. Depois a capa, por cima, encaixada.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b13",
+  "texto": "Tudo isso pesa uns quarenta a cinquenta quilos por metro quadrado.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b14",
+  "texto": "Por isso a madeira tem que ser boa e bem presa.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b15",
+  "texto": "No topo, a cumeeira fecha o encontro dos dois lados do telhado.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b16",
+  "texto": "Resumo: tesoura, terça, caibro, ripa e telha. Cada camada cruza a de baixo.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b17",
+  "texto": "Na próxima vez que olhar um telhado, tenta achar as cinco.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ }
+]
