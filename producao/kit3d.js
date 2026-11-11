@@ -103,6 +103,12 @@ export function boneco(P){
  if(P.cab==='curto'||P.cab==='cacheado'){const c=malha(new THREE.SphereGeometry(.375,40,30,0,Math.PI*2,0,Math.PI*.42),mCab);c.rotation.x=-.32;c.position.set(0,.02,-.02);c.scale.set(1.02,1.05,1);cab.add(c);
   if(P.cab==='cacheado')for(let i=0;i<22;i++){const a=hash(i)*Math.PI*2,e=.15+hash(i+7)*.5;const b=malha(G.esf(.09,12),mCab);b.position.set(Math.cos(a)*Math.cos(e)*.36,.1+Math.sin(e)*.3,Math.sin(a)*Math.cos(e)*.36-.04);cab.add(b)}
   const fr=malha(G.cap(.06,.32),mCab);fr.rotation.z=Math.PI/2;fr.position.set(.02,.27,.25);fr.rotation.y=.1;cab.add(fr)}
+ if(P.cab==='topete'){const c=malha(new THREE.SphereGeometry(.375,40,30,0,Math.PI*2,0,Math.PI*.38),mCab);c.rotation.x=-.3;c.position.set(0,.02,-.03);cab.add(c);
+  const tp=malha(G.cap(.11,.2,8),mCab);tp.rotation.set(1.3,0,0);tp.position.set(0,P.bone?.27:.36,P.bone?.3:.18);tp.scale.set(1.7,1,1);cab.add(tp);const tp2=malha(G.esf(.13,14),mCab);tp2.position.set(.04,P.bone?.3:.43,P.bone?.32:.25);tp2.scale.set(1.6,.75,1.1);cab.add(tp2)}
+ // boné virado pra trás (aba na nuca), deixa o topete aparecer na testa
+ if(P.bone){const mB=mat(P.bone,{rough:.7});const capG=new THREE.Group();cab.add(capG);const cp=malha(new THREE.SphereGeometry(.39,36,24,0,Math.PI*2,0,Math.PI*.4),mB);capG.add(cp);
+  const aba=malha(G.cil(.25,.25,.035,24),mB);aba.scale.set(1,1,1.2);aba.position.set(0,.22,-.36);aba.rotation.x=-.25;capG.add(aba);const bt=malha(G.esf(.035,8),mB);bt.position.set(0,.39,0);capG.add(bt);
+  const fecho=malha(G.cx(.14,.06,.03,.01),mat('#f4f4f4'));fecho.position.set(0,.18,-.37);capG.add(fecho);capG.rotation.x=-.55;capG.position.set(0,.03,-.05)}
  if(P.cab==='lados'){[-1,1].forEach(d=>{const s=malha(G.esf(.13,16),mCab);s.position.set(d*.32,.05,-.08);s.scale.set(.6,1,1.2);cab.add(s)});const s2=malha(G.esf(.15,16),mCab);s2.position.set(0,.05,-.3);s2.scale.set(1.6,.9,.6);cab.add(s2)}
  // óculos 3D
  const oc=new THREE.Group();const mOc=mat('#1b1626',{rough:.3});[-1,1].forEach(d=>{const ar=malha(new THREE.TorusGeometry(.085,.014,10,32),mOc,{sombra:false});ar.position.set(d*.12,.05,.345);ar.scale.y=.85;oc.add(ar);
