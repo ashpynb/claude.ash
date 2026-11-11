@@ -77,7 +77,7 @@ const colegas=[[-2.4,0,'#a66b43','#1c1410','curto','#2fb36b'],[2.4,0,'#ffdcbc','
 // ---- SÉRGIO ----
 const SERGIO={pele:'#f1c08f',cab:'topete',cabCor:'#1c1410',roupa:'pijama',cor:'#8b5cf6',corpo:'magro',bone:'#3f6df2'};
 const sergio=boneco(SERGIO);sala.add(sergio);
-const SENT={x:0,y:.62-.95+.08,z:.95};// sentado na carteira da frente (de frente pra câmera: rotação 0, mesa atrás? usamos mesa à frente dele)
+const SENT={x:0,y:.655-.95+.13,z:.12};// sentado na carteira da frente (de frente pra câmera: rotação 0, mesa atrás? usamos mesa à frente dele)
 // a carteira do Sérgio fica virada pra câmera: mesa na frente dele
 carts[0].rotation.y=Math.PI;carts[0].position.z=1.1;
 // objetos na mesa do Sérgio
@@ -85,10 +85,10 @@ const mesaY=1.1,mesaZ=1.1;
 const folhaTex=tex(256,360,()=>{});function desenhaFolha(n){const g=folhaTex.userData.canvas.getContext('2d');g.fillStyle='#fffef8';g.fillRect(0,0,256,360);g.strokeStyle='#bcd2f0';g.lineWidth=2;for(let i=0;i<30;i++){g.beginPath();g.moveTo(14,22+i*11);g.lineTo(242,22+i*11);g.stroke()}
  g.strokeStyle='#2a3a8a';g.lineWidth=2.2;for(let i=0;i<n;i++){g.beginPath();const y=20+i*11;g.moveTo(18,y);for(let x=18;x<(i===n-1?160:236);x+=6)g.lineTo(x,y-2+Math.sin(x*.7+i)*2);g.stroke()}folhaTex.needsUpdate=true}
 let linhas=-1;const setLinhas=n=>{if(n!==linhas){linhas=n;desenhaFolha(n)}};
-const folha=malha(G.cx(.62,.005,.86,.002),[mat('#fffef8'),mat('#fffef8'),new THREE.MeshStandardMaterial({map:folhaTex,roughness:.9}),mat('#fffef8'),mat('#fffef8'),mat('#fffef8')]);folha.position.set(.15,mesaY+.01,mesaZ-.05);sala.add(folha);
+const folha=malha(G.cx(.62,.005,.86,.002),[mat('#fffef8'),mat('#fffef8'),new THREE.MeshStandardMaterial({map:folhaTex,roughness:.9}),mat('#fffef8'),mat('#fffef8'),mat('#fffef8')]);folha.position.set(.15,mesaY+.01,mesaZ-.22);sala.add(folha);
 const cadTex=tex(256,340,(g,w,h)=>{g.fillStyle='#ffd43b';g.fillRect(0,0,w,h);g.fillStyle='#2a1a40';g.font='64px Lilita';g.textAlign='center';g.fillText('ENEM',w/2,120);g.font='34px Lilita';g.fillText('caderno de prova',w/2,175);g.fillStyle='#3f6df2';g.fillRect(0,h-40,w,40)});
 const caderno=malha(G.cx(.55,.05,.75,.01),[mat('#ffd43b'),mat('#ffd43b'),new THREE.MeshStandardMaterial({map:cadTex,roughness:.8}),mat('#ffd43b'),mat('#ffd43b'),mat('#ffd43b')]);caderno.position.set(-.45,mesaY+.03,mesaZ-.1);caderno.rotation.y=.15;sala.add(caderno);
-const caneta=new THREE.Group();caneta.add(em(malha(G.cil(.018,.018,.42,8),mat('#ffffff',{rough:.3})),0,0,0));caneta.add(em(malha(G.cil(.02,.02,.08,8),mat('#3f6df2')),0,.2,0));caneta.children.forEach(c=>{});caneta.rotation.z=Math.PI/2;caneta.position.set(.45,mesaY+.03,mesaZ+.2);sala.add(caneta);
+const caneta=new THREE.Group();caneta.add(em(malha(G.cil(.018,.018,.42,8),mat('#ffffff',{rough:.3})),0,0,0));caneta.add(em(malha(G.cil(.02,.02,.08,8),mat('#3f6df2')),0,.2,0));caneta.children.forEach(c=>{});caneta.rotation.z=Math.PI/2;caneta.position.set(.45,mesaY+.03,mesaZ-.3);sala.add(caneta);
 // física: folha do tema, constituição, caderneta, seringas, moedas
 const mkTex=(bg,fg,txt,sub)=>tex(256,340,(g,w,h)=>{g.fillStyle=bg;g.fillRect(0,0,w,h);g.fillStyle=fg;g.textAlign='center';g.font='46px Lilita';txt.split('|').forEach((l,i)=>g.fillText(l,w/2,110+i*54));if(sub){g.font='30px Lilita';g.fillText(sub,w/2,h-40)}});
 const livro=malha(G.cx(.55,.12,.75,.02),[mat('#1f3a6a'),mat('#1f3a6a'),new THREE.MeshStandardMaterial({map:mkTex('#1f3a6a','#ffd43b','CONSTITUIÇÃO|FEDERAL','1988'),roughness:.7}),mat('#f4efe6'),mat('#f4efe6'),mat('#f4efe6')]);sala.add(livro);
@@ -160,13 +160,13 @@ ev(palavra(19,'dezoito'),'tic');ev(palavra(20,'dezenove'),'tic');ev(palavra(20,'
 function olhaCam(px,py,pz,ax,ay,az,fov=32){cam.position.set(px,py,pz);cam.fov=fov;cam.updateProjectionMatrix();cam.lookAt(ax,ay,az)}
 function camOrbit(a,dist,az,el,fov=32){const A=az*Math.PI/180,El=el*Math.PI/180;olhaCam(a[0]+dist*Math.cos(El)*Math.sin(A),a[1]+dist*Math.sin(El),a[2]+dist*Math.cos(El)*Math.cos(A),...a,fov)}
 function mostra(k){sala.visible=k==='sala';Object.entries(ins).forEach(([n,g])=>g.visible=n===k);pz.visible=k!=='sala'}
-function sentado(t,o={}){sergio.position.set(SENT.x,SENT.y,SENT.z+.75);sergio.rotation.set(0,0,0);pose(sergio,{cara:'cansado',sentado:true,bE:.15,bD:.15,bEx:-.9,bDx:-.9,...o},t)}
+function sentado(t,o={}){sergio.position.set(SENT.x,SENT.y,SENT.z);sergio.rotation.set(0,0,0);pose(sergio,{cara:'cansado',sentado:true,bE:.15,bD:.15,bEx:-.9,bDx:-.9,...o},t)}
 function dePe(t,x,z,o={}){sergio.position.set(x,o.y||0,z);sergio.rotation.set(o.rx||0,o.ry||0,o.rz||0);pose(sergio,{cara:'cansado',...o},t)}
 const MESA=[0,1.4,1.4];
 window.renderAt=(t)=>{
  const bi0=B.findIndex(b=>t>=b.t0&&t<b.t1);const bi=bi0<0?B.length-1:bi0;const b=B[bi],u=clamp((t-b.t0)/(b.t1-b.t0)),lt=t-b.t0,w=(a,n)=>palavra(bi,a,n)-b.t0;
  ['titulo','num','tema','selo','card','sirene'].forEach(i=>$(i).style.opacity=0);document.querySelectorAll('#chips span').forEach(s=>s.style.opacity=0);let flash=lt<.06?.3:0;
- cena.background=null;livro.visible=cartao.visible=temaFolha.visible=false;seringas.forEach(s=>s.visible=false);ideia.visible=false;caneta.position.set(.45,mesaY+.03,mesaZ+.2);caneta.rotation.set(0,0,Math.PI/2);
+ cena.background=null;livro.visible=cartao.visible=temaFolha.visible=false;seringas.forEach(s=>s.visible=false);ideia.visible=false;caneta.position.set(.45,mesaY+.03,mesaZ-.3);caneta.rotation.set(0,0,Math.PI/2);
  const relH=[[13,25],[13,25],[13,28],[13,29],[13,30],[13,40],[13,50],[13,55],[14,0],[14,15],[14,30],[15,0],[15,10],[15,30],[15,45],[16,0],[16,30],[18,0],[18,20],[18,50],[19,0],[19,5]][bi];hora(relH[0],relH[1]+u*5);
  setLinhas(bi<17?0:bi===17?Math.round(lerp(4,18,u)):bi===18?Math.round(lerp(18,24,u)):bi===19?Math.round(lerp(24,30,u)):30);
  colegas.forEach((c,i)=>pose(c,{cara:'feliz',sentado:true,bEx:-.9,bDx:-.9,bE:.15,bD:.15,cabX:Math.sin(t*1.3+i)*.05},t+i*3));
@@ -182,20 +182,20 @@ window.renderAt=(t)=>{
  case 6:{mostra('porta');cena.background=fundo('porta','#7cc4ff','#2d5a7a');portaSUS.forEach((o,i)=>{const f=clamp(lt*.42-i*.09);o.position.set(lerp(-3.2+(i%3)*.4,0,f),0,lerp(3+(i%2),-1.2,f));o.rotation.y=Math.atan2(-o.position.x,-1.2-o.position.z);o.visible=f<.98;
   pose(o,{cara:['feliz','feliz2','confiante'][i%3],pEx:Math.sin(lt*10+i)*.5,pDx:-Math.sin(lt*10+i)*.5,bEx:-Math.sin(lt*10+i)*.4,bDx:Math.sin(lt*10+i)*.4},t+i)});animaPoeira(pz,t);camOrbit([0,1.4,0],push(15,14),0,14);break}
  case 7:{mostra('sala');sentado(t,{cara:'surpreso',olhar:[0,4]});livro.visible=true;simLivro([livro],Math.max(0,lt-.3));if(lt>.75&&lt<.95)flash=.15;camOrbit(MESA,push(10,9.5),-6,24);num('1988','art. 196',b.t0+w('oitenta'),t);break}
- case 8:{mostra('sala');sentado(t,{cara:'confiante',bDx:-1.2,bD:.05});caneta.position.set(.35,mesaY+.35,mesaZ+.25);caneta.rotation.set(.4,0,.3);camOrbit(MESA,push(10.5,10),12,18);num('14:00','',b.t0+w('catorze'),t);break}
+ case 8:{mostra('sala');sentado(t,{cara:'confiante',bDx:-1.2,bD:.05});caneta.position.set(.3,mesaY+.3,mesaZ-.35);caneta.rotation.set(.4,0,.3);camOrbit(MESA,push(10.5,10),12,18);num('14:00','',b.t0+w('catorze'),t);break}
  case 9:{mostra('dez');cena.background=fundo('dez','#8a6ad8','#2a1a40');dez.forEach((o,i)=>{const k=back(clamp((lt-i*.05)/.3));o.scale.setScalar(.5*k);const on=i<7&&lt>w('sete')+i*.12;o.userData.halo.material.opacity=on?.85:0;pose(o,{cara:on?'feliz2':'feliz',bE:on?2.5:.15,bD:on?2.5:.15},t+i)});
   animaPoeira(pz,t);camOrbit([0,.9,0],push(14,13),0,16);num('7 em 10','dependem do SUS',b.t0+w('sete'),t);break}
  case 10:{mostra('transp');cena.background=fundo('transp','#7cc4ff','#2d5a7a');const g=ins.transp;g.userData.cor.rotation.y=t*1.5;g.userData.cor.position.y=1.75+Math.sin(t*3)*.08;g.userData.cor.scale.setScalar(1+.06*Math.pow(Math.max(0,Math.sin(t*7)),8));
   animaPoeira(pz,t);camOrbit([.2,1.1,0],push(13.5,12.8),0,10);num('Nº 1','maior sistema público de transplantes',b.t0+w('maior'),t);break}
  case 11:{mostra('sala');sentado(t,{cara:'surpreso',olhar:[-3,3]});cartao.visible=true;simCart([cartao],Math.max(0,lt-.2));camOrbit(MESA,push(10,9.5),-12,22);num('15:00','',b.t0+w('quinze'),t);break}
  case 12:{mostra('sala');sentado(t,{cara:lt>w('sus')?'feliz2':'surpreso',olhar:[0,4]});cartao.visible=true;simCart([cartao],9);seringas.forEach(s=>s.visible=true);simSer(seringas,Math.max(0,lt-.4));camOrbit(MESA,push(9.5,9),8,26);break}
- case 13:{mostra('sala');sentado(t,{cara:'surpreso',olhar:[0,-3],bE:.6,bD:.6});ideia.visible=true;ideia.position.set(SENT.x,SENT.y+.95+.92+.36+.95+Math.sin(t*3)*.05+.35,SENT.z+.75);ideia.scale.setScalar(back(clamp((lt-w('virada'))/.3)));camOrbit(MESA,push(11,10),0,14);break}
+ case 13:{mostra('sala');sentado(t,{cara:'surpreso',olhar:[0,-3],bE:.6,bD:.6});ideia.visible=true;ideia.position.set(SENT.x,SENT.y+.95+.92+.36+.95+Math.sin(t*3)*.05+.35,SENT.z);ideia.scale.setScalar(back(clamp((lt-w('virada'))/.3)));camOrbit(MESA,push(11,10),0,14);break}
  case 14:{mostra('vigi');cena.background=fundo('vigi','#9be8b0','#2f6a4a');animaPoeira(pz,t);camOrbit([0,1.2,0],push(10,9.2),0,18);pop('selo',b.t0+w('vigilancia'),t);break}
  case 15:{mostra('fila');cena.background=fundo('fila','#c7a6ff','#3a2a5c');fila.forEach((o,i)=>{pose(o,{cara:i%2?'cansado':'preocupado',cabX:Math.sin(t+i)*.05,inclina:Math.sin(t*.8+i)*.03},t+i);o.position.y=0});animaPoeira(pz,t);camOrbit([-.4,.9,-.4],push(12,11),22,14);num('26%','não são atendidos na 1ª tentativa',b.t0+w('vinte'),t);break}
  case 16:{mostra('cura');cena.background=fundo('cura','#ff9fb0','#3a1626');const g=ins.cura;g.userData.cg.rotation.y=Math.sin(t*1.2)*.3;g.userData.cg.scale.setScalar(1+.05*Math.pow(Math.max(0,Math.sin(t*7)),8));animaPoeira(pz,t);camOrbit([0,2,0],push(11,10.5),0,6);break}
- case 17:{mostra('sala');sentado(t,{cara:'confiante',olhar:[0,5],bDx:-1.25+Math.sin(t*22)*.12,bD:.05+Math.sin(t*15)*.05,cabX:.25});caneta.position.set(.25+Math.sin(t*22)*.08,mesaY+.12,mesaZ+.15);caneta.rotation.set(.9,0,.2);camOrbit(MESA,push(9.5,9),18,30);num('18:00','proposta de intervenção',b.t0+w('dezoito'),t);break}
+ case 17:{mostra('sala');sentado(t,{cara:'confiante',olhar:[0,5],bDx:-1.25+Math.sin(t*22)*.12,bD:.05+Math.sin(t*15)*.05,cabX:.25});caneta.position.set(.25+Math.sin(t*22)*.08,mesaY+.12,mesaZ-.3);caneta.rotation.set(.9,0,.2);camOrbit(MESA,push(9.5,9),18,30);num('18:00','proposta de intervenção',b.t0+w('dezoito'),t);break}
  case 18:{mostra('cofre');cena.background=fundo('cofre','#7cc4ff','#2d5a7a');const g=ins.cofre;g.userData.sim(moedas,Math.max(0,lt-.2));g.userData.meds.forEach((m,i)=>{const k=back(clamp((lt-w('medicos')-i*.15)/.35));m.scale.setScalar(.6*k);pose(m,{cara:'feliz2',bD:2.4+Math.sin(t*6+i)*.3,bE:.15},t+i)});animaPoeira(pz,t);camOrbit([-.1,1,0],push(14,13.2),0,14);break}
- case 19:{mostra('sala');sentado(t,{cara:'feliz',olhar:[0,5],bDx:-1.25+Math.sin(t*18)*.1,cabX:.25});caneta.position.set(.2+Math.sin(t*18)*.07,mesaY+.12,mesaZ+.15);caneta.rotation.set(.9,0,.2);camOrbit([0,1.5,1.2],push(10,9.5),10,32);num('30 linhas','no máximo',b.t0+w('trinta'),t);break}
+ case 19:{mostra('sala');sentado(t,{cara:'feliz',olhar:[0,5],bDx:-1.25+Math.sin(t*18)*.1,cabX:.25});caneta.position.set(.2+Math.sin(t*18)*.07,mesaY+.12,mesaZ-.3);caneta.rotation.set(.9,0,.2);camOrbit([0,1.5,1.2],push(10,9.5),10,32);num('30 linhas','no máximo',b.t0+w('trinta'),t);break}
  case 20:{mostra('sala');const tt2=w('torceu');if(lt<w('entregou')+.2)sentado(t,{cara:'feliz2'});else if(lt<tt2){const k=ease(clamp((lt-w('entregou')-.2)/(tt2-w('entregou')-.2)));dePe(t,lerp(.2,2.6,k),lerp(2,3.6,k),{cara:'feliz2',ry:.9,bE:2.4,bD:2.4,pEx:Math.sin(lt*10)*.45,pDx:-Math.sin(lt*10)*.45})}
   else{const k=ease(clamp((lt-tt2)/.35));dePe(t,2.6+k*.3,3.6+k*.3,{cara:'surpreso',ry:.9,rx:k*1.35,y:k*.3,bE:2.6,bD:2.6,pEx:-.6*k})}camOrbit([1.6,1.2,2.6],push(16,15),18,16);num('19:00','entregou!',b.t0+w('dezenove'),t);break}
  case 21:{mostra('sala');dePe(t,2.9,3.9,{cara:'triste',ry:.9,rx:1.35,y:.3,bE:2.6,bD:2.6,pEx:-.6,tremor:true});const s=$('sirene');s.style.opacity=.55;s.style.background=Math.sin(t*12)>0?'radial-gradient(circle at 0% 20%,#ff2a2a88,transparent 55%)':'radial-gradient(circle at 100% 20%,#2a6aff88,transparent 55%)';
