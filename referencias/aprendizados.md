@@ -17,6 +17,16 @@ conflita com uma regra geral, vale a da série (está marcada).
   explicação ~2,9). Se o ritmo viral deixar o vídeo abaixo do mínimo de duração, acrescentar
   frases (só fatos conferidos ou piadas), nunca falar mais devagar.
 
+### Câmera e camadas HTML (pedido da usuária, viral 09)
+- **Não aproximar demais a câmera.** Personagem de corpo inteiro na maioria dos planos (distância
+  ~10–16 unidades pro boneco de 2,6 de altura, câmera vertical fov 32). Close só em 1 ou 2 momentos
+  de reação. Inserto com objeto: o objeto inteiro dentro do quadro, com folga.
+- **Conferir as camadas HTML/CSS** (legenda, número, cartão do tema, selos, etiquetas) antes do
+  render final: `node producao/teste_css.js URL prefixo` renderiza 2 quadros por beat e aponta
+  texto fora da tela, sobreposição entre camadas e legenda com mais de 2 linhas.
+- Textos desenhados em objetos 3D (lousa, relógio, capas) só depois da fonte carregar
+  (`await document.fonts.load(...)` no começo do módulo).
+
 ### Texto na tela (pedido da usuária, EP01 abelhas)
 - **Nada de texto grande no topo repetindo a fala.** No vídeo das abelhas, a palavra-chave
   gigante em cima + legenda embaixo foi "muita informação"; ficou só a legenda.
