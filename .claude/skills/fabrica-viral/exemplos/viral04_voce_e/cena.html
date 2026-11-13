@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><style>
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#000;font-family:'Inter',sans-serif}
+canvas{display:block}
+#ui{position:absolute;inset:0;pointer-events:none}
+#titulo{position:absolute;left:50px;right:50px;top:300px;text-align:center;font:900 112px/1.0 'Inter';color:#fff;
+ -webkit-text-stroke:16px #0a1a2a;paint-order:stroke fill;letter-spacing:-1px;opacity:0}
+#titulo b{color:#FFD400}
+#leg{position:absolute;left:60px;right:60px;top:1330px;text-align:center;font:900 92px/1.05 'Inter';color:#fff;text-transform:uppercase;
+ -webkit-text-stroke:15px #0a0f18;paint-order:stroke fill}
+#leg .k{color:#FFD400}
+#cartao{position:absolute;left:0;right:0;top:250px;text-align:center;opacity:0}
+#cartao span{display:inline-block;background:#FFD400;color:#111;font:900 66px/1.05 'Inter';padding:22px 40px;border-radius:26px;
+ box-shadow:0 10px 0 #b38f00,0 18px 40px #0008;text-transform:uppercase;max-width:900px}
+#cartao small{display:block;font:800 34px 'Inter';letter-spacing:1px}
+#num{position:absolute;left:0;right:0;top:470px;text-align:center;opacity:0}
+#num span{display:inline-block;background:#0b1a2acc;border:6px solid #FFD400;color:#FFD400;font:900 78px 'Inter';padding:10px 36px;border-radius:999px}
+#rotulo{position:absolute;left:0;right:0;top:120px;text-align:center;font:700 34px 'Inter';color:#e8f7ff;opacity:0;text-shadow:0 2px 6px #000c}
+#rotulo i{font-style:italic}
+#grao{position:absolute;inset:0;width:1080px;height:1920px;opacity:.07;mix-blend-mode:overlay}
+#vin{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 50%,rgba(0,10,25,.55) 100%)}
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+</style></head><body>
+<div id="ui"><canvas id="grao" width="270" height="480"></canvas><div id="vin"></div>
+<div id="rotulo"></div><div id="titulo"></div><div id="cartao"><span></span></div><div id="num"><span></span></div><div id="leg"></div><div id="flash"></div></div>
+<script src="tempo.js"></script>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+<script type="module">
+// Viral 04 — Ouriço-do-mar. 3D com luz de cena (ficha 03): feixes de luz, cáusticas na areia, neblina, contorno, partículas,
+// sombras suaves, grão e vinheta. Modelos CC0 (peixes Quaternius, pedras Kenney) + ouriço e objetos feitos por código.
+import * as THREE from 'three';
+import {GLTFLoader} from './vendor/jsm/loaders/GLTFLoader.js';
+const W=1080,H=1920,$=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),lerp=(a,b,t)=>a+(b-a)*t,ease=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2},
+ out=x=>{x=clamp(x);return 1-Math.pow(1-x,3)},back=x=>{x=clamp(x);const c=1.9;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+let sd=9;const rnd=()=>(sd=(sd*16807)%2147483647)/2147483647;
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});r.setSize(W,H);r.setPixelRatio(1);
+r.outputEncoding=THREE.sRGBEncoding;r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=1.15;r.shadowMap.enabled=true;r.shadowMap.type=THREE.PCFSoftShadowMap;
+document.body.prepend(r.domElement);
+const scene=new THREE.Scene();const AGUA=new THREE.Color(0x0b4f6c);scene.fog=new THREE.FogExp2(AGUA,0.045);
+const cam=new THREE.PerspectiveCamera(42,W/H,.05,200);
+const C=h=>new THREE.Color(h).convertSRGBToLinear();
+const std=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:C(c),roughness:.7,metalness:0},o));
+function mesh(g,m,p=scene,pos=[0,0,0],s=[1,1,1]){const x=new THREE.Mesh(g,m);x.position.set(...pos);x.scale.set(...s);x.castShadow=true;x.receiveShadow=true;p.add(x);return x}
+const grupo=(p=scene)=>{const g=new THREE.Group();p.add(g);return g};
+
+// ---------- céu da água ----------
+const fundo=new THREE.Mesh(new THREE.SphereGeometry(90,32,16),new THREE.ShaderMaterial({side:THREE.BackSide,depthWrite:false,fog:false,
+ vertexShader:'varying vec3 p;void main(){p=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+ fragmentShader:'varying vec3 p;void main(){float h=clamp(p.y*.9+.35,0.,1.);vec3 a=vec3(.02,.16,.24),b=vec3(.1,.45,.6),c=vec3(.55,.9,1.);gl_FragColor=vec4(h<.6?mix(a,b,h/.6):mix(b,c,(h-.6)/.4),1.);}'}));
+scene.add(fundo);
+// ---------- luz ----------
+scene.add(new THREE.HemisphereLight(C(0xa8ecff),C(0x1d3b3a),.75));
+const sol=new THREE.DirectionalLight(C(0xfff1d6),2.4);sol.position.set(3,14,4);sol.castShadow=true;sol.shadow.mapSize.set(2048,2048);
+Object.assign(sol.shadow.camera,{left:-9,right:9,top:9,bottom:-9,near:1,far:40});sol.shadow.bias=-.0004;sol.shadow.radius=4;scene.add(sol);
+const rim=new THREE.DirectionalLight(C(0x7ff6ff),1.6);rim.position.set(-4,3,-7);scene.add(rim);
+const fill=new THREE.PointLight(C(0xffb3e6),.6,14);fill.position.set(3,2,4);scene.add(fill);
+// ---------- areia + cáusticas ----------
+const areiaG=new THREE.PlaneGeometry(80,80,160,160).rotateX(-Math.PI/2);{const p=areiaG.attributes.position;for(let i=0;i<p.count;i++){const x=p.getX(i),z=p.getZ(i);p.setY(i,Math.sin(x*.7)*.06+Math.cos(z*.9+x*.3)*.05+Math.sin(x*2.3+z*1.7)*.02)}areiaG.computeVertexNormals()}
+const areia=new THREE.Mesh(areiaG,std(0xd8c597,{roughness:1}));areia.receiveShadow=true;scene.add(areia);
+const caust=new THREE.Mesh(new THREE.PlaneGeometry(40,40).rotateX(-Math.PI/2),new THREE.ShaderMaterial({transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,
+ uniforms:{t:{value:0}},vertexShader:'varying vec2 u;void main(){u=position.xz;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+ fragmentShader:'uniform float t;varying vec2 u;float c(vec2 p){float v=0.;for(int i=0;i<3;i++){float f=float(i)+1.;v+=sin(p.x*f*1.7+t*1.3*f+sin(p.y*f*1.3+t))*cos(p.y*f*1.9-t*1.1*f+sin(p.x*1.1*f));}return v;}void main(){float v=pow(abs(c(u*.9))*.36,3.);float fade=1.-smoothstep(6.,18.,length(u));gl_FragColor=vec4(vec3(.6,.95,1.)*v*.55*fade,1.);}'}));
+caust.position.y=.02;scene.add(caust);
+// ---------- feixes de luz ----------
+const raios=[];for(let i=0;i<9;i++){const m=new THREE.Mesh(new THREE.ConeGeometry(1.6+rnd()*1.6,26,24,1,true),new THREE.MeshBasicMaterial({color:C(0xcff7ff),transparent:true,opacity:.05,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,fog:false}));
+ m.position.set((rnd()-.5)*16,11,-2-rnd()*12);m.rotation.z=.25+rnd()*.15;m.userData={f:rnd()*6};scene.add(m);raios.push(m)}
+// ---------- partículas (neve marinha) ----------
+const NP=500,pg=new THREE.BufferGeometry(),pp=new Float32Array(NP*3),pv=[];for(let i=0;i<NP;i++){pv.push([(rnd()-.5)*20,rnd()*10,(rnd()-.5)*20,rnd()])}
+pg.setAttribute('position',new THREE.BufferAttribute(pp,3));const part=new THREE.Points(pg,new THREE.PointsMaterial({color:C(0xeaffff),size:.035,transparent:true,opacity:.7,depthWrite:false}));scene.add(part);
+// ---------- algas e corais ----------
+const algas=[];for(let i=0;i<26;i++){const h=2+rnd()*3.5,pts=[];for(let k=0;k<=10;k++)pts.push(new THREE.Vector3(0,k/10*h,0));
+ const g=new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),20,.06+rnd()*.05,6,false);const a=mesh(g,std([0x2f8f4e,0x3fa35b,0x5aa83a][i%3],{roughness:.9}));
+ const ang=Math.PI*(1.05+rnd()*.9),d=3.5+rnd()*7;a.position.set(Math.cos(ang)*d*1.4,0,Math.sin(ang)*d-1.5);a.userData={f:rnd()*6,h};algas.push(a)}
+const coral=(x,z,cor,s=1)=>{const g=grupo();g.position.set(x,0,z);g.scale.setScalar(s);const m=std(cor,{roughness:.8});
+ const ramo=(p,dir,len,n)=>{if(n<=0)return;const e=mesh(new THREE.CylinderGeometry(.06*n*.5,.08*n*.5,len,8),m,g);const fim=p.clone().add(dir.clone().multiplyScalar(len));
+  e.position.copy(p.clone().add(fim).multiplyScalar(.5));e.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir.clone().normalize());
+  mesh(new THREE.SphereGeometry(.06*n*.55,8,6),m,g,[fim.x,fim.y,fim.z]);for(let k=0;k<2;k++){const nd=dir.clone().add(new THREE.Vector3((rnd()-.5)*1.2,.4,(rnd()-.5)*1.2)).normalize();ramo(fim,nd,len*.75,n-1)}};
+ ramo(new THREE.Vector3(),new THREE.Vector3(0,1,0),.6,4);return g};
+[[-3.2,-1.5,0xff7aa8,1.1],[3.5,-2.6,0xff9f45,1.3],[-5,-5,0xc77dff,1.5],[5.5,-6,0xff6b6b,1.2],[-1.8,-7,0xffb84d,1.4]].forEach(a=>coral(...a));
+
+// ---------- ouriço (código) ----------
+function ourico(cor=0x5b2a72,espCor=0x3d1450){
+ const g=grupo();const corpoM=std(cor,{roughness:.55});
+ const corpo=mesh(new THREE.SphereGeometry(1,56,40),corpoM,g,[0,0,0],[1,.72,1]);
+ const N=420,esp=new THREE.InstancedMesh(new THREE.ConeGeometry(.04,1.15,7).translate(0,.575,0),std(espCor,{roughness:.4}),N);esp.castShadow=true;g.add(esp);
+ const dirs=[];for(let i=0;i<N;i++){const y=1-(i+.5)/N*1.75,rr=Math.sqrt(1-y*y),a=i*2.39996;dirs.push(new THREE.Vector3(Math.cos(a)*rr,y,Math.sin(a)*rr).normalize())}
+ // pés ambulacrários (5 faixas embaixo)
+ const NF=90,pes=new THREE.InstancedMesh(new THREE.CylinderGeometry(.025,.025,1,6).translate(0,.5,0),std(0xf0b6d8,{roughness:.6,transparent:true,opacity:.95}),NF);g.add(pes);
+ const ventosa=new THREE.InstancedMesh(new THREE.SphereGeometry(.045,8,6),std(0xffd6ec),NF);g.add(ventosa);
+ const fdirs=[];for(let i=0;i<NF;i++){const banda=i%5,k=Math.floor(i/5)/18;const lat=-.25-k*.7,lon=banda/5*Math.PI*2+(Math.floor(i/5)%2)*.08;
+  const rr=Math.cos(lat*1.3);fdirs.push(new THREE.Vector3(Math.cos(lon)*rr,Math.sin(lat*1.3),Math.sin(lon)*rr).normalize())}
+ // boca (embaixo) com 5 dentes
+ const boca=grupo(g);boca.position.y=-.71;mesh(new THREE.CircleGeometry(.3,24).rotateX(Math.PI/2),std(0x1a0a12),boca,[0,-.005,0]);
+ const dentes=[];for(let i=0;i<5;i++){const d=mesh(new THREE.ConeGeometry(.06,.22,8),std(0xf8f4e8,{roughness:.3}),boca);d.userData.a=i/5*Math.PI*2;dentes.push(d)}
+ // ânus (topo)
+ const topo=mesh(new THREE.TorusGeometry(.12,.035,8,20).rotateX(Math.PI/2),std(0x2a0d2e),g,[0,.72,0]);
+ const o={g,corpo,esp,dirs,pes,ventosa,fdirs,dentes,topo,corpoM,espM:esp.material,
+  set(t,{giro=.08,palito=0,pes:pe=0,boca:bk=0,escala=1}={}){
+   const m=new THREE.Matrix4(),q=new THREE.Quaternion(),up=new THREE.Vector3(0,1,0),sc=new THREE.Vector3();
+   for(let i=0;i<N;i++){const d=dirs[i].clone();d.x+=Math.sin(t*1.7+i)*giro;d.z+=Math.cos(t*1.3+i*1.7)*giro;d.normalize();
+    q.setFromUnitVectors(up,d);const base=new THREE.Vector3(dirs[i].x,dirs[i].y*.72,dirs[i].z).multiplyScalar(.98);
+    const L=(.75+((i*37)%10)/25)*(1+palito*.25),th=1+palito*1.6;sc.set(th,L,th);m.compose(base,q,sc);esp.setMatrixAt(i,m)}
+   esp.instanceMatrix.needsUpdate=true;esp.material.color.copy(C(espCor)).lerp(C(0xc8955a),palito);
+   for(let i=0;i<NF;i++){const d=fdirs[i];const ext=pe*(.5+.5*Math.sin(t*3+i))*.9+.02;const base=new THREE.Vector3(d.x,d.y*.72,d.z).multiplyScalar(.97);
+    q.setFromUnitVectors(up,new THREE.Vector3(d.x,d.y-.6,d.z).normalize());sc.set(1,ext,1);m.compose(base,q,sc);pes.setMatrixAt(i,m);
+    const tip=base.clone().add(new THREE.Vector3(d.x,d.y-.6,d.z).normalize().multiplyScalar(ext));m.compose(tip,q,new THREE.Vector3(pe>0?1:0,pe>0?1:0,pe>0?1:0));ventosa.setMatrixAt(i,m)}
+   pes.instanceMatrix.needsUpdate=ventosa.instanceMatrix.needsUpdate=true;
+   const ab=.12+bk*(.5+.5*Math.sin(t*9))*.1;dentes.forEach(d=>{const a=d.userData.a;d.position.set(Math.cos(a)*ab,-.02,Math.sin(a)*ab);d.rotation.set(0,0,0);d.lookAt(0,-.6,0);d.rotateX(Math.PI/2)});
+   g.scale.setScalar(escala)}};
+ return o}
+const U=ourico();U.g.position.set(0,.9,0);
+const V=ourico(0xb0302a,0x7a1712);V.g.visible=false;const F1=ourico(0xc0453a,0x8a2018);F1.g.visible=false;
+
+// ---------- objetos do refrão ----------
+const madeira=std(0xc9955c,{roughness:.8}),metal=std(0xb8c2cc,{metalness:.8,roughness:.3}),preto=std(0x151515),branco=std(0xffffff);
+// boneco articulado
+const boneco=grupo();boneco.visible=false;{const m=madeira;mesh(new THREE.CapsuleGeometry(.18,.5,4,10),m,boneco,[0,1.0,0]);mesh(new THREE.SphereGeometry(.17,16,12),m,boneco,[0,1.55,0]);
+ [-1,1].forEach(s=>{mesh(new THREE.SphereGeometry(.07,10,8),m,boneco,[s*.24,1.28,0]);mesh(new THREE.CapsuleGeometry(.05,.35,4,8),m,boneco,[s*.24,.58,0])})}
+const braco=grupo(boneco);braco.position.set(.26,1.28,0);mesh(new THREE.CapsuleGeometry(.05,.38,4,8),madeira,braco,[0,-.25,0]);
+// triturador de pia
+const trit=grupo();trit.visible=false;mesh(new THREE.CylinderGeometry(.9,.9,1.2,40,1,true),std(0x9aa5ad,{metalness:.9,roughness:.25,side:THREE.DoubleSide}),trit,[0,.6,0]);
+mesh(new THREE.TorusGeometry(.92,.06,10,40).rotateX(Math.PI/2),metal,trit,[0,1.2,0]);mesh(new THREE.CircleGeometry(.9,40).rotateX(-Math.PI/2),std(0x2a2f33),trit,[0,.05,0]);const lam=grupo(trit);lam.position.y=.4;for(let i=0;i<4;i++){const b=mesh(new THREE.BoxGeometry(1.5,.05,.16),metal,lam);b.rotation.y=i*Math.PI/4}
+const pedacos=[];for(let i=0;i<24;i++)pedacos.push(mesh(new THREE.IcosahedronGeometry(.07,0),std(0x3d8f3a),trit));
+// cocô (vulcão)
+const coco=[];for(let i=0;i<14;i++){const c=mesh(new THREE.SphereGeometry(.17,14,10),std(0x6b3f22,{roughness:.9}));c.visible=false;c.userData={f:rnd(),vx:(rnd()-.5)*1.6,vz:(rnd()-.5)*1.6};coco.push(c)}
+// seta
+const seta=grupo();seta.visible=false;mesh(new THREE.ConeGeometry(.25,.5,16).rotateX(Math.PI),std(0xffd400,{emissive:C(0x553300)}),seta,[0,0,0]);mesh(new THREE.CylinderGeometry(.08,.08,.8,10),std(0xffd400,{emissive:C(0x553300)}),seta,[0,.6,0]);
+// velcro
+function texVelcro(cor,ganchos){const cv=document.createElement('canvas');cv.width=512;cv.height=128;const x=cv.getContext('2d');x.fillStyle=cor;x.fillRect(0,0,512,128);
+ for(let i=0;i<900;i++){const px=(i*53)%512,py=(i*29)%128;x.strokeStyle=ganchos?'rgba(255,255,255,.55)':'rgba(0,0,0,.35)';x.lineWidth=2;x.beginPath();
+  if(ganchos){x.arc(px,py,3,Math.PI,0)}else{x.moveTo(px-3,py);x.lineTo(px+3,py+2)}x.stroke()}const t=new THREE.CanvasTexture(cv);t.encoding=THREE.sRGBEncoding;return t}
+const velcro=grupo();velcro.visible=false;const vB=mesh(new THREE.BoxGeometry(2.6,.12,.8),new THREE.MeshStandardMaterial({map:texVelcro('#8f98a5',false),roughness:1}),velcro);
+const vPiv=grupo(velcro);vPiv.position.set(-1.3,.1,0);const vA=mesh(new THREE.BoxGeometry(2.6,.12,.8),new THREE.MeshStandardMaterial({map:texVelcro('#2d64d8',true),roughness:1}),vPiv,[1.3,0,0]);
+// olho gigante
+const olho=grupo();olho.visible=false;mesh(new THREE.SphereGeometry(1.25,40,30),std(0xffffff,{roughness:.2}),olho);const iris=mesh(new THREE.SphereGeometry(.62,32,24),std(0x2a8cff,{roughness:.2}),olho,[0,0,.78],[1,1,.45]);
+mesh(new THREE.SphereGeometry(.3,24,16),preto,olho,[0,0,1.02],[1,1,.4]);mesh(new THREE.SphereGeometry(.09,12,8),branco,olho,[.16,.16,1.12]);
+// câmera 360
+const cam360=grupo();cam360.visible=false;mesh(new THREE.BoxGeometry(.7,.5,.4),preto,cam360);mesh(new THREE.CylinderGeometry(.18,.2,.25,24).rotateX(Math.PI/2),metal,cam360,[0,0,.3]);
+mesh(new THREE.SphereGeometry(.12,16,12),std(0x88ccff,{metalness:.2,roughness:.05}),cam360,[0,0,.43]);mesh(new THREE.SphereGeometry(.05,8,6),std(0xff2a2a,{emissive:C(0xff0000)}),cam360,[.25,.18,.21]);
+const anel=mesh(new THREE.TorusGeometry(2.6,.03,8,80).rotateX(Math.PI/2),std(0xffd400,{emissive:C(0x664400)}));anel.visible=false;
+// conchas/pedras/alga que vão pro topo + boné + óculos
+const cobertura=[];for(let i=0;i<8;i++){const c=mesh(i%3===0?new THREE.SphereGeometry(.18,10,8,0,Math.PI*2,0,Math.PI/2):i%3===1?new THREE.DodecahedronGeometry(.14,0):new THREE.TorusGeometry(.12,.04,6,10),
+ std([0xf2d7c4,0x8f8f8f,0x3f9b4a][i%3]));c.scale.setScalar(2.2);c.visible=false;c.userData={a:i/8*6.28,f:rnd()};cobertura.push(c)}
+const bone=grupo();bone.visible=false;{const g=new THREE.SphereGeometry(.85,32,16,0,Math.PI*2,0,Math.PI/2.2);const m=mesh(g,std(0xf4c9b0,{roughness:.5}),bone,[0,0,0],[1,.45,1]);
+ for(let i=0;i<12;i++){const c=mesh(new THREE.TorusGeometry(.85,.025,6,40,Math.PI/2.4),std(0xd89f85),bone);c.rotation.set(Math.PI/2,0,i/12*Math.PI*2);c.scale.set(1,1,.45)}}
+const oculos=grupo();oculos.visible=false;[-1,1].forEach(s=>mesh(new THREE.CylinderGeometry(.32,.32,.06,24).rotateX(Math.PI/2),std(0x111111,{metalness:.5,roughness:.15}),oculos,[s*.38,0,0]));mesh(new THREE.BoxGeometry(.4,.06,.05),preto,oculos);
+// bolo 100 anos
+const bolo=grupo();bolo.visible=false;mesh(new THREE.CylinderGeometry(1.1,1.1,.7,40),std(0xffe0f0),bolo,[0,.35,0]);mesh(new THREE.CylinderGeometry(1.12,1.12,.12,40),std(0xff5ca8),bolo,[0,.72,0]);
+const velas=[];for(let i=0;i<20;i++){const a=i/20*6.28,rr=.3+(i%3)*.25;mesh(new THREE.CylinderGeometry(.03,.03,.3,8),std(0x6ad0ff),bolo,[Math.cos(a)*rr,.93,Math.sin(a)*rr]);
+ velas.push(mesh(new THREE.SphereGeometry(.05,8,6),new THREE.MeshBasicMaterial({color:0xffc040}),bolo,[Math.cos(a)*rr,1.12,Math.sin(a)*rr]))}
+// bengala + óculos de vô
+const bengala=grupo();bengala.visible=false;mesh(new THREE.CylinderGeometry(.04,.04,1.6,10),std(0x7a4b2a),bengala,[0,.8,0]);mesh(new THREE.TorusGeometry(.18,.04,8,16,Math.PI),std(0x7a4b2a),bengala,[-.18,1.6,0]);
+const oculosVo=grupo();oculosVo.visible=false;[-1,1].forEach(s=>mesh(new THREE.TorusGeometry(.22,.03,8,20),std(0xc9a040,{metalness:.7,roughness:.3}),oculosVo,[s*.3,0,0]));
+// relógio de ponto
+const ponto=grupo();ponto.visible=false;mesh(new THREE.BoxGeometry(1.4,1.8,.8),std(0x6c7a86,{metalness:.4,roughness:.4}),ponto,[0,.9,0]);mesh(new THREE.CylinderGeometry(.45,.45,.06,32).rotateX(Math.PI/2),branco,ponto,[0,1.25,.42]);
+const pont=mesh(new THREE.BoxGeometry(.04,.36,.02),preto,ponto,[0,1.25,.46]);const cartaoPonto=mesh(new THREE.BoxGeometry(.5,.7,.02),std(0xfff3c4),ponto,[0,.55,.45]);
+// pessoa genérica espinhosa e mal-humorada
+const pessoa=grupo();pessoa.visible=false;mesh(new THREE.CapsuleGeometry(.5,1.2,6,14),std(0x4a6cff),pessoa,[0,1.1,0]);mesh(new THREE.SphereGeometry(.45,24,18),std(0xf0c09a),pessoa,[0,2.25,0]);
+for(let i=0;i<14;i++){const a=i/14*Math.PI-Math.PI/2;const c=mesh(new THREE.ConeGeometry(.08,.4,8),std(0x2a1a10),pessoa,[Math.sin(a)*.32,2.58+Math.cos(a)*.08,(i%2?-.1:.1)]);c.rotation.z=-a*.8}
+[-1,1].forEach(s=>{mesh(new THREE.SphereGeometry(.06,8,6),preto,pessoa,[s*.16,2.3,.4]);const b=mesh(new THREE.BoxGeometry(.2,.04,.04),preto,pessoa,[s*.16,2.42,.41]);b.rotation.z=s*.45});
+mesh(new THREE.TorusGeometry(.12,.025,6,12,Math.PI),preto,pessoa,[0,2.05,.42]);
+
+// ---------- modelos CC0 ----------
+const L=new GLTFLoader();const load=u=>new Promise((ok,err)=>L.load(u,ok,undefined,err));
+const peixes=[];let pedras=[];
+async function carregar(){
+ const nomes=['Clownfish','BlueTang','YellowTang','Puffer','ButterflyFish'];
+ const gl=await Promise.all(nomes.map(n=>load('modelos/mar/'+n+'.glb')));
+ gl.forEach((g,i)=>{for(let k=0;k<2;k++){const o=k?g.scene.clone(true):g.scene;o.traverse(m=>{if(m.isMesh){m.castShadow=true}});scene.add(o);
+  const mx=new THREE.AnimationMixer(o);const clip=g.animations.find(a=>/Swimming_Normal/.test(a.name));if(clip)mx.clipAction(clip).play();
+  peixes.push({o,mx,f:rnd()*6,r:5+rnd()*5,y:2.2+rnd()*3,v:.2+rnd()*.2,s:.35+rnd()*.25,i:peixes.length})}});
+ const rk=await Promise.all(['rock-large','rock-wide','rock-small'].map(n=>load('modelos/mar/'+n+'.glb')));
+ const pedraM=std(0x5d5a63,{roughness:.95});
+ for(let i=0;i<12;i++){const o=rk[i%3].scene.clone(true);o.traverse(m=>{if(m.isMesh){m.castShadow=m.receiveShadow=true;m.material=pedraM}});
+  const a=Math.PI*(1.1+rnd()*.8),d=4.5+rnd()*6;o.position.set(Math.cos(a)*d*1.3,0,Math.sin(a)*d-2);o.scale.setScalar(.5+rnd()*.7);o.rotation.y=rnd()*6;scene.add(o);pedras.push(o)}
+ window.pronto=true}
+
+// ---------- linha do tempo, legenda ----------
+const B=TEMPO.beats;
+const norm=w=>w.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9-]/g,'');
+function palavra(bi,a,n=1){let c=0;for(const x of B[bi].words)if(norm(x.w).startsWith(norm(a))&&++c===n)return x.t0;throw new Error('palavra '+a+' beat '+bi)}
+function ultima(bi,a){let v=null;for(const x of B[bi].words)if(norm(x.w).startsWith(norm(a)))v=x.t0;if(v===null)throw new Error('ultima '+a+' '+bi);return v}
+const CHAVE=new Set(['paus','duros','predador','ourico-do-mar','ourico','comeco','juntinha','boneco','armadura','palito','churrasco','boca','cinco','dentes','sessenta','musculos','triturador','pia','cu','costas','coco','teto','vulcao','pezinhos','grudam','velcro','olho','gigante','camera','trezentos','sol','concha','pedra','alga','bone','estiloso','pior','vermelho','cem','anos','filhote','dez','aposentadoria','espinhoso','mal-humorado','corpo','inteiro']);
+// divide cada beat em pedaços de 1–3 palavras (quebra na pontuação)
+B.forEach(b=>{const toks=b.fala.split(' ');const ws=b.words;let wi=0;const tt=toks.map(tk=>{const n=norm(tk);for(let j=wi;j<ws.length;j++){const m=norm(ws[j].w);if(m===n||(n&&m.startsWith(n))||(m&&n.startsWith(m))){wi=j+1;return ws[j]}}return null});
+ const ch=[];let cur=[];toks.forEach((tk,i)=>{cur.push({tk,w:tt[i]});if(cur.length===3||/[.,?!:]$/.test(tk)||i===toks.length-1){ch.push(cur);cur=[]}});
+ b.chunks=ch.map(c=>({t0:(c.find(x=>x.w)||{w:{t0:b.t0}}).w.t0,html:c.map(x=>{const n=norm(x.tk);return CHAVE.has(n)?`<span class="k">${x.tk}</span>`:x.tk}).join(' ')}))});
+function legenda(b,t){let c=b.chunks[0];for(const x of b.chunks)if(x.t0<=t+.04)c=x;$('leg').innerHTML=c.html;$('leg').style.transform=`scale(${.92+.08*back((t-c.t0)/.16)})`}
+// cartões "ESSE É SEU …" (aparecem no "seu/sua" do refrão), números e rótulos
+const CART={3:'ESSA É SUA<small>ARMADURA DE PALITO</small>',5:'ESSE É SEU<small>TRITURADOR DE PIA</small>',7:'ESSE É SEU<small>VULCÃO</small>',9:'ESSE É SEU<small>VELCRO</small>',
+ 11:'ESSA É SUA<small>CÂMERA 360</small>',13:'ESSE É SEU<small>BONÉ</small>',16:'ESSA É SUA<small>APOSENTADORIA</small>'};
+function cartao(bi,t){if(!(bi in CART))return;let t0;try{t0=ultima(bi,'seu')}catch(e){t0=ultima(bi,'sua')}if(bi===7)t0=palavra(7,'esse');if(bi===13)t0=palavra(13,'esse');
+ if(t<t0)return;const c=$('cartao');c.firstChild.innerHTML=CART[bi];c.style.opacity=clamp((t-t0)/.08);c.style.transform=`scale(${.6+.4*back((t-t0)/.25)}) rotate(${-3+3*out((t-t0)/.3)}deg)`}
+function num(txt,t0,t){if(t<t0)return;const n=$('num');n.firstChild.textContent=txt;n.style.opacity=clamp((t-t0)/.1);n.style.transform=`scale(${.6+.4*back((t-t0)/.25)})`}
+function rotulo(html,t0,t){const e=$('rotulo');e.innerHTML=html;e.style.opacity=clamp((t-t0)/.2)*.9}
+// grão determinístico
+const gc=$('grao').getContext('2d'),gimg=gc.createImageData(270,480);
+function grao(f){let s=(f*7919+13)>>>0;const d=gimg.data;for(let i=0;i<d.length;i+=4){s=(s*1103515245+12345)>>>0;const v=(s>>>16)&255;d[i]=d[i+1]=d[i+2]=v;d[i+3]=255}gc.putImageData(gimg,0,0)}
+
+const PER=[];
+let ZOOM=1.85; // afasta todos os planos (o ouriço com espinhos tem ~4 unidades de largura)
+function camv(p,a,t,push=0){cam.position.set(a[0]+(p[0]-a[0])*ZOOM,a[1]+(p[1]-a[1])*ZOOM,a[2]+(p[2]-a[2])*ZOOM-push*t);cam.lookAt(a[0],a[1],a[2])}
+const esconder=[boneco,trit,seta,velcro,olho,cam360,anel,bone,oculos,bolo,bengala,oculosVo,ponto,pessoa,V.g,F1.g];
+window.renderAt=(t)=>{
+ const bi0=B.findIndex(b=>t>=b.t0&&t<b.t1);const bi=bi0<0?B.length-1:bi0;const b=B[bi],u=clamp((t-b.t0)/(b.t1-b.t0)),lt=t-b.t0,w=(a,n)=>palavra(bi,a,n);
+ esconder.forEach(o=>o.visible=false);coco.forEach(c=>c.visible=false);cobertura.forEach(c=>c.visible=false);U.g.visible=true;U.g.position.set(0,.9,0);U.g.rotation.set(0,t*.08,0);
+ ['titulo','cartao','num','rotulo'].forEach(i=>$(i).style.opacity=0);let flash=0;
+ let st={giro:.06,pes:0,boca:0,palito:0,escala:1};sol.intensity=2.4;
+ // ambiente vivo
+ caust.material.uniforms.t.value=t;raios.forEach(m=>{m.material.opacity=.045+.025*Math.sin(t*.7+m.userData.f);m.rotation.z=.28+Math.sin(t*.2+m.userData.f)*.05});
+ for(let i=0;i<NP;i++){const v=pv[i];pp[i*3]=v[0]+Math.sin(t*.3+v[3]*9)*.3;pp[i*3+1]=((v[1]-t*.12*(.5+v[3]))%10+10)%10;pp[i*3+2]=v[2]+Math.cos(t*.25+v[3]*7)*.3}pg.attributes.position.needsUpdate=true;
+ algas.forEach(a=>{a.rotation.z=Math.sin(t*.9+a.userData.f)*.12;a.rotation.x=Math.cos(t*.7+a.userData.f)*.08});
+ peixes.forEach(p=>{p.mx.setTime(t*1.0+p.f);const ang=t*p.v+p.f;p.o.position.set(Math.cos(ang)*p.r,p.y+Math.sin(t*.8+p.f)*.25,-Math.abs(Math.sin(ang))*p.r-4);p.o.rotation.y=-ang+Math.PI;p.o.scale.setScalar(p.s);p.o.visible=true});
+ const P0=peixes[0];ZOOM=1.85;
+ switch(bi){
+  case 0: case 19:{ // gancho e loop: peixe encosta no espinho e foge
+   const k=ease(lt/1.6);if(P0){P0.o.position.set(lerp(-3,-1.75,k),1.25,lerp(1.5,.6,k));P0.o.rotation.y=-.5;P0.o.scale.setScalar(.45);if(lt>1.6){const f=out((lt-1.6)/.6);P0.o.position.x=lerp(-1.75,-5,f);P0.o.rotation.y=Math.PI*.9;P0.mx.setTime(t*3)}}
+   if(lt>1.6&&lt<1.68)flash=.25;camv([lerp(-1.2,-.6,u),1.25,lerp(4.4,3.6,u)],[-.4,1.0,0],t);
+   if(bi===0&&lt<2.6){const e=$('titulo');e.innerHTML='COBERTO DE<br><b>PAUS DUROS</b>';e.style.opacity=clamp(lt/.1)*clamp((2.6-lt)/.3);e.style.transform=`scale(${.7+.3*back(lt/.3)})`}break}
+  case 1:{camv([lerp(0,1.5,u),3.2,9.5],[0,1,-1],t);rotulo('Ouriço-do-mar · classe <i>Echinoidea</i>',b.t0+.2,t);break}
+  case 2:{st.giro=.25;boneco.visible=true;boneco.position.set(2.1,0,.6);boneco.rotation.y=-.6;braco.rotation.z=Math.sin(t*4)*.9;camv([1.6,1.5,2.7],[.9,1.1,0],t);break}
+  case 3:{st.palito=ease((t-w('armadura'))/.4);ZOOM=1.3;camv([.8,1.4,3.2],[0,1,0],t);break}
+  case 4:{st.boca=1;ZOOM=1.25;camv([lerp(.3,.1,u),-.05,lerp(2.6,1.9,u)],[0,.25,0],t);U.g.rotation.set(-.55,t*.05,0);U.g.position.y=1.2;num('5 dentes · 60 músculos',w('cinco'),t);break}
+  case 5:{U.g.visible=false;trit.visible=true;trit.position.set(0,0,0);lam.rotation.y=t*14;pedacos.forEach((p,i)=>{const a=t*6+i;p.position.set(Math.cos(a)*.45*((i%3)/3+.4),.55+Math.sin(t*9+i)*.25,Math.sin(a)*.45*((i%3)/3+.4))});
+   ZOOM=1.15;camv([0,3.6,1.6],[0,.5,0],t);if(lt<.07)flash=.3;break}
+  case 6:{seta.visible=true;seta.position.set(0,2.3+Math.sin(t*6)*.12,0);camv([.4,4.6,2.2],[0,1.4,0],t);break}
+  case 7:{const tv=w('faz');coco.forEach((c,i)=>{const tt=t-tv-c.userData.f*1.2;if(tt<0)return;const ph=tt%1.3;c.visible=true;c.position.set(c.userData.vx*ph*1.4,2.5+4.2*ph-4.9*ph*ph,c.userData.vz*ph*1.4)});
+   camv([2.2,2.8,4.2],[0,2.2,0],t);break}
+  case 8:{st.pes=ease(lt/.8);U.g.position.y=lerp(.9,1.05,ease(lt/.8));camv([1.4,.35,2.9],[0,.45,0],t);break}
+  case 9:{U.g.visible=false;velcro.visible=true;velcro.position.set(0,1.2,0);const k=ease((t-w('velcro')+.1)/.7);vPiv.rotation.z=k*.75;vB.position.y=0;velcro.scale.setScalar(.7);ZOOM=1.6;camv([1.0,1.9,2.9],[0,1.3,0],t);velcro.rotation.set(.35,-.35,0);if(Math.abs(t-w('velcro')-.1)<.04)flash=.15;break}
+  case 10:{const ta=w('cientistas');if(t>=ta){const k=ease((t-ta)/.6);olho.visible=true;olho.position.set(0,1.0,0);olho.scale.setScalar(k);iris.position.x=Math.sin(t*2)*.2;U.g.scale.setScalar(1-k*.3)}
+   rotulo('Ullrich-Lüter et al., <i>PNAS</i> 2011',ta,t);camv([0,1.3,lerp(5.2,4.2,u)],[0,1,0],t);break}
+  case 11:{cam360.visible=anel.visible=true;const a=t*2.2;cam360.position.set(Math.cos(a)*2.6,1.3,Math.sin(a)*2.6);cam360.lookAt(0,1,0);anel.position.set(0,1.3,0);camv([0,4.5,6.5],[0,1,0],t);break}
+  case 12:{sol.intensity=4.2;cobertura.forEach((c,i)=>{const tt=clamp((lt-.3-i*.12)/.7);c.visible=true;const a=c.userData.a;c.position.set(lerp(Math.cos(a)*3,Math.cos(a)*.45,ease(tt)),lerp(.2,2.45+Math.sin(tt*3.14)*.6,ease(tt)),lerp(Math.sin(a)*3,Math.sin(a)*.45,ease(tt)))});camv([1.8,2.4,4.2],[0,1.2,0],t);break}
+  case 13:{bone.visible=true;bone.position.set(0,2.5,0);bone.scale.setScalar(1.5);bone.rotation.z=.18;oculos.visible=true;oculos.scale.setScalar(.55);oculos.position.set(0,1.75,1.75);
+   cobertura.forEach((c,i)=>{c.visible=true;c.position.set(Math.cos(c.userData.a)*.5,2.45,Math.sin(c.userData.a)*.5)});ZOOM=1.5;camv([.6,1.9,3.3],[0,1.7,0],t);break}
+  case 14:{U.g.visible=false;V.g.visible=true;V.g.position.set(-.9,.9,0);bolo.visible=true;bolo.position.set(1.5,0,.5);velas.forEach((v,i)=>v.scale.setScalar(.8+.3*Math.sin(t*14+i)));
+   num('+100 ANOS',w('cem'),t);rotulo('Ebert &amp; Southon, 2003 · <i>Mesocentrotus franciscanus</i>',b.t0+.2,t);camv([.4,1.6,5],[.3,1,0],t);break}
+  case 15:{U.g.visible=false;V.g.visible=true;V.g.position.set(-1.1,.9,0);bengala.visible=true;bengala.position.set(-2.3,0,.4);oculosVo.visible=true;oculosVo.position.set(-1.1,1.2,1.25);
+   F1.g.visible=true;F1.g.position.set(1.4,.55,.3);camv([.2,1.3,5.2],[0,.9,0],t);break}
+  case 16:{U.g.visible=false;ponto.visible=true;ponto.position.set(0,0,0);pont.rotation.z=-t*6;cartaoPonto.position.y=.55+Math.abs(Math.sin(t*3))*.25;camv([.6,1.4,3.6],[0,1,0],t);break}
+  case 17:{U.g.visible=false;pessoa.visible=true;pessoa.position.set(0,0,0);pessoa.rotation.y=Math.sin(t)*.15;ZOOM=1.05;camv([0,2.0,4.4],[0,1.6,0],t);break}
+  case 18:{const k=Math.floor(u*3);if(k===0){cam360.visible=anel.visible=true;const a=t*2.4;cam360.position.set(Math.cos(a)*2.6,1.3,Math.sin(a)*2.6);cam360.lookAt(0,1,0);anel.position.set(0,1.3,0);camv([0,4,6],[0,1,0],t)}
+   else if(k===1){bone.visible=oculos.visible=true;bone.position.set(0,2.5,0);bone.scale.setScalar(1.5);oculos.scale.setScalar(.55);oculos.position.set(0,1.75,1.75);ZOOM=1.5;camv([.6,1.9,3.3],[0,1.7,0],t)}
+   else{coco.forEach((c,i)=>{const tt=lt-c.userData.f*.8;if(tt<0)return;const ph=tt%1.3;c.visible=true;c.position.set(c.userData.vx*ph*1.4,2.5+4.2*ph-4.9*ph*ph,c.userData.vz*ph*1.4)});camv([2.2,2.8,4.2],[0,2.2,0],t)}
+   if(Math.abs(u-1/3)<.01||Math.abs(u-2/3)<.01)flash=.2;break}
+ }
+ U.set(t,st);V.set(t,{giro:.06});F1.set(t,{giro:.06,escala:.55});
+ cartao(bi,t);legenda(b,t);grao(Math.floor(t*30));
+ for(const x of B)if(x.t0>0&&t>=x.t0&&t-x.t0<.05)flash=Math.max(flash,.12);
+ $('flash').style.opacity=flash;r.render(scene,cam)};
+window.TOTAL=TEMPO.total;window.EVENTOS=()=>({EV:B.map(b=>({t:b.t0,tipo:'corte'})),NOTA:[]});
+carregar();
+</script></body></html>

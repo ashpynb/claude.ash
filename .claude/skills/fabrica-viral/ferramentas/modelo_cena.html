@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><style>
+/* Modelo de cena (kit3d, ficha 09). Camadas HTML: título (só no gancho), número, cartão, legenda.
+   Antes do render: python video.py testar SLUG (confere se nada sai da tela ou se sobrepõe). */
+@font-face{font-family:'Lilita';src:url(vendor/fonts/LilitaOne.woff2) format('woff2')}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#2a2238;font-family:'Lilita','Inter',sans-serif}
+canvas{display:block;position:absolute;inset:0}
+#ui{position:absolute;inset:0;pointer-events:none}
+#titulo{position:absolute;left:40px;right:40px;top:190px;text-align:center;font:124px/1.0 'Lilita';color:#fff;opacity:0;-webkit-text-stroke:20px #2a1a40;paint-order:stroke fill;text-shadow:0 12px 0 #0006}
+#titulo b{color:#FFD43B;font-weight:400}
+#leg{position:absolute;left:40px;right:40px;top:1360px;text-align:center;font:108px/1.05 'Lilita';color:#fff;-webkit-text-stroke:18px #2a1a40;paint-order:stroke fill;text-shadow:0 10px 0 #0005}
+#leg .k{color:#FFD43B}
+#num{position:absolute;left:0;right:0;top:230px;text-align:center;opacity:0}
+#num span{display:inline-block;background:#2a1a40;color:#FFD43B;font:104px 'Lilita';padding:8px 46px 14px;border-radius:30px;box-shadow:0 12px 0 #0006}
+#num small{display:block;font:38px 'Lilita';color:#efe6ff;margin-top:-4px}
+#card{position:absolute;left:0;right:0;top:560px;text-align:center;opacity:0}
+#card span{display:inline-block;background:#FFD43B;color:#2a1a40;font:150px 'Lilita';padding:10px 60px 20px;border-radius:36px;border:10px solid #2a1a40;box-shadow:0 16px 0 #0007}
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+</style></head><body>
+<div id="ui"><div id="titulo"></div><div id="num"><span></span></div><div id="card"><span>PARTE 2</span></div><div id="leg"></div><div id="flash"></div></div>
+<script src="tempo.js"></script>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+<script type="module">
+import {THREE,lin,clamp,lerp,ease,back,hash,criarRender,mat,tex,T,G,malha,boneco,pose,simular,poeira,animaPoeira} from './kit3d.js';
+const W=1080,H=1920,$=id=>document.getElementById(id);
+await document.fonts.load('100px Lilita');// textos pintados em objetos 3D só depois da fonte
+
+// ======================= CONFIGURAÇÃO DO VÍDEO =======================
+const TITULO='E SE TU<br><b>FIZESSE</b><br><b>ISSO?</b>';     // só nos 3 s do gancho
+const CHAVE=['sergio','mes','dia','corpo'];                     // palavras que ficam amarelas (sem acento, minúsculas)
+const PERSONAGEM={pele:'#f1c08f',cab:'curto',cabCor:'#3a2416',roupa:'pijama',cor:'#3f6df2',corpo:'normal',oculos:true}; // ver kit3d: cab curto|cacheado|topete|lados|careca, bone:'#cor', roupa pijama|camiseta|jaleco|traje
+// =====================================================================
+
+const {r,env}=criarRender(W,H);const cena=new THREE.Scene();cena.environment=env;
+const cam=new THREE.PerspectiveCamera(32,W/H,.1,200);
+cena.add(new THREE.HemisphereLight(lin('#fff8ee'),lin('#7a6a5a'),.45));
+const sol=new THREE.DirectionalLight(lin('#fff1dc'),1.4);sol.position.set(6,10,7);sol.castShadow=true;sol.shadow.mapSize.set(2048,2048);
+Object.assign(sol.shadow.camera,{left:-9,right:9,top:9,bottom:-9,near:1,far:40});sol.shadow.radius=6;sol.shadow.bias=-.0004;sol.shadow.normalBias=.02;cena.add(sol);
+const em=(m,a,b,c)=>{m.position.set(a,b,c);return m};
+
+// ---- cenário de exemplo: chão de madeira + parede (troque pelo do seu vídeo) ----
+const piso=malha(new THREE.PlaneGeometry(20,16),mat('#ffffff',{map:T.madeira('#b07a4e','#9a6740'),rough:.7}),{sombra:false});piso.rotation.x=-Math.PI/2;piso.position.z=2;cena.add(piso);
+const parede=malha(new THREE.PlaneGeometry(20,8),mat('#ffffff',{map:T.papel('#d9946a','#e3a77e'),rough:.95}),{sombra:false});parede.position.set(0,4,-4);cena.add(parede);
+const mesa=malha(G.cx(2,.12,1,.04),mat('#ffffff',{map:T.madeira('#c79560','#b07f4c')}));mesa.position.set(1.8,1.05,-.4);cena.add(mesa);
+[[-.9,-.4],[.9,-.4],[-.9,.4],[.9,.4]].forEach(([x,z])=>cena.add(em(malha(G.cil(.04,.04,1,8),mat('#3a4a6a',{metal:.5})),1.8+x,.5,-.4+z)));
+// ---- personagem ----
+const heroi=boneco(PERSONAGEM);cena.add(heroi);
+// ---- física pré-calculada: caixas caindo na mesa (exemplo) ----
+const caixas=[0,1,2].map(i=>{const c=malha(G.cx(.3,.3,.3,.06),mat(['#e8503c','#ffd43b','#3ddc97'][i]));cena.add(c);return c});
+const simCaixas=simular(caixas.map((c,i)=>({forma:'caixa',tam:[.3,.3,.3],pos:[1.6+i*.2,3+i*.5,-.4],ang:[i*2,1,0]})),{estaticos:[{tam:[2,.12,1],pos:[1.8,1.05,-.4]}],dur:4});
+
+// ======================= TEMPO E LEGENDA (não precisa mexer) =======================
+const B=TEMPO.beats;const SETCHAVE=new Set(CHAVE);
+const norm=w=>w.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9-]/g,'');
+function palavra(bi,a,n=1){let c=0;for(const w of B[bi].words)if(norm(w.w).startsWith(norm(a))&&++c===n)return w.t0;throw new Error('palavra '+a+' no beat '+bi)}
+B.forEach(b=>{const toks=b.fala.split(' ');const ws=b.words;let wi=0;const tt=toks.map(tk=>{const n=norm(tk);for(let j=wi;j<ws.length;j++){const m=norm(ws[j].w);if(m===n||(n&&m.startsWith(n))||(m&&n.startsWith(m))){wi=j+1;return ws[j]}}return null});
+ const ch=[];let cur=[];toks.forEach((tk,i)=>{cur.push({tk,w:tt[i]});if(cur.length===3||/[.,?!:]$/.test(tk)||i===toks.length-1){ch.push(cur);cur=[]}});
+ b.chunks=ch.map(c=>({t0:(c.find(q=>q.w)||{w:{t0:b.t0}}).w.t0,html:c.map(q=>{const s=q.tk.replace(/[.,!:]$/,'');return SETCHAVE.has(norm(q.tk))?`<span class="k">${s}</span>`:s}).join(' ')}))});
+function legenda(b,t){let c=b.chunks[0];for(const q of b.chunks)if(q.t0<=t+.04)c=q;$('leg').innerHTML=c.html;$('leg').style.transform=`scale(${.86+.14*back((t-c.t0)/.18)})`}
+function num(txt,sub,t0,t){if(t<t0)return;const n=$('num');n.firstChild.innerHTML=txt+(sub?`<small>${sub}</small>`:'');n.style.opacity=clamp((t-t0)/.1);n.style.transform=`scale(${.5+.5*back((t-t0)/.28)}) rotate(${(1-clamp((t-t0)/.3))*-5}deg)`}
+function olhaCam(px,py,pz,ax,ay,az,fov=32){cam.position.set(px,py,pz);cam.fov=fov;cam.updateProjectionMatrix();cam.lookAt(ax,ay,az)}
+// REGRA DA USUÁRIA: câmera aberta. Boneco inteiro (altura ~2,6): distância 10–16. Close só 1–2 vezes no vídeo.
+function camOrbit(a,dist,az,el,fov=32){const A=az*Math.PI/180,El=el*Math.PI/180;olhaCam(a[0]+dist*Math.cos(El)*Math.sin(A),a[1]+dist*Math.sin(El),a[2]+dist*Math.cos(El)*Math.cos(A),...a,fov)}
+// efeitos sonoros (tipos no ferramentas/mix.py): whoosh em todo corte + os que você marcar
+const EV=[];const ev=(t,tipo)=>EV.push({t,tipo});B.forEach((b,i)=>{if(i>0)ev(b.t0-.1,'whoosh')});
+ev(B[0].t0+.5,'pop');
+
+// ======================= CENAS: uma função por beat =======================
+// lt = segundos desde o início do beat; u = 0..1 do beat; w('palavra') = segundo em que a palavra é dita no beat.
+const CENAS={
+ 0:(lt,u,t,w)=>{pose(heroi,{cara:'feliz2',bE:2.5,bD:2.5},t);camOrbit([0,1.4,0],lerp(14,13,ease(u)),15,12);
+   if(lt<2.9){const e=$('titulo');e.innerHTML=TITULO;e.style.opacity=clamp(lt/.1)*clamp((2.9-lt)/.3);e.style.transform=`scale(${.7+.3*back(lt/.3)})`}},
+ 1:(lt,u,t,w)=>{pose(heroi,{cara:'confiante',bD:2.6,joinha:true},t);camOrbit([0,1.4,0],12,-10,10)},
+ 2:(lt,u,t,w)=>{pose(heroi,{cara:'surpreso',olhar:[3,0]},t);simCaixas(caixas,lt);camOrbit([.9,1.4,0],13,20,14);num('3','caixas',B[2].t0+.3,t)},
+};
+const PADRAO=(lt,u,t,w)=>{pose(heroi,{cara:'feliz'},t);camOrbit([0,1.4,0],13,0,12)};
+
+window.renderAt=(t)=>{
+ const bi0=B.findIndex(b=>t>=b.t0&&t<b.t1);const bi=bi0<0?B.length-1:bi0;const b=B[bi],u=clamp((t-b.t0)/(b.t1-b.t0)),lt=t-b.t0,w=(a,n)=>palavra(bi,a,n)-b.t0;
+ ['titulo','num','card'].forEach(i=>$(i).style.opacity=0);heroi.position.set(0,0,0);heroi.rotation.set(0,0,0);
+ caixas.forEach((c,i)=>c.position.set(1.4+i*.4,1.26,-.4));
+ (CENAS[bi]||PADRAO)(lt,u,t,w);
+ if(bi===B.length-1){const k=clamp((lt-.3)/.4);if(k>0){const c=$('card');c.style.opacity=1;c.style.transform=`scale(${.4+.6*back(k)})`}}
+ r.render(cena,cam);legenda(b,t);$('flash').style.opacity=lt<.06?.3:0;
+};
+window.TOTAL=TEMPO.total;window.EVENTOS=()=>({EV});window.pronto=true;
+</script></body></html>

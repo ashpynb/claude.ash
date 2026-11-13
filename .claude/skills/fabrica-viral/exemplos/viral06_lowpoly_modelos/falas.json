@@ -1,0 +1,191 @@
+[
+ {
+  "id": "b00",
+  "texto": "Se você soltar um tubo de metal de setenta toneladas lá do alto, ele cai feito pedra.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b01",
+  "texto": "Então você prende duas asas, de leve inclinadas pra cima na frente.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b02",
+  "texto": "Quando o ar passa, a asa desvia o ar pra baixo. E o ar empurra a asa pra cima.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b03",
+  "texto": "Essa é a sustentação.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b04",
+  "texto": "Mas parado no chão, não passa ar nenhum pela asa.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b05",
+  "texto": "Então você pendura dois motores, que puxam o ar pela frente e jogam com força pra trás.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b06",
+  "texto": "Esse é o empuxo.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b07",
+  "texto": "Mas a asa só aguenta esse peso lá pelos duzentos e cinquenta quilômetros por hora.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b08",
+  "texto": "Então você faz uma pista bem comprida, pra dar tempo de acelerar.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b09",
+  "texto": "Essa é a decolagem.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b10",
+  "texto": "Mas o ar também freia tudo que passa por ele.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b11",
+  "texto": "Então você deixa o corpo liso e o nariz arredondado, pra cortar o vento.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b12",
+  "texto": "Essa é a aerodinâmica.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b13",
+  "texto": "Mas o nariz fica subindo e descendo sozinho, feito gangorra.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b14",
+  "texto": "Então você põe uma asinha lá atrás, deitada.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b15",
+  "texto": "Esse é o estabilizador horizontal.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b16",
+  "texto": "Mas o rabo fica rebolando pros lados.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b17",
+  "texto": "Então você põe uma barbatana em pé.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b18",
+  "texto": "Essa é a deriva.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b19",
+  "texto": "E pra fazer curva, você põe abas nas pontas das asas. Uma sobe, a outra desce, e o avião deita de lado.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b20",
+  "texto": "Esses são os ailerons.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b21",
+  "texto": "Mas se você inclinar a asa demais, o ar descola dela e a sustentação some de uma vez.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b22",
+  "texto": "Esse é o estol. Por isso o manche treme pra avisar o piloto.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b23",
+  "texto": "Lá em cima, a uns onze quilômetros, faz uns cinquenta graus abaixo de zero e o ar é ralo.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b24",
+  "texto": "Então você fecha a cabine e enche de ar.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b25",
+  "texto": "Essa é a pressurização.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ },
+ {
+  "id": "b26",
+  "texto": "Parabéns. Você construiu um avião. Ele fica no ar porque empurra o ar pra baixo o tempo todo.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.1
+ }
+]

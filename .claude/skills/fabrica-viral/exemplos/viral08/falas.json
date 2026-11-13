@@ -1,0 +1,163 @@
+[
+ {
+  "id": "b00",
+  "texto": "Se você empilhar pedra no meio de um rio, a correnteza leva tudo embora.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b01",
+  "texto": "Então, primeiro, você cava um canal do lado e tira o rio do caminho.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b02",
+  "texto": "Esse é o canal de desvio. O de Itaipu tem uns dois quilômetros.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b03",
+  "texto": "Mas a água empurra a parede, e quanto mais fundo, mais forte.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b04",
+  "texto": "A cada dez metros de fundo, a pressão sobe uma atmosfera inteira.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b05",
+  "texto": "Então você faz a parede bem mais grossa embaixo do que em cima.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b06",
+  "texto": "Essa é a barragem de gravidade. Ela segura o rio no próprio peso.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b07",
+  "texto": "A de Itaipu tem cento e noventa e seis metros de altura. Um prédio de sessenta e cinco andares.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b08",
+  "texto": "Mas a água é espertinha: ela entra por baixo, pela rocha, e tenta levantar a barragem.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b09",
+  "texto": "Então você abre túneis dentro do concreto, pra essa água escorrer e sair.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b10",
+  "texto": "Essas são as galerias de drenagem.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b11",
+  "texto": "Mas o rio enche. E se a água passar por cima, a barragem pode cair.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b12",
+  "texto": "Então você põe comportas que abrem quando sobra água.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b13",
+  "texto": "Esse é o vertedouro. O de Itaipu solta até sessenta e dois mil metros cúbicos por segundo.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b14",
+  "texto": "É umas quarenta Cataratas do Iguaçu juntas.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b15",
+  "texto": "Mas parada, essa água não acende nem uma lâmpada.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b16",
+  "texto": "Então ela despenca por tubos gigantes até uma turbina.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b17",
+  "texto": "Esse é o conduto forçado. A água cai uns cento e dezoito metros e gira a turbina.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b18",
+  "texto": "Itaipu tem vinte dessas, cada uma com setecentos megawatts.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b19",
+  "texto": "Mas e os peixes, que sobem o rio pra desovar?",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b20",
+  "texto": "Então você faz um caminho só pra eles, pelo lado.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b21",
+  "texto": "Esse é o canal da piracema. O de Itaipu tem quase dez quilômetros.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ },
+ {
+  "id": "b22",
+  "texto": "Parabéns. Você construiu uma represa.",
+  "rate": "+7%",
+  "gap": 0.09,
+  "resp": 0.12
+ }
+]
