@@ -1,6 +1,6 @@
 ---
 name: fabrica-viral
-description: Fábrica de vídeos virais curtos (9:16, ~1:00–1:30) em português com a voz do Antônio, do pedido ao MP4. Use quando a usuária pedir um vídeo viral, colar um pedido do Estúdio Viral ("Faz um vídeo viral do tipo…"), pedir roteiro de "Você é um…", "Você construiu um…", "E se tu…", "Passo a passo" ou "Escala absurda", mandar um vídeo de referência pra engenharia reversa, ou pedir pra corrigir/regerar um vídeo já feito. Contém as regras dela, os moldes de roteiro, o kit 3D (boneco de primitivas, corte transversal, física), e o script video.py que narra, testa, renderiza e mixa.
+description: Fábrica de vídeos virais curtos (9:16, ~1:00–1:30) em português com a voz do Antônio, do pedido ao MP4. Use quando a usuária pedir um vídeo viral, colar um pedido do Estúdio Viral ("Faz um vídeo viral do tipo…"), pedir roteiro de "Você é um…", "Você construiu um…", "E se tu…", "Passo a passo" ou "2D flat engraçado", mandar um vídeo de referência pra engenharia reversa, ou pedir pra corrigir/regerar um vídeo já feito. Contém as regras dela, os moldes de roteiro, o kit 3D (boneco de primitivas, corte transversal, física), e o script video.py que narra, testa, renderiza e mixa.
 ---
 
 # Fábrica viral

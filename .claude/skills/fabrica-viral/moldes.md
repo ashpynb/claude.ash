@@ -1,6 +1,9 @@
 # Os 5 tipos de vídeo (moldes)
 
 Cada um tem um exemplo nosso em `exemplos/` e referências medidas em `fichas/`.
+**Personagem só em "E se tu…" e "2D flat"** (pedido da usuária); nos outros, o protagonista é a coisa
+(o bicho, a obra, a montagem). **Acabamento cinema** (luz de cinema + malha bem feita) é opção pra
+qualquer tipo 3D: ver `visual-3d.md`.
 
 ## 1. "Você é um…" (bichos e coisas vivas)
 - **Estrutura:** gancho em 2ª pessoa com o fato mais absurdo ("Você tem o corpo inteiro coberto de
@@ -39,13 +42,17 @@ Cada um tem um exemplo nosso em `exemplos/` e referências medidas em `fichas/`.
   `anatomy` ajuda nas figuras.
 - **Nosso:** `exemplos/viral05_passo_iso` (telhado).
 
-## 5. Escala absurda (número grande demais pra imaginar)
-- **Estrutura:** "Imagina acordar e ver isso…" → o número em contador gigante → 3 a 5 comparações de
-  escala (pilha até o espaço, balança em kg, calendário correndo, personagem envelhecendo) → virada
-  → pergunta pro público ("E você?").
-- **Estilo:** 3D boneco de primitivas + gráficos 3D (barras, balança, contadores).
-- **Referência:** "1 trilhão" 690 mil views (ficha 10). Ainda não fizemos um inteiro; o viral 07
-  tem barras e balança reaproveitáveis.
+## 5. 2D flat engraçado (coisa do dia a dia explicada com piada visual)
+- **Estrutura:** gancho com pergunta do dia a dia + piada visual ("Por que o gato derruba tudo da
+  mesa?") → "Esse é o [nome]." → 3 a 5 passos, cada um com uma metáfora desenhada e um número com
+  fonte → virada engraçada → pergunta pro público ("E você, já…?").
+- **Estilo:** 2D flat: vetor plano, cores chapadas, contorno escuro, personagem com expressão
+  exagerada (piscar, bocão, olhos girando, gotinha de suor), objetos com contorno. Escala absurda
+  (pilha, balança, contador, calendário correndo) entra aqui quando o tema tem número grande.
+- **Personagem:** sim (Sérgio 2D ou outro desenhado no Estúdio).
+- **Referência:** "1 trilhão" 690 mil views, 2D flat (ficha 10).
+- **Nosso:** `exemplos/flat2d_sergio` (o Sérgio "1 mês sem se mexer" em 2D, canvas puro, antes da
+  versão 3D): quarto, cama, cérebro com placa, operários, barras, balança, osso, coração, estrelinhas.
 
 ## Ganchos que funcionam (pra variar)
 "E se tu…?" · "Você é um…" · "Sabe quando você…?" · "Imagina se…" · "Fulano só quer X, mas existe

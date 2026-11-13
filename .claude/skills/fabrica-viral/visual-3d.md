@@ -25,6 +25,25 @@ quadro a quadro pelo Playwright (WebGL SwiftShader) e montada no ffmpeg. Comece 
 Também há modelos CC0 (Quaternius/Kenney) em `ferramentas/modelos/` (GLTFLoader em `vendor/jsm`).
 Mais modelos: `git clone --filter=blob:none` de `trebeljahr/quaternius-showcase` ou `shorepine/kenney`.
 
+## Acabamento "cinema" (opção do Estúdio: luz de cinema e malha bem feita)
+Quando o pedido trouxer "Acabamento cinema":
+- `luzCinema(cena,{alvo,quente,fria,forca,neblina})` no lugar do sol + hemisfério: principal quente
+  (spot com sombra macia), **contraluz fria forte** desenhando a silhueta, preenchimento frio baixo,
+  neblina exponencial. Mude a mira por plano com `.mira([x,y,z])`. Exposição ~0.9.
+- Fundo nunca preto vazio: parede/cenário ao fundo pegando a neblina, ou fundo em degradê escuro.
+- Vinheta em CSS (`radial-gradient` escurecendo as bordas) por cima do canvas.
+- Malha: `G.esfFina`, `G.capFina`, `G.cxFina` (bordas arredondadas, 8 segmentos), `G.extrusaoFina`
+  (bisel 8, curva 48). Materiais com `rough` 0.25–0.5 em objetos de destaque pra brilhar na contraluz.
+- Custo: ~30% mais tempo de render (spot + mais polígonos).
+
+## 2D flat (tipo "2D flat engraçado")
+Canvas 2D puro (sem three.js), mesmo esquema de `renderAt(t)`, legendas e `video.py`.
+Base: `exemplos/flat2d_sergio/cena.html` (personagem `boneco()` 2D com contorno, sombra chapada,
+cabelos, roupas, acessórios e expressões; `quarto()`, `cama()`, insertos com fundo de raios).
+Regras: cor chapada + contorno escuro de 4–6 px, no máximo 1 tom de sombra por cor, expressão
+exagerada a cada beat, uma piada visual por frase, câmera = `cam(cx,cy,zoom,…)` com push-in.
+Não use `ctx.filter` (blur/sepia travam no render); faça desfoque reduzindo e ampliando um canvas.
+
 ## Câmera (regra da usuária: aberta)
 - Vertical, fov 32. Boneco tem ~2,6 de altura: **distância 10–16** pra corpo inteiro; cenário 14–18;
   vista aérea de terreno 50–75. Close (≤6) só em 1–2 reações no vídeo inteiro.

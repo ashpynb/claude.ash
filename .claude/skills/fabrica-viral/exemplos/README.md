@@ -8,6 +8,7 @@
 | `corte_transversal` | demo | low-poly + corte | o mínimo do corte com furo, pistões e etiquetas |
 | `viral06_lowpoly_modelos` | Você construiu um avião | low-poly com modelos CC0 | GLTFLoader, peças montando |
 | `viral04_voce_e` | Você é um ouriço-do-mar | 3D cartoon com luz de cena | fundo do mar, feixes de luz, refrão "Esse é seu…" |
+| `flat2d_sergio` | 2D flat (Sérgio 1 mês sem se mexer, versão 2D) | 2D flat em canvas | personagem 2D com expressões, quarto, insertos com raios, operários, balança, barras |
 | `viral05_passo_iso` | Passo a passo (telhado) | isométrico técnico | câmera ortográfica isométrica, camadas descendo, tons de cinza |
 
 Cada pasta tem `cena.html` (+ `tempo.js`, `falas.json`, `roteiro.md` com as fontes, `legenda.txt`).

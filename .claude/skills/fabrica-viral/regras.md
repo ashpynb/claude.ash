@@ -4,9 +4,10 @@ Só entra aqui o que a usuária pediu ou o que foi medido em vídeo de referênc
 Regra nova que contradiz uma antiga: atualize a antiga, não empilhe.
 
 ## Decisões da usuária
-- **Estilos:** só vídeo viral em **3D** (boneco de primitivas, low-poly em dia claro, cartoon com luz
-  de cena, isométrico técnico). No máximo **2D explicativo** estilo Traço Curioso. **Sem pixel art.**
-  Plano de economia cancelado.
+- **Estilos:** vídeo viral em **3D** (boneco de primitivas, low-poly em dia claro, cartoon com luz
+  de cena, isométrico técnico; opcional **acabamento cinema**) ou **2D flat engraçado** (tipo próprio).
+  **Sem pixel art.** Plano de economia cancelado. "Escala absurda" deixou de ser tipo: virou recurso do 2D flat.
+- **Personagem só em "E se tu…" e "2D flat".** Nos outros tipos não há personagem fixo.
 - **Sem música, nunca.** Só narração (Edge TTS `pt-BR-AntonioNeural`) + efeitos sonoros.
 - **Ritmo 3,2 palavras/s** em todo vídeo (exceção: série do cubo, que tem skill própria).
   Se ficar curto, acrescente frases (fato conferido ou piada), nunca fale mais devagar.

@@ -183,3 +183,19 @@ export function trilha(pontos,alvos){const c=new THREE.CatmullRomCurve3(pontos.m
 // muitas cópias baratas (carros, árvores): InstancedMesh com lista de [x,y,z,rotY,escala]
 export function copias(geo,m,lista){const im=new THREE.InstancedMesh(geo,m,lista.length);im.castShadow=im.receiveShadow=true;const M=new THREE.Matrix4(),Q=new THREE.Quaternion(),E=new THREE.Euler();
  lista.forEach((p,i)=>{E.set(0,p[3]||0,0);Q.setFromEuler(E);M.compose(new THREE.Vector3(p[0],p[1],p[2]),Q,new THREE.Vector3().setScalar(p[4]||1));im.setMatrixAt(i,M)});return im}
+
+// ---------- acabamento "cinema" (Estúdio: luz de cinema e malha bem feita) ----------
+// Luz de três pontos: principal quente (spot com sombra macia), contraluz fria forte por trás,
+// preenchimento frio e baixo, neblina. Use no lugar do sol/hemisfério do modelo.
+export function luzCinema(cena,{alvo=[0,1.4,0],quente='#ffb46a',fria='#7a9cff',forca=1,neblina='#1a1426'}={}){
+ const g=new THREE.Group();cena.add(g);const A=new THREE.Vector3(...alvo);
+ const key=new THREE.SpotLight(lin(quente),3.2*forca,40,Math.PI/5,.7,1.2);key.position.set(A.x+5,A.y+7,A.z+6);key.target.position.copy(A);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.radius=8;key.shadow.bias=-.0004;key.shadow.normalBias=.02;g.add(key,key.target);
+ const rim=new THREE.DirectionalLight(lin(fria),2.2*forca);rim.position.set(A.x-4,A.y+5,A.z-7);rim.target.position.copy(A);g.add(rim,rim.target);
+ const fill=new THREE.HemisphereLight(lin(fria),lin('#2a1a20'),.35*forca);g.add(fill);
+ cena.fog=new THREE.FogExp2(lin(neblina),.035);
+ return {grupo:g,key,rim,fill,mira:p=>{A.set(...p);key.target.position.copy(A);rim.target.position.copy(A)}}}
+// geometrias com mais detalhe (malha bem feita): mais segmentos e bordas arredondadas
+G.esfFina=(r)=>new THREE.SphereGeometry(r,64,48);
+G.capFina=(r,l)=>new THREE.CapsuleGeometry(r,l,12,32);
+G.cxFina=(w,h,d,r=.06)=>new RoundedBoxGeometry(w,h,d,8,Math.min(r,w/2-.001,h/2-.001,d/2-.001));
+G.extrusaoFina=(shape,prof=.3,bisel=.08)=>new THREE.ExtrudeGeometry(shape,{depth:prof,bevelEnabled:true,bevelSize:bisel,bevelThickness:bisel,bevelSegments:8,curveSegments:48});
