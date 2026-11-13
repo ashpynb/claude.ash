@@ -24,8 +24,12 @@ só o que a etapa precisar:
    Se for tema da atualidade (ex.: tema do Enem do ano), pesquise antes de escrever.
 2. **Roteiro** (`roteiro.md` + `moldes.md`): um fato conferido em fonte por frase, humor, o que não
    tiver fonte vai pra "⚠️ Conferir". Conte as palavras: alvo 3,2 palavras/s e 1:00–1:30.
-   Salve em `trabalho/SLUG/roteiro.md` (com fontes) e **mostre à usuária e espere o ok**.
-3. **Produção** (depois do ok), com `ferramentas/video.py`:
+   Salve em `trabalho/SLUG/roteiro.md` (com fontes) e as falas em `trabalho/SLUG/falas.txt`.
+   **Aprovação = skill `verificador-viral` (portão 1)**, não a usuária (pedido dela, 2026-11-13):
+   `python .claude/skills/fabrica-viral/ferramentas/video.py validar SLUG --molde voce|construiu|ese|passo|flat2d` + gancho pontuado + rubrica.
+   Nota ≥ 8,5 → produza direto e mostre um resumo. Até 3 reescritas; depois disso, ou em tema sensível
+   ou crédito pago, pergunte a ela.
+3. **Produção** (depois do verificador), com `ferramentas/video.py`:
    ```
    F=.claude/skills/fabrica-viral/ferramentas
    python $F/video.py novo SLUG [--de viral09]   # pasta trabalho/SLUG com cena.html + links do kit
@@ -33,14 +37,18 @@ só o que a etapa precisar:
    python $F/video.py narrar SLUG                # voz + ajuste automático do ritmo pra 3,2 p/s
    # monte as cenas em trabalho/SLUG/cena.html (visual-3d.md)
    python $F/video.py testar SLUG                # camadas CSS + folha de contato: OLHE a folha
-   python $F/video.py render SLUG                # 4 processos, ~25–40 min pra 1:20
+   python $F/video.py render SLUG                # 4 processos, ~25–40 min pra 1:20; volume -14 LUFS + QA no fim
+   python $F/video.py qa SLUG                    # (de novo, depois de consertar) QA quadro a quadro
    ```
    Rode o render em segundo plano e avise a usuária do tempo estimado.
-4. **Conferir** a `folha_final.jpg` (câmera aberta, personagem inteiro, nada cortado, texto legível).
+4. **Conferir** (verificador-viral, portão 2): o QA do render tem que passar sem ✗ DURO, e a
+   `qa/visao_geral.jpg` (1 quadro/s) tem que tirar ≥ 8 na rubrica de vídeo. Câmera aberta, personagem
+   inteiro, nada cortado, texto legível, nada parado.
 5. **Entregar**: envie o MP4 pelo chat (SendUserFile) com a legenda do post (pedido de "marca um amigo"
    só na legenda, com as fontes). **Não comite MP4 nem quadros** (o repo fica leve; `trabalho/` é ignorado).
    Comite `trabalho/SLUG/{roteiro.md,falas.txt,cena.html}` só se a usuária quiser guardar.
 6. **Registrar**: se a skill `publicar-no-estudio` existir, grave o vídeo e a regra nova no Estúdio.
+   Depois de postado, peça a curva de retenção e rode o portão 3 do verificador (`retencao.py`).
    Regra nova (pedida pela usuária ou medida em referência) vai também pro `regras.md` desta skill.
 
 ## Correções pedidas depois de pronto
@@ -58,7 +66,7 @@ folha de contato. Escreva `fichas/NN_nome.md` e leve só as regras novas pro `re
   estão em `ferramentas/vendor/` (licenças junto).
 - Edge TTS precisa do proxy (o `narrar.py` já usa `$HTTPS_PROXY`).
 - Créditos pagos (imagem/vídeo de IA): mostrar custo e esperar ok. Hoje não usamos.
-- Outras skills úteis aqui: `roteiro-humor`, `comedy-writer`, `viral-hooks`, `assistir-youtube`,
+- Outras skills úteis aqui: `verificador-viral` (aprova roteiro e vídeo), `roteiro-humor`, `comedy-writer`, `viral-hooks`, `assistir-youtube`,
   `watch`, `anatomy` (figuras isométricas), `ig-caption` (legenda do post), `publicar-no-estudio`.
 - Estúdio Viral (artifact onde a usuária escolhe tipo/ideia/personagem):
   https://claude.ai/artifact/G1kStDLJTDJhSj6JFHefvj — fonte em `ferramentas/estudio_viral.html`.

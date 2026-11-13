@@ -15,8 +15,12 @@ Regra nova que contradiz uma antiga: atualize a antiga, não empilhe.
 - **Título grande só no gancho (0–3 s)**, depois some. No resto, só legenda + números/notação que
   ensinam algo ("25 cm", "13:30", "−27%"). Nada de palavra-chave gigante repetindo a fala.
 - **Legenda de 1 a 3 palavras**, centro-baixo da tela, **palavra-chave em amarelo** (8 de 8 referências).
-- **Fatos conferidos com fonte**; o que não tiver fonte vai pra "⚠️ Conferir". Mostrar o roteiro e
-  **esperar o ok** antes de produzir.
+- **Fatos conferidos com fonte**; o que não tiver fonte vai pra "⚠️ Conferir" e fica fora da fala.
+- **Aprovação do roteiro = skill `verificador-viral`** (pedido da usuária, 2026-11-13: "aciona essa
+  skill que ela vê tudo isso e confirma se viralizaria"). Nota ≥ 8,5 → produzir sem esperar o ok.
+  Ainda pergunta a ela: crédito pago, tema sensível, 3 reprovações seguidas, ou se ela pedir pra ver.
+- **Volume final −14 LUFS** (pico ≤ −1,5 dBTP), medido nas referências do claude-animated-shorts;
+  o `video.py render` já normaliza e o `qa.py` confere.
 - **O roteiro é meu**: a usuária escolhe ideia, tipo, estilo e personagem; eu escrevo.
 - **Tom**: humor + curiosidade. Quando ela pedir "tranquilo/acessível" (ex.: tema de prova), explicar
   em palavras simples, sem jargão.
@@ -46,6 +50,9 @@ Regra nova que contradiz uma antiga: atualize a antiga, não empilhe.
 - **Legenda em fonte arredondada grossa** (Lilita One), branca com contorno escuro (ficha 09).
 - **Som**: um efeito por ação, hit na pausa logo depois da palavra; whoosh em todo corte (ficha 03).
 - Ritmo das referências: 2,4–3,4 p/s; a usuária fixou 3,2.
+
+## Medido nos NOSSOS vídeos (curva de retenção, `verificador-viral/retencao.py`)
+Uma linha por lição, com o vídeo e o número. (Ainda vazio: preencher depois dos primeiros vídeos postados.)
 
 ## Checklist da folha de contato (antes de enviar)
 1 lê em 1 s no celular · 2 tamanhos de plano variam · 3 luz com direção, sombra no chão ·

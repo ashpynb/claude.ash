@@ -11,6 +11,17 @@ aprovado ao MP4; e o Estúdio passou a entregar os dados em JSON pra integraçã
 
 ---
 
+## 0. Atualização 2 (13/11/2026, noite): verificador-viral + QA automático
+Fonte: branch `claude/cubo-magico-f2l-videos-0r1398` (mesmo repositório). Nada do Estúdio mudou.
+| O que | Onde | O que fazer no Content Factory |
+|---|---|---|
+| **Skill nova `verificador-viral`**: aprova o roteiro no lugar da pessoa (nota ≥ 8,5), confere o MP4, lê a retenção | `skills/verificador-viral/` | copiar a pasta; o fluxo não pede mais "ok" do roteiro, só em crédito pago, tema sensível ou após 3 reprovações. Se a sua tela tinha um botão "aprovar roteiro", ele vira "ver verificação" (`trabalho/SLUG/verificacao.md`) |
+| `video.py validar SLUG --molde X` e `video.py qa SLUG` | `fabrica-viral/ferramentas/video.py` | novos comandos; `render` agora termina com o QA |
+| `ferramentas/qa.py`: formato, duração 1:00–1:30, −14 LUFS, silêncio morto, quadro preto, imagem parada, pulos, tempo.js × vídeo | `fabrica-viral/ferramentas/qa.py` | precisa de `numpy` e `pillow` (já estavam na lista) |
+| Volume final normalizado em **−14 LUFS** | `video.py render` (filtro `loudnorm`) | nada; vídeos novos saem no volume padrão das plataformas |
+| Regras novas de câmera/acabamento e fórmula de roteiro (medidas no claude-animated-shorts, MIT) | `visual-3d.md`, `roteiro.md`, `regras.md` | nada |
+| Comparação com 7 repositórios de automação (o que entrou e o que não) | `fabrica-viral/fichas/11_repos_automacao.md` | ler se for adicionar publicação automática (só API oficial) |
+
 ## 1. Estúdio Viral (a página)
 
 Link do artifact: https://claude.ai/artifact/G1kStDLJTDJhSj6JFHefvj (versão 8, privado).

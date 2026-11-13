@@ -15,6 +15,22 @@
   como exemplo ("Tipo: o governo aumenta…" é exemplo de redação, não fato).
 - Tema da atualidade (prova, notícia): confira a data e o enunciado exato.
 
+## Fórmula medida (20 de 20 shorts da referência do claude-animated-shorts, MIT)
+Serve pros moldes de história e de "como funciona"; nos moldes fixos ("Você é…", "construiu") use como tempero.
+1. **Gancho = paradoxo dito como fato**, 1ª frase, sem preparação ("Setenta e quatro soldados derrubaram
+   uma ponte de ferro só andando nela.").
+2. **Cenário** em 1–2 frases concretas (hora, lugar, um nome comum, um número).
+3. **Escalada** em 3–6 beats, cada um maior; 1–2 piadas de exagero.
+4. **Beat de mistério:** uma pergunta no meio ("Pera. Como assim?").
+5. **Virada com "Sabe por quê?"** (na referência, "You see," em 14 de 20) → o mecanismo real com uma
+   **analogia do dia a dia** ("Sabe quando você empurra alguém no balanço?").
+6. **Fecho irônico** em 1–2 frases curtas; o vídeo acaba na última palavra.
+- Dupla seca que funciona: "Por sorte… / Por azar…". Nunca descreva o que a imagem já mostra.
+
+## Antes de produzir: verificador
+Roteiro pronto → skill **`verificador-viral`** (portão 1). Ela roda `validar_roteiro.py`, pontua o gancho
+e dá a nota de viralização. Se passar (≥ 8,5), segue pra produção **sem esperar o ok** (pedido da usuária).
+
 ## Humor (skills `roteiro-humor`, `comedy-writer`)
 - Personificar ("a água é espertinha"), contraste absurdo ("três semanas de cama fizeram mais
   estrago que trinta anos de vida"), reação do personagem, objeto do dia a dia como metáfora.
@@ -25,8 +41,8 @@
 2. Tabela: # | Fala | Cena | Na tela (número/etiqueta).
 3. Legenda do post (com o "marca aquele amigo…").
 4. **Fontes** (com link por fato) e **⚠️ Conferir**.
-No chat: mostre as falas numeradas, os números da tela entre colchetes, as fontes principais e o
-⚠️ Conferir. Pergunte só "me dá o ok ou o que mudar".
+No chat: mostre as falas numeradas, a nota do verificador, as fontes principais e o ⚠️ Conferir.
+Não pergunte "me dá o ok": o `verificador-viral` aprova (ver as exceções que ainda pedem ok na skill).
 
-## Depois do ok
+## Depois da aprovação do verificador
 Copie as falas, uma por linha, pra `trabalho/SLUG/falas.txt` (sem numeração) e siga o SKILL.md.

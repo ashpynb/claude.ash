@@ -4,7 +4,9 @@
   python video.py novo   SLUG [--de EXEMPLO]   cria trabalho/SLUG (cena.html, falas.txt, links pro kit)
   python video.py narrar SLUG [--alvo 3.2]     falas.txt -> voz do Antônio, acerta o ritmo, gera tempo.js
   python video.py testar SLUG                  2 quadros por beat + checagem das camadas CSS + folha de contato
-  python video.py render SLUG [-j 4]           quadros em paralelo + efeitos sonoros + MP4 + folha final
+  python video.py render SLUG [-j 4]           quadros em paralelo + efeitos sonoros + MP4 (-14 LUFS) + QA automático
+  python video.py validar SLUG --molde voce    regras objetivas do roteiro (skill verificador-viral)
+  python video.py qa SLUG                      QA do MP4: formato, volume, silêncio, quadro preto/parado, sincronia
 
 SLUG: nome curto sem espaço (ex.: viral10_polvo). EXEMPLO: pasta em exemplos/ (ex.: viral09).
 Tudo fica em <raiz do repo>/trabalho/SLUG (quadros, áudio e MP4 não vão pro git).
@@ -158,9 +160,34 @@ def render(a):
     mp4 = p / f'{a.slug}.mp4'
     subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-framerate', '30', '-i', str(q / 'f%05d.jpg'), '-i', str(p / 'mix.wav'),
                     '-c:v', 'libx264', '-preset', 'medium', '-crf', '23', '-maxrate', '9M', '-bufsize', '18M', '-pix_fmt', 'yuv420p',
+                    '-af', 'loudnorm=I=-14:TP=-1.5:LRA=7', '-ar', '48000',
                     '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', str(mp4)], check=True)
     folha([q / f'f{i:05d}.jpg' for i in range(15, n, max(1, n // 28))][:28], p / 'folha_final.jpg')
     print(f'MP4: {mp4} ({mp4.stat().st_size / 1e6:.1f} MB)\nFolha final: {p / "folha_final.jpg"} (confira antes de enviar)')
+    qa(a)
+
+
+# ---------------------------------------------------------------- verificador
+def validar(a):
+    p = pasta(a.slug)
+    v = SKILL.parent / 'verificador-viral' / 'validar_roteiro.py'
+    if not v.exists():
+        sys.exit('Skill verificador-viral não instalada (falta validar_roteiro.py).')
+    r = subprocess.run([sys.executable, '-I', str(v), str(p / 'falas.txt'), '--molde', a.molde])
+    sys.exit(r.returncode)
+
+
+def qa(a):
+    p = pasta(a.slug)
+    mp4 = p / f'{a.slug}.mp4'
+    if not mp4.exists():
+        sys.exit(f'Não achei {mp4}. Rode o render primeiro.')
+    cmd = [sys.executable, '-I', str(FERR / 'qa.py'), str(mp4), '--saida', str(p / 'qa')]
+    if (p / 'tempo.js').exists():
+        cmd += ['--tempo', str(p / 'tempo.js')]
+    r = subprocess.run(cmd)
+    if r.returncode:
+        print('⚠️  QA reprovou: conserte os erros duros antes de enviar (skill verificador-viral, portão 2).')
 
 
 if __name__ == '__main__':
@@ -170,4 +197,6 @@ if __name__ == '__main__':
     x = sp.add_parser('narrar'); x.add_argument('slug'); x.add_argument('--alvo', type=float, default=3.2); x.add_argument('--rate', type=int, default=10); x.set_defaults(f=narrar)
     x = sp.add_parser('testar'); x.add_argument('slug'); x.set_defaults(f=testar)
     x = sp.add_parser('render'); x.add_argument('slug'); x.add_argument('-j', type=int, default=4); x.add_argument('--limpar', action='store_true', help='apaga quadros antigos'); x.set_defaults(f=render)
+    x = sp.add_parser('validar'); x.add_argument('slug'); x.add_argument('--molde', default='livre', choices=['voce', 'construiu', 'ese', 'passo', 'flat2d', 'livre']); x.set_defaults(f=validar)
+    x = sp.add_parser('qa'); x.add_argument('slug'); x.set_defaults(f=qa)
     a = ap.parse_args(); a.f(a)

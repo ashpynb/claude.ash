@@ -58,8 +58,11 @@ Junta três fontes:
 3. Escalada até um pico no meio, e segundo gancho?
 4. O fecho ressignifica o nome com regra de três e volta à 1ª frase?
 5. Nenhuma frase ofende grupo de pessoas? Nada copiado de referência?
-6. Contagem de palavras ÷ 3,2 dá ≥ 60s?
+6. Contagem de palavras ÷ 3,2 dá ≥ 60s? (`verificador-viral/validar_roteiro.py` confere sozinho)
+7. Tem um "Sabe por quê?" ou analogia do dia a dia explicando o mecanismo (fórmula em `fabrica-viral/roteiro.md`)?
 
 ## Saída
-`trabalho/<slug>/roteiro.md` com: ganchos alternativos (se a skill `ig-reel` existir, pontue com `ig-reel/hookscore.py` na versão em inglês; senão use `viral-hooks`),
+`trabalho/<slug>/roteiro.md` com: ganchos alternativos (pontue com `verificador-viral/hookscore.py` na versão em inglês),
 tabela de beats (tempo, fala, visual, cartão), base científica com fontes, "⚠️ Conferir" e a nota do checklist.
+Depois, as falas vão pra `trabalho/<slug>/falas.txt` e o roteiro passa pela skill **`verificador-viral`**
+(portão 1). É ela que aprova, não a usuária.

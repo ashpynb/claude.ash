@@ -8,11 +8,12 @@ Dois pedaços que trabalham juntos:
 2. **`skills/`**: as skills que um Claude precisa pra transformar esse pedido em vídeo
    (roteiro com fatos conferidos → aprovação → narração → cenas 3D/2D → MP4).
 
-## Skills (copie as 7 pastas pra `.claude/skills/` do repositório do Content Factory)
+## Skills (copie as 8 pastas pra `.claude/skills/` do repositório do Content Factory)
 
 | Skill | Papel | Obrigatória? |
 |---|---|---|
-| `fabrica-viral` | O fluxo inteiro: regras, 5 tipos de vídeo, kit 3D, exemplos e `ferramentas/video.py` | **sim** |
+| `fabrica-viral` | O fluxo inteiro: regras, 5 tipos de vídeo, kit 3D, exemplos, `ferramentas/video.py` e `ferramentas/qa.py` | **sim** |
+| `verificador-viral` | **Aprova o roteiro no lugar da usuária** (regras objetivas + gancho + nota ≥ 8,5), confere o MP4 (QA + rubrica) e lê a retenção depois de postar | **sim** |
 | `roteiro-humor` | Escrever o roteiro engraçado e verdadeiro | sim (o fluxo usa) |
 | `comedy-writer` | Técnicas de piada (usada pelo roteiro-humor) | sim |
 | `clean-comedy-rewrite` | Filtro pra não ofender ninguém (usada pelo roteiro-humor) | sim |
@@ -21,7 +22,8 @@ Dois pedaços que trabalham juntos:
 | `assistir-youtube` | Ver vídeo de referência do YouTube (engenharia reversa) | opcional (precisa de chave do Gemini) |
 
 Não vão no pacote (são deste projeto): `publicar-no-estudio` (grava no "Estúdio de Ideias", um
-artifact específico), `serie-cubo-f2l`, as outras `ig-*`, `watch` e `anatomy`. Nenhuma das 7 depende delas.
+artifact específico), `serie-cubo-f2l`, as outras `ig-*`, `watch` e `anatomy`. Nenhuma das 8 depende delas
+(o `hookscore.py` que o verificador usa vai copiado dentro dele).
 
 ## O que a máquina precisa
 - Python 3.10+ e `pip install edge-tts soundfile numpy pillow`
@@ -37,9 +39,13 @@ artifact específico), `serie-cubo-f2l`, as outras `ig-*`, `watch` e `anatomy`. 
 ## Como roda
 1. A pessoa monta o pedido no Estúdio.
 2. O Content Factory entrega o `pedido` (texto) a uma sessão do Claude com as skills instaladas.
-3. O Claude escreve o roteiro (`trabalho/SLUG/roteiro.md`, com fontes e ⚠️ Conferir) e **espera aprovação**.
+3. O Claude escreve o roteiro (`trabalho/SLUG/roteiro.md`, com fontes e ⚠️ Conferir) e passa pelo
+   **`verificador-viral`** (`video.py validar` + gancho pontuado + rubrica). Nota ≥ 8,5 → produz sem esperar;
+   só pergunta à pessoa em crédito pago, tema sensível ou após 3 reprovações.
 4. Aprovado: `python .claude/skills/fabrica-viral/ferramentas/video.py novo|narrar|testar|render SLUG`
-   → `trabalho/SLUG/SLUG.mp4` (1080×1920, ~1:00–1:30, ~35 min de render com 4 processos).
+   → `trabalho/SLUG/SLUG.mp4` (1080×1920, ~1:00–1:30, −14 LUFS, ~35 min de render com 4 processos).
+   O render termina rodando o QA (`trabalho/SLUG/qa/relatorio.md` + `visao_geral.jpg`); com ✗ DURO, não entregar.
+5. Depois de postar: curva de retenção → `verificador-viral/retencao.py` → uma lição nova no `regras.md`.
 
 ## Integração com a página
 O Estúdio avisa quando a pessoa clica em **Copiar pedido** ou **Copiar como JSON**, de três jeitos:

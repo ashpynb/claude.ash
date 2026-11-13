@@ -53,6 +53,28 @@ Não use `ctx.filter` (blur/sepia travam no render); faça desfoque reduzindo e 
 - Corte transversal: plano `x<=0` mantido, câmera do lado `+x` olhando pra `-x`; tudo que deve
   aparecer no corte fica em `x<0` (setas, gotas, etiquetas).
 
+## Movimento e acabamento medidos (claude-animated-shorts, MIT: 20 shorts de referência, 4 rodadas de verificador)
+Números medidos por quadro em `mromidev/claude-animated-shorts` (references/STYLE_BIBLE.md e SKILL.md).
+Valem pra qualquer estilo 3D nosso; o `qa.py` cobra os itens marcados com ✓.
+- ✓ **Nunca parado:** todo plano "parado" faz push-in de **0,15–0,35% por quadro** (0,6%/quadro na
+  palavra de impacto). Imagem igual por ≥ 0,5 s o QA aponta; ≥ 1,5 s reprova.
+- **Movimento em rajada que freia:** quando a câmera anda, a velocidade máxima é no 1º quadro e cai em
+  ~8–10 quadros (`easeOutCubic`/`easeOutExpo`), não `easeInOut` simétrico. Deslizes longos: 18–40 quadros.
+- **Corte seco só em salto grande** (lugar/tempo); o resto é câmera seguindo um objeto, whip-pan com
+  borrão ou dissolve de 6–8 quadros.
+- **Tremida de impacto:** troca de sinal a cada quadro e some em **7 quadros**
+  (`d*(-1)**f*exp(-f/2.5)`). Inclinação (roll) de 4–5° em queda/susto.
+- **Reação visual 0–3 quadros ANTES da palavra** que ela ilustra (o olho chega antes do ouvido).
+- **Profundidade:** desfoque de fundo em ~1/3 do tempo (closes e insertos), foco nos olhos; planos
+  abertos nítidos. Neblina = cor do horizonte. Brilho (bloom) só em coisa que emite luz.
+- **Contorno escuro** (`vendor/jsm/effects/OutlineEffect.js`) ~3 px em 1080 px, quase preto, em
+  silhueta e quina, nunca na linha do horizonte. Personagem 2D sobre cenário 3D leva contorno próprio.
+- **Cor de dia:** luz média ~0,55, sem preto esmagado; sombra fria (azulada), luz quente. O QA mostra
+  "luz média" e "saturação média" pra comparar entre vídeos.
+- **Armadilhas de leitura** (o verificador deles pegou): objeto a menos de ~2 m da lente vira borrão
+  cortado na borda; arbusto cortado pela borda vira "bola verde"; placa pintada fica ilegível com sol de
+  lado (use material sem luz); bandeira inventada pode parecer de um país real.
+
 ## Receitas que já funcionaram
 - **Quarto com cama** (viral07): colchão + travesseiro que afunda no "plof" + **colcha que se molda
   ao corpo** (malha deformada pelas cápsulas do corpo deitado). Deitar: grupo externo rot.x −90° +
