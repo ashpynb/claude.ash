@@ -9,7 +9,7 @@ TMP=$(mktemp -d); P=$TMP/pacote-content-factory; mkdir -p "$P/estudio-viral" "$P
   printf '<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%%}[hidden]{display:none!important}</style>\n</head><body>\n'
   cat "$F/estudio_viral.html"; printf '\n</body></html>\n'; } > "$P/estudio-viral/index.html"
 for s in fabrica-viral roteiro-humor comedy-writer clean-comedy-rewrite viral-hooks ig-caption assistir-youtube; do cp -r "$SK/$s" "$P/skills/"; done
-cp "$F/INSTALAR_content_factory.md" "$P/INSTALAR.md"
+cp "$F/INSTALAR_content_factory.md" "$P/INSTALAR.md"; cp "$F/MUDANCAS_content_factory.md" "$P/MUDANCAS.md"
 find "$P" -name __pycache__ -prune -exec rm -rf {} +
 (cd "$TMP" && zip -qr - pacote-content-factory) > "$OUT"; rm -rf "$TMP"
 echo "Pacote: $OUT ($(du -h "$OUT" | cut -f1))"
