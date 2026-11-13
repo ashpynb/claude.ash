@@ -8,10 +8,10 @@ description: Escreve roteiros curtos (Reels/TikTok/Shorts, ~1 min) engraçados, 
 Junta três fontes:
 - `comedy-writer` (técnicas: detalhe concreto, punchline na última palavra, regra de três, callback, status);
 - `clean-comedy-rewrite` (só como filtro de ofensa, ver regra 6);
-- as regras medidas em `referencias/aprendizados.md` (ficha 05: molde "Você é…"), que **têm prioridade**.
+- as regras em `.claude/skills/fabrica-viral/regras.md` e o molde "Você é…" em `fabrica-viral/moldes.md`, que **têm prioridade**.
 
 ## Antes de escrever
-1. Leia `referencias/aprendizados.md` e, se existir, `referencias/05_voce_e.md`.
+1. Leia `.claude/skills/fabrica-viral/regras.md` e `fabrica-viral/fichas/05_voce_e.md`.
 2. Escolha o tema. Não precisa ser bicho: pode ser objeto, órgão, planeta, comida, invenção, fenômeno.
    O tema precisa de **3 a 6 fatos verdadeiros e visuais**, e pelo menos um tem que soar absurdo.
 3. **Confira cada fato** (estudo, museu, universidade, enciclopédia). O que não conseguir confirmar
@@ -61,5 +61,5 @@ Junta três fontes:
 6. Contagem de palavras ÷ 3,2 dá ≥ 60s?
 
 ## Saída
-`roteiro/viralNN_<tema>.md` com: ganchos alternativos (pontue com `ig-reel/hookscore.py` na versão em inglês),
+`trabalho/<slug>/roteiro.md` com: ganchos alternativos (pontue com `ig-reel/hookscore.py` na versão em inglês),
 tabela de beats (tempo, fala, visual, cartão), base científica com fontes, "⚠️ Conferir" e a nota do checklist.

@@ -1,26 +1,19 @@
-# Série "Cubo mágico: F2L em 5 vídeos"
+# claude.ash — fábrica de vídeos virais
 
-Roteiros feitos com a skill `diretor-video-aula`, prontos pro `produtor-video-aula`.
-Cada vídeo dura ~1:12–1:17 só de fala (com os respiros depois dos algoritmos: ~1:20).
+Tudo mora em skills (`.claude/skills/`), que carregam sozinhas em qualquer chat novo com este repo:
 
-| Ep. | Título | O que você aprende |
-|---|---|---|
-| [1](roteiro/ep01.md) | A língua do cubo | U, R, L, F, D · linha (') · dois (2) · rotações x e y |
-| [2](roteiro/ep02.md) | Camadas × F2L | por que o F2L junta quina + aresta em **pares** e usa 4 **slots** |
-| [3](roteiro/ep03.md) | Seus 2 primeiros casos | `R U R'` · `U R U' R'` · espelho `F' U' F` |
-| [4](roteiro/ep04.md) | Peças presas e branco pra cima | tirar peça presa com `y` + `R U R'` · `R U2 R'` |
-| [5](roteiro/ep05.md) | Juntando tudo + treino | ordem completa · look ahead · plano de 3 semanas |
+| Skill | O que faz |
+|---|---|
+| **fabrica-viral** | Do pedido ao MP4: regras da usuária, 5 moldes de roteiro, kit 3D, voz do Antônio, `video.py` (narrar → testar → render). Comece pelo `SKILL.md`. |
+| serie-cubo-f2l | Série "Cubo mágico: F2L" (cubo em CSS sincronizado com a fala). |
+| publicar-no-estudio | Grava ideias, vídeos e regras no Estúdio de Ideias. |
+| assistir-youtube, watch | Ver vídeos de referência (YouTube via Gemini; TikTok/Instagram via yt-dlp). |
+| roteiro-humor, comedy-writer, clean-comedy-rewrite, viral-hooks | Escrita engraçada e ganchos. |
+| ig-* | Instagram: legenda, carrossel, plano, perfil… |
+| anatomy | Figuras isométricas técnicas. |
 
-## Arquivos
-- `roteiro/epNN.md` — roteiro legível: narração, tabela de cortes (beats), prompts, kit de estudo.
-- `roteiro/epNN.json` — o mesmo em JSON, para a animação ler.
-- `roteiro/gerar.py` — fonte de tudo. Editou o texto? `python3 roteiro/gerar.py` regenera os .md/.json.
-- `anim/cubo.html` — cubo 3D em CSS puro (sem biblioteca). Abra no navegador:
-  - botões de movimento, campo de sequência, velocidade (padrão devagar), **modo foco F2L**;
-  - cenas prontas da série (`ep1-R`, `ep3-caso1`, `ep4-branco`…);
-  - para gravar: `anim/cubo.html?cena=ep3-caso1&auto=1&gravar=1&vel=900`.
-- `referencias/aprendizados.md` — regras desta série (ritmo mais calmo, algoritmo falado = cubo na tela).
+Trabalho de cada vídeo: `trabalho/SLUG/` (criado por `video.py novo`; quadros, áudio e MP4 não vão pro git).
+Vídeos antigos e referências em imagem continuam no histórico do git (antes do commit "Limpeza").
 
-## Notação usada
-Cores: branco embaixo (D), amarelo em cima (U), verde na frente (F), vermelho à direita (R).
-Os casos foram conferidos no simulador para o slot frente-direita.
+Pra levar pra outro projeto (ex.: Content Factory): copie a pasta `.claude/skills/fabrica-viral/`
+inteira; ela é autossuficiente (ferramentas, kit, fontes, bibliotecas e exemplos dentro).

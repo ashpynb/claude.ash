@@ -17,7 +17,7 @@ resultado para o Estúdio. Tudo é gravado com a ferramenta `ArtifactData` (carr
 | A usuária colou um prompt que começa com `Faz um vídeo viral` | `query` em `ideias` com `where: [["titulo","==", <título>]]`. Achou? `update` com `status: "usada"` (passe `if_version`). |
 | Roteiro aprovado e vídeo renderizado | `set` em `videos` (esquema abaixo) e `update` da ideia para `status: "produzida"`. |
 | A usuária pediu "salva essa ideia" ou você sugeriu ideias e ela gostou | `set` em `ideias` com `status: "nova"`. Uma ideia por documento. |
-| Regra nova: medida num vídeo de referência OU pedida/corrigida pela usuária | `set` em `aprendizados`. Também acrescente no `referencias/aprendizados.md` do repo. |
+| Regra nova: medida num vídeo de referência OU pedida/corrigida pela usuária | `set` em `aprendizados`. Também acrescente no `.claude/skills/fabrica-viral/regras.md`. |
 
 Antes de criar, faça `query` para não duplicar (mesmo `titulo` em ideias/vídeos, mesma `regra` em aprendizados).
 Para alterar documento existente, use o `version` lido como `if_version`.
@@ -38,7 +38,7 @@ Prefira `batch` quando gravar mais de 2 documentos. Depois de gravar, diga em um
 ```
 O `prompt` segue o padrão do Estúdio: `Faz um vídeo viral do tipo "<molde>": <título>` + Estilo +
 Estrutura + extra do molde + o parágrafo fixo (fato com fonte por frase, "⚠️ Conferir",
-aprendizados.md, Antônio 3,2 p/s, 1:00–1:30, sem música, título só no gancho, legenda 1–3 palavras,
+skill fabrica-viral, Antônio 3,2 p/s, 1:00–1:30, sem música, título só no gancho, legenda 1–3 palavras,
 mostrar o roteiro antes de produzir).
 
 ### `videos/<doc_id>` — doc_id: nome do arquivo sem extensão (ex.: `viral09_tubarao`)

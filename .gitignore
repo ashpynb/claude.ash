@@ -1,0 +1,10 @@
+trabalho/*/quadros/
+trabalho/*/teste/
+trabalho/*/voz/
+trabalho/*/*.wav
+trabalho/*/*.mp4
+trabalho/*/*.jpg
+trabalho/*/kit3d.js
+trabalho/*/vendor
+trabalho/*/modelos
+__pycache__/
