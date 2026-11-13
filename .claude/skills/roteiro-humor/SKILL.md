@@ -61,5 +61,5 @@ Junta três fontes:
 6. Contagem de palavras ÷ 3,2 dá ≥ 60s?
 
 ## Saída
-`trabalho/<slug>/roteiro.md` com: ganchos alternativos (pontue com `ig-reel/hookscore.py` na versão em inglês),
+`trabalho/<slug>/roteiro.md` com: ganchos alternativos (se a skill `ig-reel` existir, pontue com `ig-reel/hookscore.py` na versão em inglês; senão use `viral-hooks`),
 tabela de beats (tempo, fala, visual, cartão), base científica com fontes, "⚠️ Conferir" e a nota do checklist.

@@ -118,7 +118,7 @@ textarea{width:100%;min-height:170px;background:#100d17;color:var(--fg);border:1
 <section>
  <h2><small>Etapa <span id="nEtapa">4</span></small> O que eu vou entregar</h2>
  <div class="entrega" id="entrega"></div>
- <div class="linha"><button class="btn" id="copiar" type="button">Copiar pedido</button><span class="aviso" id="aviso" role="status"></span></div>
+ <div class="linha"><button class="btn" id="copiar" type="button">Copiar pedido</button><button class="btn sec" id="copiarJson" type="button">Copiar como JSON</button><span class="aviso" id="aviso" role="status"></span></div>
  <textarea id="pedido" readonly aria-label="Pedido pronto pra colar no Claude"></textarea>
 </section>
 </div>
@@ -190,7 +190,17 @@ function tudo(){const T=TIPOS[estado.tipo];cards();acab();ideiaUI();$('secPers')
 $('ideia').addEventListener('input',()=>{estado.ideia[estado.tipo]=$('ideia').value;entrega();salvar()});
 $('nome').addEventListener('input',()=>{estado.nome=$('nome').value;entrega();salvar()});
 $('sortear').onclick=()=>{const T=TIPOS[estado.tipo];const atual=$('ideia').value;const resto=T.sug.filter(s=>s!==atual);estado.ideia[estado.tipo]=resto[Math.floor(Math.random()*resto.length)];tudo()};
-$('copiar').onclick=async()=>{try{await navigator.clipboard.writeText($('pedido').value);$('aviso').textContent='Copiado. Cola aqui na conversa comigo.'}catch(e){$('pedido').select();$('aviso').textContent='Selecionei o texto: use Copiar do teclado.'}};
+// ---- integração (Content Factory): dados estruturados, evento e postMessage ----
+function dados(){const T=TIPOS[estado.tipo];const ideia=($('ideia').value||T.sug[0]).trim();
+ return {versao:1,origem:'estudio-viral',tipo:estado.tipo,tipo_nome:T.nome,ideia,frase:`${T.pre} ${ideia}`.replace(/\s+/g,' '),estilo:T.estilo,
+  acabamento:estado.tipo==='flat2d'?'2d':(estado.cinema?'cinema':'padrao'),estrutura:T.estr,duracao_alvo:T.dur,
+  personagem:T.pers?{nome:$('nome').value.trim()||null,...estado.pers,descricao:persTxt(estado.pers)}:null,
+  skill:'fabrica-viral',pedido:$('pedido').value}}
+function avisar(){const d=dados();document.dispatchEvent(new CustomEvent('estudio-viral:pedido',{detail:d}));try{if(window.parent!==window)window.parent.postMessage({tipo:'estudio-viral:pedido',dados:d},'*')}catch(e){}return d}
+window.estudioViral={dados,versao:1};
+async function copiar(txt,ok){try{await navigator.clipboard.writeText(txt);$('aviso').textContent=ok}catch(e){$('pedido').value=txt;$('pedido').select();$('aviso').textContent='Selecionei o texto: use Copiar do teclado.'}}
+$('copiar').onclick=()=>{avisar();copiar($('pedido').value,'Copiado. Cola numa conversa com o Claude (com a skill fabrica-viral).')};
+$('copiarJson').onclick=()=>{const d=avisar();copiar(JSON.stringify(d,null,1),'JSON copiado.')};
 // ---- esboço 2D do personagem ----
 let x=$('cvP').getContext('2d');
 function rr(a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath()}
